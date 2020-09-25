@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "pre_generate",
+            "type": "shell",
+            "command": "./pre_generate.ps1"
+        },
+        {
+            "label": "go-run-filepackage",
+            "type": "shell",
+            "command": "go run '${fileDirname}'",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$go"
+            ]
+        },
+        {
+            "label": "go-run-file",
+            "type": "shell",
+            "command": "go run '${file}'",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$go"
+            ]
+        },
+        {
+            "label": "py-run-file",
+            "type": "shell",
+            "command": "python '${file}'"
+        }
+    ]
+}

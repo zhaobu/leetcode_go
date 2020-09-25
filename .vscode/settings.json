@@ -1,0 +1,36 @@
+{
+    "files.autoGuessEncoding": false,
+    "files.encoding": "utf8",
+    "go.testFlags": [
+        "-v", //显示日志
+        "-count=1" //禁用go test缓存
+    ],
+    "go.installDependenciesWhenBuilding": false,
+    "go.useLanguageServer": true,
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "go.formatTool": "goimports",
+    "go.delveConfig": {
+        "dlvLoadConfig": {
+            "followPointers": true,
+            "maxVariableRecurse": 5,
+            "maxStringLen": 2000,
+            "maxArrayValues": 25,
+            "maxStructFields": -1
+        },
+        "apiVersion": 2,
+        "showGlobalVariables": true
+    },
+    "window.zoomLevel": 0,
+    "explorer.confirmDelete": false,
+    // "http.proxy": "http://127.0.0.1:1087",
+    //proto格式化格式设置
+    "files.exclude": {
+        "**/*.meta": true,
+        "**/*-template": true
+    },
+}
