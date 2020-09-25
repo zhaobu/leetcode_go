@@ -3,7 +3,6 @@ package Solution
 import (
 	"leetcode/utils/zaplog"
 	"math/rand"
-	"reflect"
 	"testing"
 )
 
@@ -16,80 +15,65 @@ func init() {
 	)
 }
 
+//定义结构
+type Input struct {
+	Nums   []int
+	Target int
+}
+
+type Case struct {
+	name   string
+	input  *Input
+	expect []int
+}
+
 func TestTwoSum1(t *testing.T) {
 	//	测试用例
-	cases := []struct {
-		name   string
-		inputs [][]int
-		expect []int
-	}{
-		{"1 test 1", [][]int{{2, 7, 11, 15}, {9}}, []int{0, 1}},
-		{"2 test 2", [][]int{{3, 2, 4}, {6}}, []int{1, 2}},
-		{"3 test 3", [][]int{{2, 7, 11, 15}, {9}}, []int{0, 1}},
-		{"4 test 4", [][]int{{7, 6, 5, 3, 2, 1, 4, 9, 10}, {17}}, []int{0, 8}},
+	cases := []*Case{
+		{name: "test 1", input: &Input{Nums: []int{2, 7, 11, 15}, Target: 9}, expect: []int{0, 1}},
+		{name: "test 2", input: &Input{Nums: []int{3, 2, 4}, Target: 6}, expect: []int{1, 2}},
+		{name: "test 3", input: &Input{Nums: []int{7, 6, 5, 3, 2, 1, 4, 9, 10}, Target: 17}, expect: []int{0, 8}},
 	}
 
 	//	开始测试
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			ret := TwoSum1(c.inputs[0], c.inputs[1][0])
-			if !reflect.DeepEqual(ret, c.expect) {
-				zaplog.Fatalf("expected: %v, but got: %v, with inputs: %v", c.expect, ret, c.inputs)
-			} else {
-				zaplog.Infof("expected: %v, result: %v, with inputs: %v", c.expect, ret, c.inputs)
-			}
+			output := TwoSum1(c.input.Nums, c.input.Target)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, output, c.input)
 		})
 	}
 }
 
 func TestTwoSum2(t *testing.T) {
 	//	测试用例
-	cases := []struct {
-		name   string
-		inputs [][]int
-		expect []int
-	}{
-		{"1 test 1", [][]int{{2, 7, 11, 15}, {9}}, []int{0, 1}},
-		{"2 test 2", [][]int{{3, 2, 4}, {6}}, []int{1, 2}},
-		{"3 test 3", [][]int{{2, 7, 11, 15}, {9}}, []int{0, 1}},
-		{"4 test 4", [][]int{{7, 6, 5, 3, 2, 1, 4, 9, 10}, {17}}, []int{0, 8}},
+	cases := []*Case{
+		{name: "test 1", input: &Input{Nums: []int{2, 7, 11, 15}, Target: 9}, expect: []int{0, 1}},
+		{name: "test 2", input: &Input{Nums: []int{3, 2, 4}, Target: 6}, expect: []int{1, 2}},
+		{name: "test 3", input: &Input{Nums: []int{7, 6, 5, 3, 2, 1, 4, 9, 10}, Target: 17}, expect: []int{0, 8}},
 	}
 
 	//	开始测试
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			ret := TwoSum2(c.inputs[0], c.inputs[1][0])
-			if !reflect.DeepEqual(ret, c.expect) {
-				zaplog.Fatalf("expected: %v, but got: %v, with inputs: %v", c.expect, ret, c.inputs)
-			} else {
-				zaplog.Infof("expected: %v, result: %v, with inputs: %v", c.expect, ret, c.inputs)
-			}
+			output := TwoSum2(c.input.Nums, c.input.Target)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, output, c.input)
 		})
 	}
 }
 
 func TestTwoSum3(t *testing.T) {
 	//	测试用例
-	cases := []struct {
-		name   string
-		inputs [][]int
-		expect []int
-	}{
-		{"1 test 1", [][]int{{2, 7, 11, 15}, {9}}, []int{0, 1}},
-		{"2 test 2", [][]int{{3, 2, 4}, {6}}, []int{1, 2}},
-		{"3 test 3", [][]int{{2, 7, 11, 15}, {9}}, []int{0, 1}},
-		{"4 test 4", [][]int{{7, 6, 5, 3, 2, 1, 4, 9, 10}, {17}}, []int{0, 8}},
+	cases := []*Case{
+		{name: "test 1", input: &Input{Nums: []int{2, 7, 11, 15}, Target: 9}, expect: []int{0, 1}},
+		{name: "test 2", input: &Input{Nums: []int{3, 2, 4}, Target: 6}, expect: []int{1, 2}},
+		{name: "test 3", input: &Input{Nums: []int{7, 6, 5, 3, 2, 1, 4, 9, 10}, Target: 17}, expect: []int{0, 8}},
 	}
 
 	//	开始测试
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			ret := TwoSum3(c.inputs[0], c.inputs[1][0])
-			if !reflect.DeepEqual(ret, c.expect) {
-				zaplog.Fatalf("expected: %v, but got: %v, with inputs: %v", c.expect, ret, c.inputs)
-			} else {
-				zaplog.Infof("expected: %v, result: %v, with inputs: %v", c.expect, ret, c.inputs)
-			}
+			output := TwoSum3(c.input.Nums, c.input.Target)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, output, c.input)
 		})
 	}
 }
