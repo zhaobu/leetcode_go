@@ -1,4 +1,4 @@
-# [1. 两数之和][https://leetcode-cn.com/problems/two-sum/?utm_source=LCUS&amp;utm_medium=ip_redirect_q_uns&amp;utm_campaign=transfer2china]
+# [两数之和][https://leetcode-cn.com/problems/two-sum/?utm_source=LCUS&amp;utm_medium=ip_redirect_q_uns&amp;utm_campaign=transfer2china]
 
 ## 问题
 
