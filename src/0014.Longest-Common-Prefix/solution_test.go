@@ -40,3 +40,19 @@ func TestLongestCommonPrefix1(t *testing.T) {
 		})
 	}
 }
+
+func TestLongestCommonPrefix2(t *testing.T) {
+	//	测试用例
+	cases := []*Case{
+		{name: "test 1", input: &Input{Strs: []string{"flower", "flow", "flight"}}, expect: "fl"},
+		{name: "test 1", input: &Input{Strs: []string{"a"}}, expect: "a"},
+	}
+
+	//	开始测试
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			output := LongestCommonPrefix2(c.input.Strs)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, output, c.input)
+		})
+	}
+}
