@@ -27,14 +27,6 @@
 > 向右旋转 2 步: [3,99,-1,-100]
 > ```
 
-### 示例 3
-
-```
-输入: [7,6,4,3,1]
-输出: 0
-解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
-```
-
 ### 说明
 
 - 尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
@@ -45,7 +37,7 @@
 ## 题解
 
 1. [windliang](https://leetcode.wang/leetcode-122-Best-Time-to-Buy-and-Sell-StockII.html)
-2. [leetcode 官方](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/solution/mai-mai-gu-piao-de-zui-jia-shi-ji-ii-by-leetcode/)
+2. [leetcode 官方](https://leetcode-cn.com/problems/rotate-array/solution/xuan-zhuan-shu-zu-by-leetcode/)
 3. [小浩算法](https://www.geekxh.com/1.0.数组系列/003.html#_02、题解分析)
 
 ## 结语
