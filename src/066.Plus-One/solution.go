@@ -55,6 +55,15 @@ func PlusOne3(digits []int) []int {
 
 // [windliang 解法二 迭代](https://leetcode.wang/leetCode-66-Plus-One.html)
 func PlusOne4(digits []int) []int {
-
-	return
+	for i := len(digits) - 1; i >= 0; i-- {
+		if digits[i] < 9 {
+			digits[i]++
+			break
+		}
+		digits[i] = 0
+	}
+	if digits[0] == 0 {
+		digits = append([]int{1}, digits...)
+	}
+	return digits
 }
