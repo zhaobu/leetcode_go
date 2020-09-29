@@ -19,6 +19,15 @@ type Input struct {
 	k    int
 }
 
+func (i *Input) Copy() *Input {
+	res := &Input{
+		nums: make([]int, len(i.nums)),
+		k:    i.k,
+	}
+	copy(res.nums, i.nums)
+	return res
+}
+
 type Case struct {
 	name   string
 	input  *Input
@@ -36,8 +45,9 @@ func TestRotate1(t *testing.T) {
 	//	开始测试
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+			input := c.input.Copy()
 			Rotate1(c.input.nums, c.input.k)
-			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, c.input.nums, c.input)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, c.input.nums, input)
 		})
 	}
 }
@@ -53,8 +63,9 @@ func TestRotate2(t *testing.T) {
 	//	开始测试
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+			input := c.input.Copy()
 			Rotate2(c.input.nums, c.input.k)
-			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, c.input.nums, c.input)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, c.input.nums, input)
 		})
 	}
 }
@@ -70,8 +81,9 @@ func TestRotate3(t *testing.T) {
 	//	开始测试
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+			input := c.input.Copy()
 			Rotate3(c.input.nums, c.input.k)
-			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, c.input.nums, c.input)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, c.input.nums, input)
 		})
 	}
 }
@@ -98,8 +110,9 @@ func TestRotate4(t *testing.T) {
 	//	开始测试
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+			input := c.input.Copy()
 			Rotate4(c.input.nums, c.input.k)
-			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, c.input.nums, c.input)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, c.input.nums, input)
 		})
 	}
 }
