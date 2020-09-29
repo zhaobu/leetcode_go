@@ -38,7 +38,7 @@ func TestRemoveElement1(t *testing.T) {
 	//	测试用例
 	cases := []*Case{
 		{name: "test 1", input: &Input{nums: []int{3, 2, 2, 3}, val: 3}, expect: 2},
-		{name: "test 1", input: &Input{nums: []int{0, 1, 2, 2, 3, 0, 4, 2}, val: 2}, expect: 5},
+		{name: "test 2", input: &Input{nums: []int{0, 1, 2, 2, 3, 0, 4, 2}, val: 2}, expect: 5},
 	}
 
 	//	开始测试
@@ -55,7 +55,7 @@ func TestRemoveElement2(t *testing.T) {
 	//	测试用例
 	cases := []*Case{
 		{name: "test 1", input: &Input{nums: []int{3, 2, 2, 3}, val: 3}, expect: 2},
-		{name: "test 1", input: &Input{nums: []int{0, 1, 2, 2, 3, 0, 4, 2}, val: 2}, expect: 5},
+		{name: "test 2", input: &Input{nums: []int{0, 1, 2, 2, 3, 0, 4, 2}, val: 2}, expect: 5},
 	}
 
 	//	开始测试
