@@ -37,8 +37,8 @@
 
 ## 题解
 
-1. [windliang](https://leetcode.wang/leetCode-27-Remove-Element.html)
-2. [leetcode 官方](https://leetcode-cn.com/problems/remove-element/solution/yi-chu-yuan-su-by-leetcode/)
-3. [小浩算法](https://leetcode.wang/leetCode-27-Remove-Element.html)
+1. [windliang](https://leetcode.wang/leetCode-66-Plus-One.html)
+2. [leetcode 官方](https://leetcode-cn.com/problems/plus-one/solution/jian-dan-ming-bai-shuang-bai-jie-fa-by-qi-ang-qi-8/)
+3. [小浩算法](https://www.geekxh.com/1.0.数组系列/006.html#_02、题目图解)
 
 ## 结语

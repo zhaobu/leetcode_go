@@ -35,3 +35,26 @@ func PlusOne2(digits []int) []int {
 	}
 	return append([]int{1}, digits...)
 }
+
+func plusOneAtIndex(nums []int, index int) []int {
+	if index < 0 {
+		return []int{1}
+	}
+	if nums[index] < 9 {
+		nums[index]++
+		return nums
+	}
+	nums[index] = 0
+	return plusOneAtIndex(nums, index-1)
+}
+
+// [windliang 解法一 递归](https://leetcode.wang/leetCode-66-Plus-One.html)
+func PlusOne3(digits []int) []int {
+	return plusOneAtIndex(digits, len(digits)-1)
+}
+
+// [windliang 解法二 迭代](https://leetcode.wang/leetCode-66-Plus-One.html)
+func PlusOne4(digits []int) []int {
+
+	return
+}
