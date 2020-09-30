@@ -32,8 +32,8 @@
 
 ## 题解
 
-1. [windliang](https://leetcode.wang/leetCode-66-Plus-One.html)
-2. [leetcode 官方](https://leetcode-cn.com/problems/plus-one/solution/jian-dan-ming-bai-shuang-bai-jie-fa-by-qi-ang-qi-8/)
-3. [小浩算法](https://www.geekxh.com/1.0.数组系列/006.html#_02、题目图解)
+1. [windliang](https://leetcode.wang/leetCode-15-3Sum.html)
+2. [leetcode 官方](https://leetcode-cn.com/problems/3sum/solution/san-shu-zhi-he-by-leetcode-solution/)
+3. [小浩算法](https://www.geekxh.com/1.0.数组系列/008.html#_03、代码展示)
 
 ## 结语
