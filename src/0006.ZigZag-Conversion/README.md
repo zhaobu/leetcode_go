@@ -56,6 +56,6 @@
 
 1. [windliang](https://leetcode.wang/leetCode-6-ZigZag-Conversion.html)
 2. [leetcode 官方](https://leetcode-cn.com/problems/zigzag-conversion/solution/z-zi-xing-bian-huan-by-leetcode/)
-3. [小浩算法](https://www.geekxh.com/1.0.数组系列/009.html#_01、题目示例)
+3. [小浩算法](https://www.geekxh.com/1.0.数组系列/009.html#_02、题目分析)
 
 ## 结语
