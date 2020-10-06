@@ -28,18 +28,29 @@ func (l *ListNode) Copy() *ListNode {
 
 /*
  */
-func RemoveNthFromEnd1(head *ListNode, n int) *ListNode {
-	result := &ListNode{Val: 0, Next: head}
-	cur := result
-	var pre *ListNode = nil
-	count := 0
-	for ; head != nil; head = head.Next {
-		if count >= n-1 {
-			pre = cur
-			cur = cur.Next
-		}
-		count++
+func MergeTwoLists1(l1 *ListNode, l2 *ListNode) *ListNode {
+	if l1 == nil {
+		return l2
 	}
-	pre.Next = cur.Next
+	if l2 == nil {
+		return l1
+	}
+	result := &ListNode{}
+	head := result
+	for l1 != nil && l2 != nil {
+		if l1.Val < l2.Val {
+			head.Next = l1
+			l1 = l1.Next
+		} else {
+			head.Next = l2
+			l2 = l2.Next
+		}
+		head = head.Next
+	}
+	if l1 != nil {
+		head.Next = l1
+	} else if l2 != nil {
+		head.Next = l2
+	}
 	return result.Next
 }

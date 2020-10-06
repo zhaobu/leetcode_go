@@ -20,19 +20,9 @@ type Input struct {
 }
 
 func (i *Input) copy() *Input {
-	result := &ListNode{}
-	var (
-		pre     = result
-		newNode *ListNode
-	)
-	for j := i.head; j != nil; j = j.Next {
-		newNode = &ListNode{Val: j.Val}
-		pre.Next = newNode
-		pre = newNode
-	}
 	return &Input{
 		n:    i.n,
-		head: result.Next,
+		head: i.head.Copy(),
 	}
 }
 
