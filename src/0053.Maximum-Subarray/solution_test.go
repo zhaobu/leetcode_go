@@ -52,3 +52,18 @@ func TestMaxSubArray2(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxSubArray3(t *testing.T) {
+	//	测试用例
+	cases := []*Case{
+		{name: "test 1", input: &Input{nums: []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}}, expect: 6},
+	}
+
+	//	开始测试
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			out := MaxSubArray3(c.input.nums)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, out, c.input)
+		})
+	}
+}
