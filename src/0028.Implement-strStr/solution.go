@@ -121,3 +121,49 @@ func StrStr3(haystack string, needle string) int {
 	}
 	return -1
 }
+
+func getNext(s string) []int {
+	next := make([]int, len(s))
+	j := 0
+	next[0] = j
+	for i := 1; i < len(s); i++ {
+		for j > 0 && s[i] != s[j] {
+			j = next[j-1]
+		}
+		if s[i] == s[j] {
+			j++
+		}
+		next[i] = j
+	}
+	return next
+}
+
+// [leetcode 官方 kmp算法](https://leetcode-cn.com/problems/implement-strstr/solution/bang-ni-ba-kmpsuan-fa-xue-ge-tong-tou-ming-ming-ba/)
+func StrStr4(haystack string, needle string) int {
+	if needle == "" {
+		return 0
+	}
+	if len(haystack) < len(needle) {
+		return -1
+	}
+	l1 := len(haystack)
+	l2 := len(needle)
+
+	//计算next数组
+	next := getNext(needle)
+
+	j := 0
+	for i := 0; i < l1; i++ {
+		for j > 0 && haystack[i] != needle[j] {
+			j = next[j-1]
+		}
+		if haystack[i] == needle[j] {
+			j++
+		}
+		if j == l2 {
+			return i - l2 + 1
+		}
+	}
+
+	return -1
+}
