@@ -51,16 +51,19 @@ func InsertionSort(nums []int) []int {
 }
 
 /*
-[希尔排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/4.shellSort.html#_1-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4
+[希尔排序](https://blog.csdn.net/qq_39207948/article/details/80006224)
 */
 func ShellSort(nums []int) []int {
 	n := len(nums)
 
 	//进行分组,最开始时的增量gap为数组长度的一半
 	for gap := n / 2; gap > 0; gap /= 2 {
-		//对各个分组进行插入排序
+		/*
+			对各个分组进行插入排序的时候并不是先对一个组进行排序完再对另一个组进行排序,而是轮流对每个组进行插入排序
+		*/
 		for i := gap; i < n; i++ {
-			//插入的时候安祖进行插入,组内元素两两相隔gap
+			//i:代表即将插入的元素下标
+			// j代表和i同组的每个左边的元素,把nums[i]插入到该组正确的位置
 			for j := i; j >= gap && nums[j] < nums[j-gap]; j -= gap {
 				nums[j-gap], nums[j] = nums[j], nums[j-gap]
 			}
