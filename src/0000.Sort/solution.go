@@ -1,7 +1,7 @@
 package Solution
 
 /*
-冒泡排序
+[冒泡排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/1.bubbleSort.html)
 */
 func BubbleSort(nums []int) []int {
 	n := len(nums)
@@ -21,9 +21,58 @@ func BubbleSort(nums []int) []int {
 }
 
 /*
-选择排序
+[选择排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/2.selectionSort.html#_1-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4)
 */
 func SelectionSort(nums []int) []int {
+	n := len(nums)
+	for i := 0; i < n-1; i++ {
+		m := i
+		for j := i + 1; j < n; j++ {
+			if nums[j] < nums[m] {
+				m = j
+			}
+		}
+		nums[i], nums[m] = nums[m], nums[i]
+	}
+	return nums
+}
+
+/*
+[插入排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/3.insertionSort.html#_1-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4)
+*/
+func InsertionSort(nums []int) []int {
+	n := len(nums)
+	for i := 1; i < n; i++ {
+		for j := i; j > 0 && nums[j] < nums[j-1]; j-- {
+			nums[j-1], nums[j] = nums[j], nums[j-1]
+		}
+	}
+	return nums
+}
+
+/*
+[希尔排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/4.shellSort.html#_1-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4
+*/
+func ShellSort(nums []int) []int {
+	n := len(nums)
+
+	//进行分组,最开始时的增量gap为数组长度的一半
+	for gap := n / 2; gap > 0; gap /= 2 {
+		//对各个分组进行插入排序
+		for i := gap; i < n; i++ {
+			//插入的时候安祖进行插入,组内元素两两相隔gap
+			for j := i; j >= gap && nums[j] < nums[j-gap]; j -= gap {
+				nums[j-gap], nums[j] = nums[j], nums[j-gap]
+			}
+		}
+	}
+	return nums
+}
+
+/*
+[归并排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/5.mergeSort.html#_3-%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA)
+*/
+func MergeSort(nums []int) []int {
 	n := len(nums)
 	for i := 0; i < n; i++ {
 

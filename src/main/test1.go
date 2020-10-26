@@ -19,7 +19,7 @@ func PrintN(n int) [][]int {
 	zaplog.Infof("开始输出%d*%d", n, n)
 	//构造n*n的二维数组
 	nums := make([][]int, n)
-	for i, _ := range nums {
+	for i := range nums {
 		nums[i] = make([]int, n)
 	}
 
@@ -104,4 +104,83 @@ func getres(n int) [][]int {
 		direction += 1
 	}
 	return matrix
+}
+
+type TransInfo int
+
+type Fragment interface {
+	Exec(transInfo *TransInfo) error
+	Print() string
+}
+type GetPodAction struct{}
+
+func (g GetPodAction) Exec(transInfo *TransInfo) error {
+	return nil
+}
+
+func (g GetPodAction) Print() string {
+	return ""
+}
+
+func Test2() {
+	var fragment1 Fragment = GetPodAction{}
+	var fragment2 Fragment = &GetPodAction{}
+	zaplog.Info(fragment1)
+	zaplog.Info(fragment2)
+}
+
+func Test3() {
+	var run func() = nil
+	defer run()
+	fmt.Println("run")
+	// for i := 0; i < 5; i++ {
+	// 	defer fmt.Printf("i=%d\n", i)
+	// }
+	// arr := []int{0, 1, 2, 3, 4, 5}
+	// for _, v := range arr {
+	// 	defer fmt.Printf("v=%d\n", v)
+	// }
+}
+
+type Slice []int
+
+func NewSlice() Slice {
+	return make(Slice, 0)
+}
+
+func (s *Slice) Add(elem int) *Slice {
+	*s = append(*s, elem)
+	fmt.Print(elem)
+	return s
+}
+
+func Test4() {
+	s := NewSlice()
+	defer s.Add(1).Add(2).Add(3)
+	s.Add(4)
+}
+
+func Test5() {
+	s := NewSlice()
+	defer func() {
+		s.Add(1).Add(2)
+	}()
+	s.Add(3)
+}
+
+func Test6() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(err) //
+		} else {
+			fmt.Println("fatal")
+		}
+	}()
+
+	/*一个函数内多次panic以后发的为准*/
+	defer func() {
+		panic("defer panic")
+	}()
+
+	panic("你妹")
 }
