@@ -184,3 +184,7 @@ func Test6() {
 
 	panic("你妹")
 }
+
+func Test7() {
+
+}

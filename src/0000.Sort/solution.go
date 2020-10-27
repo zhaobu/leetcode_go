@@ -77,8 +77,31 @@ func ShellSort(nums []int) []int {
 */
 func MergeSort(nums []int) []int {
 	n := len(nums)
-	for i := 0; i < n; i++ {
-
+	if n < 2 {
+		return nums
 	}
-	return nums
+	middle := n / 2
+	left, right := nums[0:middle], nums[middle:]
+	return merge(MergeSort(left), MergeSort(right))
+}
+
+func merge(left, right []int) []int {
+	n1, n2 := len(left), len(right)
+	res := make([]int, 0, n1+n2)
+	i, j := 0, 0
+	for i < n1 && j < n2 {
+		if left[i] < right[j] {
+			res = append(res, left[i])
+			i++
+		} else {
+			res = append(res, right[j])
+			j++
+		}
+	}
+	if i < n1 {
+		res = append(res, left[i:]...)
+	} else if j < n2 {
+		res = append(res, right[j:]...)
+	}
+	return res
 }
