@@ -105,3 +105,39 @@ func merge(left, right []int) []int {
 	}
 	return res
 }
+
+/*
+[快速排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/6.quickSort.html#_1-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4)
+*/
+func QuickSort(nums []int) []int {
+	n := len(nums)
+	if n < 2 {
+		return nums
+	}
+	quickSort(nums, 0, n-1)
+	return nums
+}
+
+func quickSort(nums []int, start, end int) {
+	if start < end {
+		i, j, key := start, end, nums[start]
+		for i < j {
+			for i < j && key < nums[j] {
+				j--
+			}
+			if i < j {
+				nums[i], nums[j] = nums[j], nums[i]
+				i++
+			}
+			for i < j && nums[i] < key {
+				i++
+			}
+			if i < j {
+				nums[i], nums[j] = nums[j], nums[i]
+				j--
+			}
+		}
+		quickSort(nums, start, i-1)
+		quickSort(nums, i+1, end)
+	}
+}
