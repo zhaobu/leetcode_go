@@ -141,3 +141,50 @@ func quickSort(nums []int, start, end int) {
 		quickSort(nums, i+1, end)
 	}
 }
+
+/*
+[堆排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/6.quickSort.html#_1-%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4)
+可以结合https://www.cnblogs.com/ssyfj/p/9512451.html理解
+*/
+func HeapSort(nums []int) []int {
+
+	/*
+		low表示二叉树中最后一个非叶结点下标,high表示数组最后一个元素的下标
+		下标从0开始的数组构建成的二叉树,父结点为i,则左孩子为2*i+1,右孩子为2*i+2
+	*/
+	heapAdjust := func(arr []int, low, high int) {
+		i, tmp := low, arr[low]
+		for j := 2*i + 1; j <= high; j = 2*j + 1 { //逐渐去找左右孩子结点
+			//找到两孩子结点中最大的
+			if j < high && arr[j] < arr[j+1] {
+				j++
+			}
+			//父节点和孩子最大的进行判断，调整，变为最大堆
+			if tmp >= arr[j] {
+				break
+			}
+			//将父节点数据变为最大的，将原来的数据还是放在temp中，
+			arr[i] = arr[j]
+			i = j
+		}
+		arr[i] = tmp
+	}
+
+	n := len(nums)
+	/*
+		首先将无序数列转换为大顶堆,采取下标从0开始的数组构建:
+		注意由于是完全二叉树，从最后一个非叶结点(n/2-1)开始构建
+	*/
+	for i := n/2 - 1; i >= 0; i-- {
+		heapAdjust(nums, i, n-1)
+	}
+	/*
+		上面大顶堆已经构造完成，我们现在需要排序，每次将二叉树根结点也就是最大的元素放入最后
+		然后将剩余元素重新构造大顶堆，将最大元素放在剩余最后
+	*/
+	for i := n - 1; i > 0; i-- {
+		nums[0], nums[i] = nums[i], nums[0]
+		heapAdjust(nums, 0, i-1)
+	}
+	return nums
+}
