@@ -152,22 +152,23 @@ func HeapSort(nums []int) []int {
 		low表示二叉树中最后一个非叶结点下标,high表示数组最后一个元素的下标
 		下标从0开始的数组构建成的二叉树,父结点为i,则左孩子为2*i+1,右孩子为2*i+2
 	*/
-	heapAdjust := func(arr []int, low, high int) {
-		i, tmp := low, arr[low]
+	heapAdjust := func(nums []int, low, high int) {
+		i := low
+		//i表示父节点,j表示左孩子,j+1表示右孩子
 		for j := 2*i + 1; j <= high; j = 2*j + 1 { //逐渐去找左右孩子结点
 			//找到两孩子结点中最大的
-			if j < high && arr[j] < arr[j+1] {
+			if j < high && nums[j] < nums[j+1] {
 				j++
 			}
-			//父节点和孩子最大的进行判断，调整，变为最大堆
-			if tmp >= arr[j] {
+			//如果父节点比左右孩子都大,则不需要交换
+			if nums[i] >= nums[j] {
 				break
 			}
-			//将父节点数据变为最大的，将原来的数据还是放在temp中，
-			arr[i] = arr[j]
+			//将父节点和孩子节点中最大的那个交换
+			nums[i], nums[j] = nums[j], nums[i]
+			//交换后继续让被交换的孩子节点变为父节点,继续判断
 			i = j
 		}
-		arr[i] = tmp
 	}
 
 	n := len(nums)

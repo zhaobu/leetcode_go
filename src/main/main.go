@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // func init() {
 // 	zaplog.InitLog(&zaplog.Config{
 // 		Logdir:   "./",
@@ -9,17 +11,29 @@ package main
 // 	)
 // }
 
-type A struct {
-	s string
+type Student struct {
+	Name string
+	Age  int
 }
 
-// 这是上面提到的 "在方法内把局部变量指针返回" 的情况
-func foo(s string) bool {
-	a := new(A)
-	a.s = s
-	return true //返回局部变量a,在C语言中妥妥野指针，但在go则ok，但a会逃逸到堆
+func StudentAge1(s Student) *Student {
+	if s.Age > 18 {
+		s.Name = "aaa"
+	}
+	return &s
+}
+
+func StudentAge2(s *Student) *Student {
+	if s.Age > 18 {
+		s.Name = "aaa"
+	}
+	return s
 }
 
 func main() {
-	foo("a")
+	arr := []int{1, 2, 3}
+	for _, v := range arr {
+		arr = append(arr, v)
+	}
+	fmt.Println(arr)
 }
