@@ -1,5 +1,7 @@
 package Solution
 
+import "math"
+
 /*
 [冒泡排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/1.bubbleSort.html)
 */
@@ -186,6 +188,42 @@ func HeapSort(nums []int) []int {
 	for i := n - 1; i > 0; i-- {
 		nums[0], nums[i] = nums[i], nums[0]
 		heapAdjust(nums, 0, i-1)
+	}
+	return nums
+}
+
+func RadixSort(nums []int) []int {
+	if len(nums) < 2 {
+		return nums
+	}
+	maxNum := nums[0]
+	//计算最大数
+	for _, v := range nums {
+		if v > maxNum {
+			maxNum = v
+		}
+	}
+	//计算最大位数
+	maxDight := int(math.Log10(float64(maxNum))) + 1
+
+	for i, j := 1, 1; i <= maxDight; i++ {
+		//初始化0-9个桶
+		bucket := [10][]int{}
+		//根据第i位数字放入桶中
+		for _, v := range nums {
+			k := (v / j) % 10 //求v的第i位上的数字
+			bucket[k] = append(bucket[k], v)
+		}
+		j *= 10
+
+		//从桶中拿出数字
+		k := 0
+		for _, v1 := range bucket {
+			for _, v2 := range v1 {
+				nums[k] = v2
+				k++
+			}
+		}
 	}
 	return nums
 }

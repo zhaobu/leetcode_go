@@ -162,3 +162,21 @@ func TestHeapSort(t *testing.T) {
 		})
 	}
 }
+
+func TestRadixSort(t *testing.T) {
+	//	测试用例
+	cases := []*Case{
+		{name: "test 1", input: &Input{nums: []int{278, 109, 63, 930, 589, 184, 505, 269, 8, 83}}, expect: []int{8, 63, 83, 109, 184, 269, 278, 505, 589, 930}},
+		{name: "test 2", input: &Input{nums: []int{49, 38, 65, 97, 76, 13, 27, 878, 49}}, expect: []int{13, 27, 38, 49, 49, 65, 76, 97, 878}},
+		{name: "test 3", input: &Input{nums: []int{5, 7, 8, 3, 1, 2, 4, 6}}, expect: []int{1, 2, 3, 4, 5, 6, 7, 8}},
+	}
+
+	//	开始测试
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			copy := c.input.Copy()
+			out := RadixSort(c.input.nums)
+			t.Logf("case %s success expect: %v, output: %v, with input: %+v", c.name, c.expect, out, copy)
+		})
+	}
+}
