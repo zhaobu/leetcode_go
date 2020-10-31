@@ -192,6 +192,9 @@ func HeapSort(nums []int) []int {
 	return nums
 }
 
+/*
+[基数排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/10.radixSort.html#_1-%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F-vs-%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F-vs-%E6%A1%B6%E6%8E%92%E5%BA%8F
+*/
 func RadixSort(nums []int) []int {
 	if len(nums) < 2 {
 		return nums
@@ -223,6 +226,39 @@ func RadixSort(nums []int) []int {
 				nums[k] = v2
 				k++
 			}
+		}
+	}
+	return nums
+}
+
+/*
+[计数排序](https://www.geekxh.com/2.0.%E6%8E%92%E5%BA%8F%E7%B3%BB%E5%88%97/8.countingSort.html#_7-php-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0)
+*/
+func CountingSort(nums []int) []int {
+	if len(nums) < 2 {
+		return nums
+	}
+	maxNum, minNum := nums[0], nums[0]
+	for _, v := range nums {
+		if v > maxNum {
+			maxNum = v
+		}
+		if minNum > v {
+			minNum = v
+		}
+	}
+	//以nums中每个数-minNum作为下标创建数组
+	bucket := make([]int, maxNum-minNum+1)
+	//统计nums中每个数的个数
+	for _, v := range nums {
+		bucket[v-minNum]++
+	}
+	//从小到大遍历bucket,bucket的下标+minNum就是nums中的值,bucket的值为重复值的个数
+	for i, j := 0, 0; i < len(bucket); i++ {
+		for bucket[i] > 0 {
+			nums[j] = i + minNum
+			j++
+			bucket[i] -= 1
 		}
 	}
 	return nums
