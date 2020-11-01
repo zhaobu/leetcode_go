@@ -1,6 +1,6 @@
 package main
 
-import "fmt"
+import "leetcode/utils/zaplog"
 
 // func init() {
 // 	zaplog.InitLog(&zaplog.Config{
@@ -30,10 +30,39 @@ func StudentAge2(s *Student) *Student {
 	return s
 }
 
-func main() {
-	arr := []int{1, 2, 3}
-	for _, v := range arr {
-		arr = append(arr, v)
+var record []int
+
+func fib1(N int) (res int) {
+	if N == 1 || N == 2 {
+		return 1
 	}
-	fmt.Println(arr)
+	if record[N-1] == 0 {
+		record[N-1] = fib1(N-1) + fib1(N-2)
+	}
+	return record[N-1]
+}
+
+func fib2(N int) (res int) {
+	if N == 1 || N == 2 {
+		return 1
+	}
+	pre, cur := 1, 1
+	for i := 3; i <= N; i++ {
+		sum := pre + cur
+		pre = cur
+		cur = sum
+	}
+	return cur
+}
+
+func main() {
+	num := 300
+	record = make([]int, num)
+	res := fib2(num)
+	zaplog.Infof("fib(%d)=%d", num, res)
+
+	// for i := 1; i < 10; i++ {
+	// 	res := fib1(i)
+	// 	zaplog.Infof("fib1(%d)=%d", i, res)
+	// }
 }
