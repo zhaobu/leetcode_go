@@ -100,3 +100,10 @@ func coinChange3(coins []int, amount int) int {
 	}
 	return dp[amount]
 }
+
+/*
+Todo [leetcode :dp 贪心 + dfs](https://leetcode-cn.com/problems/coin-change/solution/322-by-ikaruga/)
+*/
+func coinChange4(coins []int, amount int) int {
+	return 0
+}
