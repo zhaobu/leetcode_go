@@ -37,3 +37,17 @@ func TestPermute1(t *testing.T) {
 		})
 	}
 }
+
+func TestPermute2(t *testing.T) {
+	//	测试用例
+	cases := []*Case{
+		{name: "test 1", input: &Input{nums: []int{1, 2, 3}}, expect: [][]int{{1, 2, 3}, {1, 3, 2}, {2, 1, 3}, {2, 3, 1}, {3, 1, 2}, {3, 2, 1}}},
+	}
+	//	开始测试
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			out := permute2(c.input.nums)
+			t.Logf("case %s success expect: %v, output: %v, with input: %+v", c.name, c.expect, out, c.input)
+		})
+	}
+}
