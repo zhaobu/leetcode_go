@@ -1,6 +1,9 @@
 package main
 
-import "leetcode/utils/zaplog"
+import (
+	"errors"
+	"fmt"
+)
 
 // func init() {
 // 	zaplog.InitLog(&zaplog.Config{
@@ -55,14 +58,34 @@ func fib2(N int) (res int) {
 	return cur
 }
 
-func main() {
-	num := 300
-	record = make([]int, num)
-	res := fib2(num)
-	zaplog.Infof("fib(%d)=%d", num, res)
+var ErrDidNotWork = errors.New("did not work")
 
-	// for i := 1; i < 10; i++ {
-	// 	res := fib1(i)
-	// 	zaplog.Infof("fib1(%d)=%d", i, res)
-	// }
+func DoTheThing(reallyDoIt bool) (err error) {
+	if reallyDoIt {
+		result, err := tryTheThing()
+		if err != nil || result != "it worked" {
+			err = ErrDidNotWork
+		}
+	}
+	return err
+}
+
+func tryTheThing() (string, error) {
+	return "", ErrDidNotWork
+}
+
+func main() {
+
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println("fatal")
+		}
+	}()
+
+	defer func() {
+		panic("defer panic")
+	}()
+	panic("panic")
 }
