@@ -31,3 +31,26 @@ func MaxProfit2(prices []int) int {
 	}
 	return sum
 }
+
+/*
+[labuladong 一个方法团灭 LeetCode 股票买卖问题](https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie-qing-an-shun-xu-yue-du/tuan-mie-gu-piao-wen-ti)
+*/
+func MaxProfit3(prices []int) int {
+	if len(prices) < 1 {
+		return 0
+	}
+	dp_i_0, dp_i_1 := 0, -1<<31
+	for i := 0; i < len(prices); i++ {
+		tmp := dp_i_0
+		dp_i_0 = max(dp_i_0, dp_i_1+prices[i])
+		dp_i_1 = max(dp_i_1, tmp-prices[i])
+	}
+	return dp_i_0
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
