@@ -27,8 +27,9 @@ type Case struct {
 func TestMaxProfit1(t *testing.T) {
 	//	测试用例
 	cases := []*Case{
-		{name: "test 1", input: &Input{prices: []int{7, 1, 5, 3, 6, 4}}, expect: 7},
+		{name: "test 1", input: &Input{prices: []int{3, 3, 5, 0, 0, 3, 1, 4}}, expect: 6},
 		{name: "test 2", input: &Input{prices: []int{1, 2, 3, 4, 5}}, expect: 4},
+		{name: "test 3", input: &Input{prices: []int{7, 6, 4, 3, 1}}, expect: 0},
 	}
 
 	//	开始测试
@@ -43,30 +44,15 @@ func TestMaxProfit1(t *testing.T) {
 func TestMaxProfit2(t *testing.T) {
 	//	测试用例
 	cases := []*Case{
-		{name: "test 1", input: &Input{prices: []int{7, 1, 5, 3, 6, 4}}, expect: 7},
+		{name: "test 1", input: &Input{prices: []int{3, 3, 5, 0, 0, 3, 1, 4}}, expect: 6},
 		{name: "test 2", input: &Input{prices: []int{1, 2, 3, 4, 5}}, expect: 4},
+		{name: "test 3", input: &Input{prices: []int{7, 6, 4, 3, 1}}, expect: 0},
 	}
 
 	//	开始测试
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			output := MaxProfit2(c.input.prices)
-			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, output, c.input)
-		})
-	}
-}
-
-func TestMaxProfit3(t *testing.T) {
-	//	测试用例
-	cases := []*Case{
-		{name: "test 1", input: &Input{prices: []int{7, 1, 5, 3, 6, 4}}, expect: 7},
-		{name: "test 2", input: &Input{prices: []int{1, 2, 3, 4, 5}}, expect: 4},
-	}
-
-	//	开始测试
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			output := MaxProfit3(c.input.prices)
 			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, output, c.input)
 		})
 	}
