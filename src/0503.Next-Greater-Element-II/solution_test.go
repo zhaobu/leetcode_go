@@ -28,7 +28,7 @@ func TestNextGreaterElements1(t *testing.T) {
 	//	测试用例
 	cases := []*Case{
 		{name: "test 1", input: &Input{nums: []int{1, 2, 1}}, expect: []int{2, -1, 2}},
-		{name: "test 2", input: &Input{nums: []int{2, 1, 2, 4, 3}}, expect: []int{4, 2, 4, -1, -1}},
+		{name: "test 2", input: &Input{nums: []int{2, 1, 2, 4, 3}}, expect: []int{4, 2, 4, -1, 4}},
 	}
 
 	//	开始测试

@@ -29,6 +29,10 @@ func nextGreaterElement2(nums1 []int, nums2 []int) []int {
 	stack := []int{}
 	//从右往左求出nums2的单调递减栈
 	for i := len(nums2) - 1; i >= 0; i-- {
+		/*
+			因为是倒着入栈,所以这个for循环实际上是把从元素nums2[i]开始往右,不比nums2[i]大的元素都弹出,
+			直到找到比nums2[i]大的元素,同时nums2[i]也要入栈,这些元素放在栈中也没有意义
+		*/
 		for len(stack) > 0 && stack[len(stack)-1] <= nums2[i] {
 			stack = stack[:len(stack)-1]
 		}
