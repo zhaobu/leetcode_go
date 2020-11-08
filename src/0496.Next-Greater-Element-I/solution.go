@@ -51,8 +51,8 @@ func nextGreaterElement2(nums1 []int, nums2 []int) []int {
 [leetcode 题解 从左往右单调递减栈](https://leetcode-cn.com/problems/next-greater-element-i/solution/dan-diao-zhan-zong-jie-by-wu-xian-sen-2/)
 */
 func nextGreaterElement3(nums1 []int, nums2 []int) []int {
-	m := make(map[int]int)
-	var stack []int
+	m := make(map[int]int, len(nums2)) //记录nums2中找到的每个元素右边第一个比自己大的值
+	var stack []int                    //栈里面最终存储的是右边不存在比自己大的值的元素
 	for _, v := range nums2 {
 		for len(stack) != 0 && v > stack[len(stack)-1] {
 			// 发现有更大的数字，给其下一个更大数字赋值
