@@ -77,3 +77,46 @@ func ThreeSum2(nums []int) [][]int {
 	}
 	return ans
 }
+
+// [labuladong 一个函数秒杀 2Sum 3Sum 4Sum 问题](https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247485789&idx=1&sn=efc1167b85011c019e05d2c3db1039e6&chksm=9bd7f755aca07e43405baeac62c76b44d8438fe8a69ae77e87cbb5121e71b6ee46f4c626eb98&scene=21#wechat_redirect)
+func ThreeSum3(nums []int) [][]int {
+	// 数组排序
+	sort.Slice(nums, func(i, j int) bool {
+		return nums[i] < nums[j]
+	})
+	res := make([][]int, 0) //存储结果
+
+	// 穷举 threeSum 的第一个数
+	for first := 0; first < len(nums); first++ {
+		// 对 0 - nums[first] 计算 twoSum
+		target := 0 - nums[first]
+		second, third := first+1, len(nums)-1
+		for second < third {
+			left, right := nums[second], nums[third]
+			sum := left + right
+			if sum < target {
+				for second < third && nums[second] == left {
+					second++
+				}
+			} else if sum > target {
+				for second < third && nums[third] == right {
+					third--
+				}
+			} else {
+				res = append(res, []int{nums[first], left, right})
+				for second < third && nums[second] == left {
+					second++
+				}
+				for second < third && nums[third] == right {
+					third--
+				}
+			}
+		}
+		// 跳过第一个数字重复的情况，否则会出现重复结果
+		for first < len(nums)-1 && nums[first] == nums[first+1] {
+			first++
+		}
+	}
+
+	return res
+}
