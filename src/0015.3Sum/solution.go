@@ -120,3 +120,38 @@ func ThreeSum3(nums []int) [][]int {
 
 	return res
 }
+
+//[leetcode 官方:方法一 优化版](https://leetcode-cn.com/problems/3sum/solution/san-shu-zhi-he-by-leetcode-solution/)
+func ThreeSum4(nums []int) [][]int {
+	n := len(nums)
+	sort.Ints(nums)
+	res := make([][]int, 0)
+
+	//在确定第一个数之后，如果 nums[first]+nums[first+1]+nums[first+2]>0,说明此时剩下的2个数无论取什么值，3数之和一定大于 0，因此退出第一重循环；
+	for first := 0; first < n-2 && nums[first]+nums[first+1]+nums[first+2] <= 0; first++ {
+		/*
+			1:去掉重复的nums[first]
+			2:在确定第一个数之后，如果 nums[first]+nums[n-2]+nums[n-1] < 0，说明此时剩下的2个数无论取什么值，3数之和一定小于0，因此第一重循环直接进入下一轮，枚举 nums[first+1]；
+		*/
+		if first > 0 && nums[first] == nums[first-1] || nums[first]+nums[n-2]+nums[n-1] < 0 {
+			continue
+		}
+		//使用双指针遍历第2第3个元素
+		for left, right := first+1, n-1; left < right; {
+			if sum := nums[first] + nums[left] + nums[right]; sum == 0 {
+				res = append(res, []int{nums[first], nums[left], nums[right]})
+				//去除重复的第2个元素
+				for left++; left < right && nums[left] == nums[left-1]; left++ {
+				}
+				//去除重复的第3个元素
+				for right--; left < right && nums[right] == nums[right+1]; right-- {
+				}
+			} else if sum < 0 {
+				left++
+			} else {
+				right--
+			}
+		}
+	}
+	return res
+}

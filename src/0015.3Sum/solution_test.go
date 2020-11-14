@@ -81,3 +81,21 @@ func TestThreeSum3(t *testing.T) {
 		})
 	}
 }
+
+func TestThreeSum4(t *testing.T) {
+	//	测试用例
+	cases := []*Case{
+		{name: "test 1", input: &Input{nums: []int{-1, 0, 1, 2, -1, -4}}, expect: [][]int{{-1, 0, 1}, {-1, -1, 2}}},
+		{name: "test 2", input: &Input{nums: []int{0, 0}}, expect: [][]int{}},
+		{name: "test 3", input: &Input{nums: []int{1, 2, -2, -1}}, expect: [][]int{}},
+	}
+
+	//	开始测试
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			input := c.input.Copy()
+			out := ThreeSum4(c.input.nums)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect, out, input)
+		})
+	}
+}
