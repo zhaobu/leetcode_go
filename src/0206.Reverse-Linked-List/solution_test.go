@@ -132,3 +132,30 @@ func TestReverseList2(t *testing.T) {
 		})
 	}
 }
+
+func TestReverseList3(t *testing.T) {
+	//	测试用例
+	cases := []*Case{
+		{name: "test 1",
+			input: &Input{
+				head: UnmarshalListBySlice([]int{2, 4, 3, 1}),
+			},
+			expect: UnmarshalListBySlice([]int{1, 3, 4, 2}),
+		},
+		{name: "test 2",
+			input: &Input{
+				head: UnmarshalListBySlice([]int{1, 2, 3, 4}),
+			},
+			expect: UnmarshalListBySlice([]int{4, 3, 2, 1}),
+		},
+	}
+
+	//	开始测试
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			copy := c.input.copy()
+			out := ReverseList3(c.input.head)
+			t.Logf("success expect: %v, output: %v, with input: %+v", c.expect.Print(), out.Print(), copy.Print())
+		})
+	}
+}

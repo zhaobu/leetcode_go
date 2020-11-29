@@ -70,3 +70,17 @@ func ReverseList2(head *ListNode) *ListNode {
 	head.Next = nil
 	return newHead
 }
+
+func ReverseList3(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	cur := head
+	pre := (*ListNode)(nil)
+
+	for cur != nil {
+		cur.Next, pre, cur = pre, cur, cur.Next
+	}
+
+	return pre
+}
