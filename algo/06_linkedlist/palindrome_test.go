@@ -35,3 +35,17 @@ func TestPalindrome2(t *testing.T) {
 		l.Print()
 	}
 }
+
+func TestPalindrome(t *testing.T) {
+
+	strs := []string{"12345"}
+	for _, str1 := range strs {
+		l := NewLinkedList()
+		for _, c := range str1 {
+			l.InsertToTail(string(c))
+		}
+		l.Print()
+		t.Log(isPalindrome(l.head.next))
+		l.Print()
+	}
+}

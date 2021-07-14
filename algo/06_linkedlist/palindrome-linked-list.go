@@ -2,11 +2,11 @@ package _6_linkedlist
 
 /**
  * Definition for singly-linked list.
- * type ListNode struct {
- *     Val int
- *     Next *ListNode
- * }
- */
+type ListNode struct {
+	next  *ListNode
+	value interface{}
+}
+*/
 func isPalindrome(head *ListNode) bool {
 	var slow *ListNode = head
 	var fast *ListNode = head
@@ -25,7 +25,14 @@ func isPalindrome(head *ListNode) bool {
 		slow = temp
 	} // 快的先跑完,同时反转了一半链表,剪短
 
-	if fast != nil {
+	/*
+	   运行到此处时:
+	   1->2->3->4->5->6: prew=3->2->1, slow=4->5->6, fast=nil
+	   1->2->3->4->5: prew=2->1, slow=3->4->5, fast=5
+
+	*/
+
+	if fast != nil { //基数个字符,此时slow指向最中间的节点
 		slow = slow.next // 处理余数,跨过中位数
 		// prev 增加中 2->1->nil
 	}
