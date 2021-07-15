@@ -29,6 +29,7 @@ func (this *ListNode) GetValue() interface{} {
 	return this.value
 }
 
+//新建一个带哨兵节点的链表
 func NewLinkedList() *LinkedList {
 	return &LinkedList{NewListNode(0), 0}
 }
