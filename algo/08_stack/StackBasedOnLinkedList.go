@@ -19,39 +19,39 @@ func NewLinkedListStack() *LinkedListStack {
 	return &LinkedListStack{nil}
 }
 
-func (this *LinkedListStack) IsEmpty() bool {
-	return this.topNode == nil
+func (t *LinkedListStack) IsEmpty() bool {
+	return t.topNode == nil
 }
 
-func (this *LinkedListStack) Push(v interface{}) {
-	this.topNode = &node{next: this.topNode, val: v}
+func (t *LinkedListStack) Push(v interface{}) {
+	t.topNode = &node{next: t.topNode, val: v}
 }
 
-func (this *LinkedListStack) Pop() interface{} {
-	if this.IsEmpty() {
+func (t *LinkedListStack) Pop() interface{} {
+	if t.IsEmpty() {
 		return nil
 	}
-	v := this.topNode.val
-	this.topNode = this.topNode.next
+	v := t.topNode.val
+	t.topNode = t.topNode.next
 	return v
 }
 
-func (this *LinkedListStack) Top() interface{} {
-	if this.IsEmpty() {
+func (t *LinkedListStack) Top() interface{} {
+	if t.IsEmpty() {
 		return nil
 	}
-	return this.topNode.val
+	return t.topNode.val
 }
 
-func (this *LinkedListStack) Flush() {
-	this.topNode = nil
+func (t *LinkedListStack) Flush() {
+	t.topNode = nil
 }
 
-func (this *LinkedListStack) Print() {
-	if this.IsEmpty() {
+func (t *LinkedListStack) Print() {
+	if t.IsEmpty() {
 		fmt.Println("empty stack")
 	} else {
-		cur := this.topNode
+		cur := t.topNode
 		for nil != cur {
 			fmt.Println(cur.val)
 			cur = cur.next

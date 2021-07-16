@@ -20,53 +20,46 @@ func NewArrayStack() *ArrayStack {
 	}
 }
 
-func (this *ArrayStack) IsEmpty() bool {
-	if this.top < 0 {
-		return true
-	}
-	return false
+func (t *ArrayStack) IsEmpty() bool {
+	return t.top < 0
 }
 
-func (this *ArrayStack) Push(v interface{}) {
-	if this.top < 0 {
-		this.top = 0
-	} else {
-		this.top += 1
-	}
+func (t *ArrayStack) Push(v interface{}) {
+	t.top += 1
 
-	if this.top > len(this.data)-1 {
-		this.data = append(this.data, v)
+	if t.top >= len(t.data) {
+		t.data = append(t.data, v)
 	} else {
-		this.data[this.top] = v
+		t.data[t.top] = v
 	}
 }
 
-func (this *ArrayStack) Pop() interface{} {
-	if this.IsEmpty() {
+func (t *ArrayStack) Pop() interface{} {
+	if t.IsEmpty() {
 		return nil
 	}
-	v := this.data[this.top]
-	this.top -= 1
+	v := t.data[t.top]
+	t.top -= 1
 	return v
 }
 
-func (this *ArrayStack) Top() interface{} {
-	if this.IsEmpty() {
+func (t *ArrayStack) Top() interface{} {
+	if t.IsEmpty() {
 		return nil
 	}
-	return this.data[this.top]
+	return t.data[t.top]
 }
 
-func (this *ArrayStack) Flush() {
-	this.top = -1
+func (t *ArrayStack) Flush() {
+	t.top = -1
 }
 
-func (this *ArrayStack) Print() {
-	if this.IsEmpty() {
+func (t *ArrayStack) Print() {
+	if t.IsEmpty() {
 		fmt.Println("empty statck")
 	} else {
-		for i := this.top; i >= 0; i-- {
-			fmt.Println(this.data[i])
+		for i := t.top; i >= 0; i-- {
+			fmt.Println(t.data[i])
 		}
 	}
 }
