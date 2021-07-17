@@ -10,30 +10,29 @@ type CircularQueue struct {
 }
 
 func NewCircularQueue(n int) *CircularQueue {
-	if n == 0 {
+	if n < 1 {
 		return nil
 	}
-	return &CircularQueue{make([]interface{}, n), n, 0, 0}
+	return &CircularQueue{
+		q:        make([]interface{}, n),
+		capacity: n,
+		head:     0,
+		tail:     0,
+	}
 }
 
 /*
 栈空条件：head==tail为true
 */
 func (this *CircularQueue) IsEmpty() bool {
-	if this.head == this.tail {
-		return true
-	}
-	return false
+	return this.head == this.tail
 }
 
 /*
 栈满条件：(tail+1)%capacity==head为true
 */
 func (this *CircularQueue) IsFull() bool {
-	if this.head == (this.tail+1)%this.capacity {
-		return true
-	}
-	return false
+	return (this.tail+1)%this.capacity == this.head
 }
 
 func (this *CircularQueue) EnQueue(v interface{}) bool {
