@@ -24,16 +24,39 @@ type LinkedList struct {
 	head *ListNode
 }
 
-func delRepeatNodes(head *ListNode) (resHead *ListNode) {
+//删除重复节点,保留一个
+func delRepeatNode(head *ListNode) (resHead *ListNode) {
 	if head == nil {
 		return nil
 	}
 
 	var (
-		sentry *ListNode = &ListNode{} //用来记录不重复的节点
-		pre    *ListNode = sentry      //上一个不重复的节点
-		cur    *ListNode = head        //当前正在判断是否重复的第一个节点
-		next   *ListNode               //
+		cur  *ListNode = head
+		next *ListNode
+	)
+	for cur != nil {
+		next = cur.next
+		for next != nil && next.val == cur.val {
+			next = next.next
+		}
+
+		cur.next = next
+		cur = next
+	}
+	return head
+}
+
+//删除所有重复节点
+func delRepeatNodes(head *ListNode) (resHead *ListNode) {
+	if head == nil {
+		return nil
+	}
+
+	resHead = &ListNode{} //带头链表,用来记录不重复的节点
+	var (
+		pre  *ListNode = resHead //上一个不重复的节点
+		cur  *ListNode = head    //当前正在判断是否重复的第一个节点
+		next *ListNode           //
 	)
 	for cur != nil {
 		next = cur
@@ -54,7 +77,7 @@ func delRepeatNodes(head *ListNode) (resHead *ListNode) {
 			cur = next.next
 		}
 	}
-	return sentry
+	return resHead.next
 }
 
 func (t *LinkedList) Print() {
@@ -82,7 +105,24 @@ func Test_delRepeatNodes(t *testing.T) {
 	}
 	linkList.Print()
 
-	linkList.head = delRepeatNodes(linkList.head.next)
+	linkList.head.next = delRepeatNodes(linkList.head.next)
+
+	linkList.Print()
+}
+
+func Test_delRepeatNode(t *testing.T) {
+	linkList := &LinkedList{head: &ListNode{}}
+	cur := linkList.head
+	arr := []int{1, 1, 2, 3, 3, 4}
+
+	for _, v := range arr {
+		newNode := &ListNode{val: v}
+		cur.next = newNode
+		cur = cur.next
+	}
+	linkList.Print()
+
+	linkList.head.next = delRepeatNode(linkList.head.next)
 
 	linkList.Print()
 }
