@@ -18,16 +18,14 @@ type CacheNode struct {
 
 	key   int // lru key
 	value int // lru value
-
-	hnext *CacheNode // 将结点串在散列表的拉链中
 }
 
 // @lc code=start
 type LRUCache struct {
-	node []CacheNode // 散列表,存放拉链
-
 	head *CacheNode // lru head node
 	tail *CacheNode // lru tail node
+
+	cache map[int]*CacheNode
 
 	capacity int //
 	used     int //
@@ -35,7 +33,6 @@ type LRUCache struct {
 
 func Constructor(capacity int) LRUCache {
 	return LRUCache{
-		node:     make([]CacheNode, LENGTH),
 		head:     nil,
 		tail:     nil,
 		capacity: capacity,
@@ -44,123 +41,40 @@ func Constructor(capacity int) LRUCache {
 }
 
 func (this *LRUCache) Get(key int) int {
-	if this.tail == nil {
+	node, ok := this.cache[key]
+	if !ok {
 		return -1
 	}
+	// 删除节点当前位置
+	node.prev.next = node.next
+	node.next.prev = node.prev
 
-	//通过散列表，可以很快在缓存中找到一个数据
-	if tmp := this.searchNode(key); tmp != nil {
-		this.moveToTail(tmp)
-		return tmp.value
-	}
-	return -1
+	//把该节点移动到链表头部
+	node.next = this.head
+	this.head.prev = node
+	this.head = node
+	return node.value
 }
 
 func (this *LRUCache) Put(key int, value int) {
-	if tmp := this.searchNode(key); tmp != nil { //插入数据时已在lru中
-		tmp.value = value
-		this.moveToTail(tmp)
-		return
-	}
-	//插入数据不在lru中
-	this.addNode(key, value)
-
-	//且lru已满
-	if this.used > this.capacity {
-		this.delNode()
-	}
-}
-
-func (this *LRUCache) addNode(key int, value int) {
-	newNode := &CacheNode{
-		key:   key,
-		value: value,
-	}
-
-	tmp := &this.node[hash(key)] //找到新加入的节点hash到的拉链的头部
-	//把node插入拉链的队头后面
-	newNode.hnext = tmp.hnext
-	tmp.hnext = newNode
-	this.used++
-
-	if this.tail == nil { //如果缓存队列为空.直接把头和尾都指向新节点
-		this.tail, this.head = newNode, newNode
-		return
-	}
-
-	//如果缓存队列不为空,新加入的节点要放到队尾
-	this.tail.next = newNode
-	newNode.prev = this.tail
-	this.tail = newNode
-}
-
-//删除队头节点(最先加入的节点)
-func (this *LRUCache) delNode() {
-	if this.head == nil {
-		return
-	}
-
-	prev := &this.node[hash(this.head.key)] //找到头节点所在拉链的头部
-	tmp := prev.hnext
-
-	for tmp != nil && tmp.key != this.head.key {
-		prev = tmp
-		tmp = tmp.hnext
-	}
-	if tmp == nil { //拉链中没找到头节点没有找到
-		return
-	}
-	//找到了,删除拉链中的头节点
-	prev.hnext = tmp.hnext
-
-	//删除缓存队列中的头节点
-	this.head = this.head.next
-	this.head.prev = nil
-	this.used--
-}
-
-func (this *LRUCache) searchNode(key int) *CacheNode {
-	if this.tail == nil {
-		return nil
-	}
-
-	// 查找
-	tmp := this.node[hash(key)].hnext
-	for tmp != nil {
-		if tmp.key == key {
-			return tmp
+	//判断
+	node, ok := this.cache[key]
+	if !ok {
+		node = &CacheNode{
+			next:  this.head,
+			key:   key,
+			value: value,
 		}
-		tmp = tmp.hnext
-	}
-	return nil
-}
+		this.head.prev = node
+		this.head = node
+		if this.tail == nil {
+			this.tail = node
 
-func (this *LRUCache) moveToTail(node *CacheNode) {
-	if this.tail == node { //node已经是尾结点
+		}
 		return
 	}
-	if this.head == node { //要移动的是头节点
-		this.head = node.next
-		this.head.prev = nil
-	} else { //node是中间节点
-		node.next.prev = node.prev
-		node.prev.next = node.next
-	}
+	//找到了就修改值并且放到头部
 
-	//把node加入当前尾结点后面
-	node.next = nil
-	this.tail.next = node
-	node.prev = this.tail
-
-	//把链表尾指针指向node
-	this.tail = node
-}
-
-func hash(key int) int {
-	if hostbit {
-		return (key ^ (key >> 32)) & (LENGTH - 1)
-	}
-	return (key ^ (key >> 16)) & (LENGTH - 1)
 }
 
 /**
