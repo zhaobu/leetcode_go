@@ -46,13 +46,9 @@ func (this *LRUCache) Get(key int) int {
 		return -1
 	}
 	// 删除节点当前位置
-	node.prev.next = node.next
-	node.next.prev = node.prev
+	this.deleteNode(node)
 	//把该节点移动到链表头部
-	node.prev = this.head
-	node.next = this.head.next
-	this.head.next.prev = node
-	this.head.next = node
+	this.moveToHead(node)
 	return node.value
 }
 
@@ -69,29 +65,37 @@ func (this *LRUCache) Put(key int, value int) {
 			this.size--
 		}
 		//新节点加入到头部
-		node = &CacheNode{
-			prev:  this.head,
-			next:  this.head.next,
-			key:   key,
-			value: value,
-		}
-		this.head.next.prev = node
-		this.head.next = node
-		this.cache[key] = node
+		this.addToHead(&CacheNode{key: key, value: value})
 		return
 	}
 	//找到了就修改值并且放到头部
 	node.value = value
 
 	// 删除节点当前位置
+	this.deleteNode(node)
+	//把该节点移动到链表头部
+	this.moveToHead(node)
+	return
+}
+
+func (this *LRUCache) deleteNode(node *CacheNode) {
 	node.prev.next = node.next
 	node.next.prev = node.prev
-	//把该节点移动到链表头部
+}
+
+func (this *LRUCache) moveToHead(node *CacheNode) {
 	node.prev = this.head
 	node.next = this.head.next
 	this.head.next.prev = node
 	this.head.next = node
-	return
+}
+
+func (this *LRUCache) addToHead(node *CacheNode) {
+	node.prev = this.head
+	node.next = this.head.next
+	this.head.next.prev = node
+	this.head.next = node
+	this.cache[node.key] = node
 }
 
 /**
