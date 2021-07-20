@@ -5,10 +5,6 @@
  */
 
 // @lc code=start
-const (
-	hostbit = uint64(^uint(0)) == ^uint64(0)
-	LENGTH  = 3000
-)
 
 // 使用双向链表存储缓存数据
 type CacheNode struct {
@@ -28,16 +24,20 @@ type LRUCache struct {
 	cache map[int]*CacheNode
 
 	capacity int //
-	used     int //
+	size     int //
 }
 
 func Constructor(capacity int) LRUCache {
-	return LRUCache{
-		head:     nil,
-		tail:     nil,
+	l := LRUCache{
+		head:     &CacheNode{},
+		tail:     &CacheNode{},
 		capacity: capacity,
-		used:     0,
+		size:     0,
+		cache:    make(map[int]*CacheNode, capacity),
 	}
+	l.head.next = l.tail
+	l.tail.prev = l.head
+	return l
 }
 
 func (this *LRUCache) Get(key int) int {
@@ -48,11 +48,11 @@ func (this *LRUCache) Get(key int) int {
 	// 删除节点当前位置
 	node.prev.next = node.next
 	node.next.prev = node.prev
-
 	//把该节点移动到链表头部
-	node.next = this.head
-	this.head.prev = node
-	this.head = node
+	node.prev = this.head
+	node.next = this.head.next
+	this.head.next.prev = node
+	this.head.next = node
 	return node.value
 }
 
@@ -60,21 +60,38 @@ func (this *LRUCache) Put(key int, value int) {
 	//判断
 	node, ok := this.cache[key]
 	if !ok {
+		this.size++
+		if this.size > this.capacity { //超出容量要删除最后一个节点
+			delKey := this.tail.prev.key
+			this.tail.prev.prev.next = this.tail
+			this.tail.prev = this.tail.prev.prev
+			delete(this.cache, delKey)
+			this.size--
+		}
+		//新节点加入到头部
 		node = &CacheNode{
-			next:  this.head,
+			prev:  this.head,
+			next:  this.head.next,
 			key:   key,
 			value: value,
 		}
-		this.head.prev = node
-		this.head = node
-		if this.tail == nil {
-			this.tail = node
-
-		}
+		this.head.next.prev = node
+		this.head.next = node
+		this.cache[key] = node
 		return
 	}
 	//找到了就修改值并且放到头部
+	node.value = value
 
+	// 删除节点当前位置
+	node.prev.next = node.next
+	node.next.prev = node.prev
+	//把该节点移动到链表头部
+	node.prev = this.head
+	node.next = this.head.next
+	this.head.next.prev = node
+	this.head.next = node
+	return
 }
 
 /**
