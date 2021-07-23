@@ -1,48 +1,41 @@
 package _2_sorts
 
 func MergeSort(arr []int) {
-	arrLen := len(arr)
-	if arrLen <= 1 {
+	if len(arr) < 2 {
 		return
 	}
-
-	mergeSort(arr, 0, arrLen-1)
+	mergeSort(arr, 0, len(arr)-1)
 }
 
 func mergeSort(arr []int, start, end int) {
 	if start >= end {
 		return
 	}
-
-	mid := (start + end) / 2
+	mid := start + (end-start)>>1
 	mergeSort(arr, start, mid)
 	mergeSort(arr, mid+1, end)
 	merge(arr, start, mid, end)
 }
 
 func merge(arr []int, start, mid, end int) {
-	tmpArr := make([]int, end-start+1)
-
-	i := start
-	j := mid + 1
-	k := 0
-	for ; i <= mid && j <= end; k++ {
+	tmp := make([]int, 0, end-start+1)
+	i, j := start, mid+1
+	for i <= mid && j <= end {
 		if arr[i] <= arr[j] {
-			tmpArr[k] = arr[i]
+			tmp = append(tmp, arr[i])
 			i++
 		} else {
-			tmpArr[k] = arr[j]
+			tmp = append(tmp, arr[j])
 			j++
 		}
 	}
 
 	for ; i <= mid; i++ {
-		tmpArr[k] = arr[i]
-		k++
+		tmp = append(tmp, arr[i])
 	}
 	for ; j <= end; j++ {
-		tmpArr[k] = arr[j]
-		k++
+		tmp = append(tmp, arr[j])
 	}
-	copy(arr[start:end+1], tmpArr)
+
+	copy(arr[start:end+1], tmp)
 }
