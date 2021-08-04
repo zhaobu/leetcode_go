@@ -1,8 +1,8 @@
 package LinearSort
 
 import (
-	Sort "algo/12_sorts"
 	"fmt"
+	Sort "leetcode/algo/12_sorts"
 )
 
 // 桶排序
@@ -18,17 +18,32 @@ func getMax(a []int) int {
 	return max
 }
 
+func getMaxMin(a []int) (int, int) {
+	max := a[0]
+	min := a[0]
+	for i := 1; i < len(a); i++ {
+		if a[i] > max {
+			max = a[i]
+		}
+		if a[i] < min {
+			min = a[i]
+		}
+	}
+	return max, min
+}
+
 func BucketSort(a []int) {
 	num := len(a)
 	if num <= 1 {
 		return
 	}
-	max := getMax(a)
-	buckets := make([][]int, num) // 二维切片
+	max, min := getMaxMin(a)      //找到数组中最大,最小值
+	buckets := make([][]int, num) // 二维切片,创建和a长度一样的个数的桶
+	diff := max - min
 
 	index := 0
 	for i := 0; i < num; i++ {
-		index = a[i] * (num - 1) / max                // 桶序号
+		index = (a[i] - min) * (num - 1) / diff       // 桶序号
 		buckets[index] = append(buckets[index], a[i]) // 加入对应的桶中
 	}
 
