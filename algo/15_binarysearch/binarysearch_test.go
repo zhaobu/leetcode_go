@@ -3,101 +3,60 @@ package _5_binarysearch
 import "testing"
 
 func TestBinarySearch(t *testing.T) {
-	var a []int
-
-	a = []int{1, 3, 5, 6, 8}
-	if BinarySearch(a, 8) != 4 {
-		t.Fatal(BinarySearch(a, 3))
-	}
-	if BinarySearch(a, 4) != -1 {
-		t.Fatal(BinarySearch(a, 4))
+	a := []int{1, 3, 5, 6, 8}
+	finds := []int{0, 1, 4, 5, 8, 10}
+	for _, v := range finds {
+		t.Logf("find %d index %d", v, BinarySearch(a, v))
 	}
 }
 
 func TestBinarySearchRecursive(t *testing.T) {
-	var a []int
-
-	a = []int{1, 3, 5, 6, 8}
-	if BinarySearchRecursive(a, 8) != 4 {
-		t.Fatal(BinarySearch(a, 3))
-	}
-	if BinarySearchRecursive(a, 4) != -1 {
-		t.Fatal(BinarySearch(a, 4))
+	a := []int{1, 3, 5, 6, 8}
+	finds := []int{0, 1, 4, 5, 8, 10}
+	for _, v := range finds {
+		t.Logf("find %d index %d", v, BinarySearchRecursive(a, v))
 	}
 }
 
 func TestBinarySearchFirst(t *testing.T) {
-	var a []int
+	a := []int{1, 2, 2, 2, 4, 8}
 
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchFirst(a, 2) != 1 {
-		t.Fatal(BinarySearchFirst(a, 2))
-	}
-
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchFirst(a, 3) != 4 {
-		t.Fatal(BinarySearchFirst(a, 3))
+	finds := []int{0, 1, 2, 4, 5, 10}
+	for _, v := range finds {
+		t.Logf("find %d index %d", v, BinarySearchFirst(a, v))
 	}
 }
 
 func TestBinarySearchLast(t *testing.T) {
-	var a []int
-
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchLast(a, 2) != 3 {
-		t.Fatal(BinarySearchLast(a, 2))
-	}
-
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchLast(a, 3) != 4 {
-		t.Fatal(BinarySearchLast(a, 3))
+	a := []int{1, 2, 2, 2, 3, 4}
+	finds := []int{0, 1, 2, 4, 5, 10}
+	for _, v := range finds {
+		t.Logf("find %d index %d", v, BinarySearchLast(a, v))
 	}
 }
 
 func TestBinarySearchFirstGT(t *testing.T) {
-	var a []int
+	a := []int{1, 2, 2, 2, 3, 4}
 
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchFirstGT(a, 2) != 4 {
-		t.Fatal(BinarySearchFirstGT(a, 2))
-	}
-
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchFirstGT(a, 1) != 1 {
-		t.Fatal(BinarySearchFirstGT(a, 1))
-	}
-
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchFirstGT(a, 3) != 5 {
-		t.Fatal(BinarySearchFirstGT(a, 3))
-	}
-
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchFirstGT(a, 4) != -1 {
-		t.Fatal(BinarySearchFirstGT(a, 4))
+	finds := []int{0, 1, 2, 4, 5, 10}
+	for _, v := range finds {
+		t.Logf("find %d index %d", v, BinarySearchFirstGT(a, v))
 	}
 }
 
 func TestBinarySearchLastLT(t *testing.T) {
-	var a []int
-
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchLastLT(a, 2) != 0 {
-		t.Fatal(BinarySearchLastLT(a, 2))
+	a := []int{1, 2, 2, 2, 3, 4}
+	finds := []int{0, 1, 2, 4, 5, 10}
+	for _, v := range finds {
+		t.Logf("find %d index %d", v, BinarySearchLastLT(a, v))
 	}
 
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchLastLT(a, 1) != -1 {
-		t.Fatal(BinarySearchLastLT(a, 1))
-	}
+}
 
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchLastLT(a, 3) != 3 {
-		t.Fatal(BinarySearchLastLT(a, 3))
-	}
-
-	a = []int{1, 2, 2, 2, 3, 4}
-	if BinarySearchLastLT(a, 4) != 4 {
-		t.Fatal(BinarySearchLastLT(a, 4))
+func TestSearch(t *testing.T) {
+	a := []int{4, 5, 6, 7, 0, 1, 2}
+	finds := []int{-1, 3, 4, 5, 6, 7, 0, 1, 2, 9}
+	for _, v := range finds {
+		t.Logf("find %d index %d", v, search(a, v))
 	}
 }

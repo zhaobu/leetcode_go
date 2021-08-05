@@ -1,68 +1,60 @@
 package _5_binarysearch
 
+//普通二分查找
 func BinarySearch(a []int, v int) int {
-	n := len(a)
-	if n == 0 {
+	if len(a) < 1 {
 		return -1
 	}
-
-	low := 0
-	high := n - 1
-	for low <= high {
-		mid := (low + high) / 2
-		if a[mid] == v {
-			return mid
-		} else if a[mid] > v {
+	low, high := 0, len(a)-1
+	for low <= high { //注意是 low<=high，而不是 low
+		mid := low + (high-low)>>1 //low + (high-low)>>1  可以防止(low+high)/2这种写法溢出
+		if v < a[mid] {
 			high = mid - 1
-		} else {
+		} else if v > a[mid] {
 			low = mid + 1
+		} else if a[mid] == v {
+			return mid
 		}
 	}
-
 	return -1
 }
 
+//普通二分查找递归实现
 func BinarySearchRecursive(a []int, v int) int {
-	n := len(a)
-	if n == 0 {
+	if len(a) < 1 {
 		return -1
 	}
 
-	return bs(a, v, 0, n-1)
+	return bs(a, v, 0, len(a)-1)
 }
-
-func bs(a []int, v int, low, high int) int {
+func bs(a []int, v, low, high int) int {
 	if low > high {
 		return -1
 	}
-
-	mid := (low + high) / 2
-	if a[mid] == v {
-		return mid
+	mid := low + (high-low)>>1
+	if a[mid] < v {
+		return bs(a, v, mid+1, high)
 	} else if a[mid] > v {
 		return bs(a, v, low, mid-1)
 	} else {
-		return bs(a, v, mid+1, high)
+		return mid
 	}
 }
 
 //查找第一个等于给定值的元素
 func BinarySearchFirst(a []int, v int) int {
-	n := len(a)
-	if n == 0 {
+	if len(a) < 1 {
 		return -1
 	}
-
-	low := 0
-	high := n - 1
+	low, high := 0, len(a)-1
 	for low <= high {
-		mid := (low + high) >> 1
-		if a[mid] > v {
-			high = mid - 1
-		} else if a[mid] < v {
+		mid := low + (high-low)>>1
+		if a[mid] < v {
 			low = mid + 1
+		} else if a[mid] > v {
+			high = mid - 1
 		} else {
-			if mid == 0 || a[mid-1] != v {
+			if mid == 0 || a[mid-1] != v { //mid=0或者mid前一个元素!=v那mid就是第一个等于v的位置
 				return mid
 			} else {
 				high = mid - 1
@@ -75,21 +67,19 @@ func BinarySearchFirst(a []int, v int) int {
 
 //查找最后一个值等于给定值的元素
 func BinarySearchLast(a []int, v int) int {
-	n := len(a)
-	if n == 0 {
+	if len(a) < 1 {
 		return -1
 	}
 
-	low := 0
-	high := n - 1
+	low, high := 0, len(a)-1
 	for low <= high {
-		mid := (low + high) >> 1
-		if a[mid] > v {
-			high = mid - 1
-		} else if a[mid] < v {
+		mid := low + (high-low)>>1
+		if a[mid] < v {
 			low = mid + 1
+		} else if a[mid] > v {
+			high = mid - 1
 		} else {
-			if mid == n-1 || a[mid+1] != v {
+			if mid == len(a)-1 || a[mid+1] != v { //mid为最后一个或者mid后一个元素!=v那mid就是最后一个等于v的位置
 				return mid
 			} else {
 				low = mid + 1
@@ -102,49 +92,65 @@ func BinarySearchLast(a []int, v int) int {
 
 //查找第一个大于等于给定值的元素
 func BinarySearchFirstGT(a []int, v int) int {
-	n := len(a)
-	if n == 0 {
+	if len(a) < 1 {
 		return -1
 	}
-
-	low := 0
-	high := n - 1
+	low, high := 0, len(a)-1
 	for low <= high {
-		mid := (high + low) >> 1
-		if a[mid] > v {
-			high = mid - 1
-		} else if a[mid] < v {
-			low = mid + 1
-		} else {
-			if mid != n-1 && a[mid+1] > v {
-				return mid + 1
+		mid := low + (high-low)>>1
+		if a[mid] >= v {
+			if mid == 0 || a[mid-1] < v { //当a[mid]>=v时,判断mid左边的值是否<v
+				return mid
 			} else {
-				low = mid + 1
+				high = mid - 1
 			}
+		} else {
+			low = mid + 1
 		}
 	}
-
 	return -1
 }
 
 //查找最后一个小于等于给定值的元素
 func BinarySearchLastLT(a []int, v int) int {
-	n := len(a)
-	if n == 0 {
+	if len(a) < 1 {
 		return -1
 	}
-
-	low := 0
-	high := n - 1
+	low, high := 0, len(a)-1
 	for low <= high {
-		mid := (low + high) >> 1
-		if a[mid] > v {
-			high = mid - 1
-		} else if a[mid] < v {
-			low = mid + 1
+		mid := low + (high-low)>>1
+		if a[mid] <= v {
+			if mid == len(a)-1 || a[mid+1] > v { //当a[mid]<=v时,判断mid右边的值是否>v
+				return mid
+			} else {
+				low = mid + 1
+			}
 		} else {
-			if mid == 0 || a[mid-1] < v {
-				return mid - 1
+			high = mid - 1
+		}
+	}
+	return -1
+}
+
+func search(nums []int, target int) int {
+	if len(nums) < 1 {
+		return -1
+	}
+	low, high := 0, len(nums)-1
+	for low <= high {
+		mid := low + (high-low)>>1
+		if nums[mid] == target {
+			return mid
+		}
+		if nums[mid] >= nums[0] { //[0,mid]是升序的
+			if target >= nums[0] && target < nums[mid] { //target在[0,mid)
+				high = mid - 1
+			} else {
+				low = mid + 1
+			}
+		} else { //[mid,len(nums)-1]是升序的
+			if target <= nums[len(nums)-1] && target > nums[mid] { //target在(mid,len(nums)-1]
+				low = mid + 1
 			} else {
 				high = mid - 1
 			}
