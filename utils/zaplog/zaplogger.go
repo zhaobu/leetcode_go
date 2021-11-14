@@ -34,11 +34,11 @@ func NewLogger(conf *Config, skip int) *Logger {
 		conf.MaxSize = 30
 	}
 	hook := lumberjack.Logger{
-		Filename:   fmt.Sprintf("%s/%s-%s", conf.Logdir, time.Now().Format("20060102"), conf.LogName), //日志文件路径
-		MaxSize:    conf.MaxSize,                                                                      //每个日志文件保存的最大尺寸 单位：M
-		MaxBackups: conf.MaxBackups,                                                                   //最多保留备份个数
-		MaxAge:     conf.MaxAge,                                                                       //文件最多保存多少天
-		Compress:   conf.Compress,                                                                     //是否压缩 disabled by default
+		Filename:   fmt.Sprintf("%s/%s", conf.Logdir, conf.LogName), //日志文件路径
+		MaxSize:    conf.MaxSize,                                    //每个日志文件保存的最大尺寸 单位：M
+		MaxBackups: conf.MaxBackups,                                 //最多保留备份个数
+		MaxAge:     conf.MaxAge,                                     //文件最多保存多少天
+		Compress:   conf.Compress,                                   //是否压缩 disabled by default
 	}
 	var (
 		level      zapcore.Level
