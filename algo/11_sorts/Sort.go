@@ -32,12 +32,15 @@ func InsertionSort(a []int, n int) {
 		return
 	}
 	for i := 1; i < n; i++ { //依次遍历未排序区间
-		for j := i; j > 0; j-- { //从已排序区间最后一个位置开始查找
-			if a[j] >= a[j-1] { //直到找到前一个元素比自己小时才停下
+		value := a[i]
+		j := i - 1
+		for ; j >= 0; j-- { //从已排序区间最后一个位置开始查找
+			if value >= a[j] { // a[j-1]小的数才停止
 				break
 			}
-			a[j], a[j-1] = a[j-1], a[j] //如果前一个元素比自己大,就把前一个元素往后移动一个位置
+			a[j] = a[j-1] //如果前一个元素比自己大,就把前一个元素往后移动一个位置
 		}
+		a[j] = value
 		fmt.Printf("a=%+v\n", a)
 	}
 }
