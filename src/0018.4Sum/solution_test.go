@@ -34,6 +34,7 @@ type Case struct {
 }
 
 func TestFourSum1(t *testing.T) {
+
 	//	测试用例
 	cases := []*Case{
 		{name: "test 1", input: &Input{nums: []int{1, 0, -1, 0, -2, 2}, target: 0}, expect: [][]int{{-1, 0, 0, 1}, {-2, -1, 1, 2}, {-2, 0, 0, 2}}},

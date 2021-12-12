@@ -27,7 +27,6 @@ func TestSolution(t *testing.T) {
 		{"TestCase", true, true},
 		{"TestCase", false, false},
 	}
-
 	//	开始测试
 	for i, c := range cases {
 		t.Run(c.name+" "+strconv.Itoa(i), func(t *testing.T) {
