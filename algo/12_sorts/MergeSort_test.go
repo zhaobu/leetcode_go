@@ -20,4 +20,5 @@ func TestMergeSort(t *testing.T) {
 	fmt.Printf("排序前arr=%+v\n", arr)
 	MergeSort(arr)
 	fmt.Printf("排序后arr=%+v\n", arr)
+
 }
