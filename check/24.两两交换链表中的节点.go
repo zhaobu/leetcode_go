@@ -57,8 +57,41 @@
  *     Next *ListNode
  * }
  */
-func swapPairs(head *ListNode) *ListNode {
+// func swapPairs(head *ListNode) *ListNode {
+// 	if head == nil || head.Next == nil { //节点为空或者只有一个节点直接返回
+// 		return head
+// 	}
 
+// 	var (
+// 		res  = head.Next             //最终返回的链表头结点肯定指向head.Next
+// 		tail = &ListNode{Next: head} //记录已经交换好的部分的尾节点
+// 	)
+// 	for head != nil && head.Next != nil {
+// 		next := head.Next       //保存下一个节点,用来本次交换
+// 		thrid := head.Next.Next //保存下下个节点,用来记录下次交换的位置
+// 		head.Next = thrid       //本次交换的第1个节点指向还未交换的部分
+// 		next.Next = head        //本次交换的第2个节点指向第一个节点
+// 		tail.Next = next        //把已经交换的部分和本次交换的连接
+// 		tail = head             //已经交换的部分尾节点前移
+// 		head = thrid            //准备进行下次交换
+// 	}
+// 	return res
+// }
+
+//递归
+func swapPairs(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil { //节点为空或者只有一个节点直接返回
+		return head
+	}
+	newHead := head.Next //先保存下一个节点
+	/*
+		swapPairs(newHead.Next)看成是后面所有已经交换的部分
+		1.先处理第1个节点,交换到2的位置和swapPairs(newHead.Next)连接
+	*/
+	head.Next = swapPairs(newHead.Next)
+	// 2.再处理第2个节点,把他和第1个节点连接
+	newHead.Next = head
+	return newHead //返回第二个节点
 }
 
 // @lc code=end
