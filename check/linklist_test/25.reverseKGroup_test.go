@@ -20,19 +20,19 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	}
 
 	var (
-		pre = &ListNode{Next: head} //已经翻转的链表尾结点
+		pre     = &ListNode{Next: head} //已经翻转的链表尾结点
+		resHead *ListNode               //要返回的已经翻转的链表
 		// curHead *ListNode               //本次翻转的链表头结点
-		resHead *ListNode //要返回的已经翻转的链表
 	)
 
 	for head != nil {
-		var newTail *ListNode
+		var newTail *ListNode //本次k个节点翻转后的尾结点
 		pre.Next, newTail = swapList(head, k)
-		if resHead == nil {
+		if resHead == nil { //第一次翻转后的k个节点的head
 			resHead = pre.Next
 		}
-		pre = newTail
-		head = pre.Next
+		pre = newTail   //已经翻转的链表尾节点后移
+		head = pre.Next //继续翻转剩下的节点
 		fmt.Printf("resHead:%s\n", resHead.Print())
 	}
 	return resHead
@@ -43,17 +43,15 @@ newHead:翻转后的部分的头节点
 newTail:翻转后的部分的尾节点
 */
 func swapList(head *ListNode, n int) (newHead, newTail *ListNode) {
-	k := 0
+	k := 0 //记录本次要反转的节点个数
 	newHead = head
-	for newHead != nil {
+	for newHead != nil || k < n {
 		k++
+		newTail = newHead
 		newHead = newHead.Next
-		if k >= n {
-			break
-		}
 	}
 	if k < n {
-		return head, nil
+		return head, newTail
 	}
 	//翻转n个链表
 
