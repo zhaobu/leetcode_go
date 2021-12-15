@@ -45,24 +45,23 @@ newTail:翻转后的部分的尾节点
 func swapList(head *ListNode, n int) (newHead, newTail *ListNode) {
 	k := 0 //记录本次要反转的节点个数
 	newHead = head
-	for newHead != nil || k < n {
+	for newHead != nil && k < n { //剩余链表节点个数小于n个或者超过n个都要结束
 		k++
 		newTail = newHead
 		newHead = newHead.Next
 	}
-	if k < n {
+	if k < n { //剩余链表节点个数小于n,本次不翻转
 		return head, newTail
 	}
-	//翻转n个链表
 
+	//翻转n个链表
 	newHead = nil
 	newTail = head //翻转后,头结点就会变为尾节点
-
-	for head != nil && k > 0 {
-		curNext := head.Next
-		head.Next = newHead
-		newHead = head
-		head = curNext
+	for k > 0 {    //剩余节点个数>=n个时就翻转这n个节点
+		curNext := head.Next //记录下一个节点
+		head.Next = newHead  //当前节点指向已翻转部分的head
+		newHead = head       //已翻转部分的head前移
+		head = curNext       //翻转下一个节点
 		k--
 	}
 	newTail.Next = head //把翻转的链表和还未翻转的连接
