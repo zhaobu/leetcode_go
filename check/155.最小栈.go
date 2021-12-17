@@ -5,49 +5,87 @@
  */
 
 // @lc code=start
+
 type MinStack struct {
-	minVal []int
-	stack  []int
+	ValStack []int
+	MinStack []int
 }
 
-/** initialize your data structure here. */
 func Constructor() MinStack {
 	return MinStack{
-		stack:  make([]int, 0, 30),
-		minVal: make([]int, 0, 30),
+		ValStack: []int{},
+		MinStack: []int{},
 	}
 }
 
 func (this *MinStack) Push(val int) {
-	if len(this.minVal) > 0 && this.minVal[len(this.minVal)-1] < val {
-		this.minVal = append(this.minVal, this.minVal[len(this.minVal)-1])
+	this.ValStack = append(this.ValStack, val)
+	if len(this.MinStack) < 1 { //空栈则当前元素最小
+		this.MinStack = append(this.MinStack, val)
 	} else {
-		this.minVal = append(this.minVal, val)
+		min := this.MinStack[len(this.MinStack)-1] //取出栈顶元素和当前元素比较,谁小谁就入栈
+		if val < min {
+			min = val
+		}
+		this.MinStack = append(this.MinStack, min)
 	}
-	this.stack = append(this.stack, val)
 }
 
 func (this *MinStack) Pop() {
-	if len(this.stack) == 0 {
+	if len(this.ValStack) < 1 {
 		return
 	}
-	this.stack = this.stack[0 : len(this.stack)-1]
-	this.minVal = this.minVal[0 : len(this.minVal)-1]
+	this.MinStack = this.MinStack[:len(this.MinStack)-1]
+	this.ValStack = this.ValStack[:len(this.ValStack)-1]
 }
 
 func (this *MinStack) Top() int {
-	if len(this.stack) == 0 {
-		return -1
-	}
-	return this.stack[len(this.stack)-1]
+	return this.ValStack[len(this.ValStack)-1]
 }
 
 func (this *MinStack) GetMin() int {
-	if len(this.minVal) == 0 {
-		return -1
-	}
-	return this.minVal[len(this.minVal)-1]
+	return this.MinStack[len(this.MinStack)-1]
 }
+
+/* type MyStack struct {
+	Val int
+	Min int
+}
+type MinStack struct {
+	Stack []*MyStack
+}
+
+func Constructor() MinStack {
+	return MinStack{Stack: []*MyStack{}}
+}
+
+func (this *MinStack) Push(val int) {
+	if len(this.Stack) < 1 {
+		this.Stack = append(this.Stack, &MyStack{Val: val, Min: val})
+	} else {
+		min := this.Stack[len(this.Stack)-1].Min
+		if val < min {
+			min = val
+		}
+		this.Stack = append(this.Stack, &MyStack{Val: val, Min: min})
+	}
+
+}
+
+func (this *MinStack) Pop() {
+	if len(this.Stack) < 1 {
+		return
+	}
+	this.Stack = this.Stack[:len(this.Stack)-1]
+}
+
+func (this *MinStack) Top() int {
+	return this.Stack[len(this.Stack)-1].Val
+}
+
+func (this *MinStack) GetMin() int {
+	return this.Stack[len(this.Stack)-1].Min
+} */
 
 /**
  * Your MinStack object will be instantiated and called as such:
