@@ -12,25 +12,35 @@
  *     Next *ListNode
  * }
  */
-func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
-	cur := &ListNode{}
-	head := cur
-	for l1 != nil && l2 != nil {
-		if l1.Val <= l2.Val {
-			cur.Next = l1
-			l1 = l1.Next
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+	if list1 == nil {
+		return list2
+	}
+	if list2 == nil {
+		return list1
+	}
+
+	var (
+		head = &ListNode{}
+		res  = head
+	)
+	for list1 != nil && list2 != nil {
+		if list1.Val <= list2.Val {
+			head.Next = list1
+			head = list1
+			list1 = list1.Next
 		} else {
-			cur.Next = l2
-			l2 = l2.Next
+			head.Next = list2
+			head = list2
+			list2 = list2.Next
 		}
-		cur = cur.Next
 	}
-	if l1 != nil {
-		cur.Next = l1
-	} else if l2 != nil {
-		cur.Next = l2
+	if list1 != nil {
+		head.Next = list1
+	} else if list2 != nil {
+		head.Next = list2
 	}
-	return head.Next
+	return res.Next
 }
 
 // @lc code=end
