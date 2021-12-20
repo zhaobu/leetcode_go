@@ -55,13 +55,6 @@ func (i *Input) Print() string {
 	return fmt.Sprintf("head:%s", i.head.Print())
 }
 
-type CaseIface interface {
-	GetInput() interface{}
-	GetName() string
-	// Copy() CaseIface
-	Print() string
-}
-
 // 给list添加一个环
 func getRandList(hasCycle bool, len int) *ListNode {
 

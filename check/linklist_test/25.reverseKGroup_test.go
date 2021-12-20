@@ -2,6 +2,7 @@ package Solution
 
 import (
 	"fmt"
+	"leetcode/check/core"
 	"testing"
 )
 
@@ -96,7 +97,7 @@ func (m *ReverseKGroup) Print() string {
 func Test1(t *testing.T) {
 
 	//	测试用例
-	cases := []CaseIface{
+	cases := []core.CaseIface{
 		&ReverseKGroup{name: "test 1", input: &Input{head: UnmarshalListBySlice([]int{1, 2, 3, 4, 5})}},
 	}
 

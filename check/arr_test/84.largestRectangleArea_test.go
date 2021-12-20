@@ -1,34 +1,17 @@
-/*
- * @lc app=leetcode.cn id=84 lang=golang
- *
- * [84] 柱状图中最大的矩形
- */
+package Solution
 
-// @lc code=start
-// 解法1:暴力求解,超时
-func largestRectangleArea1(heights []int) int {
-	if len(heights) < 1 {
-		return 0
-	}
-	maxArea := 0
-	for i, height := range heights {
-		//寻找左边第一个比heights[i]<的位置
-		left := i - 1 //保存当前柱子左边第一个比当前柱子矮的索引
-		for left >= 0 && heights[left] >= height {
-			left--
-		}
-		//寻找右边第一个比heights[i]<的位置
-		right := i + 1 //保存当前柱子右边第一个比当前柱子矮的索引
-		for right < len(heights) && heights[right] >= height {
-			right++
-		}
-		curArea := (right - left - 1) * height //注意宽度计算
-		if curArea > maxArea {
-			maxArea = curArea
-		}
-	}
-	return maxArea
-}
+import (
+	"fmt"
+)
+
+// func init() {
+// 	zaplog.InitLog(&zaplog.Config{
+// 		Logdir:   "./",
+// 		LogName:  "main.log",
+// 		Loglevel: "debug",
+// 		Debug:    true},
+// 	)
+// }
 
 // 解法2:类似动态规划
 func largestRectangleArea2(heights []int) int {
@@ -73,7 +56,6 @@ func largestRectangleArea2(heights []int) int {
 	return maxArea
 }
 
-//单调递增栈
 func largestRectangleArea(heights []int) int {
 	if len(heights) < 1 {
 		return 0
@@ -107,5 +89,13 @@ func largestRectangleArea(heights []int) int {
 	return maxArea
 }
 
-// @lc code=end
-
+func (s *ArraryTestSuit) TestlargestRectangleArea() {
+	fmt.Printf("测试执行中 ********* TestlargestRectangleArea\n")
+	heights := [][]int{
+		{2, 1, 5, 6, 2, 3},
+		{2, 4},
+	}
+	for _, v := range heights {
+		s.Equal(largestRectangleArea2(v), largestRectangleArea(v), "")
+	}
+}
