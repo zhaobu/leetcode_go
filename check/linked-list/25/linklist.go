@@ -1,15 +1,9 @@
-package Solution
+package main
 
 import (
 	"fmt"
 	"math/rand"
 )
-
-//  Definition for singly-linked list.
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
 
 func (l *ListNode) Print() string {
 	res := ""

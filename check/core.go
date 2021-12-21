@@ -1,4 +1,4 @@
-package core
+package check
 
 type CaseIface interface {
 	GetInput() interface{}
