@@ -6,5 +6,3 @@ type CaseIface interface {
 	// Copy() CaseIface
 	Print() string
 }
-
-type

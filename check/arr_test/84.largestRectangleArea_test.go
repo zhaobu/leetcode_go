@@ -2,6 +2,9 @@ package Solution
 
 import (
 	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/suite"
 )
 
 // func init() {
@@ -12,6 +15,30 @@ import (
 // 		Debug:    true},
 // 	)
 // }
+
+type LargestRectangleArea struct {
+	suite.Suite
+}
+
+//实现了SetupAllSuite接口,在套件中所有测试开始运行前调用这个方法,对应的是TearDownAllSuite
+func (s *LargestRectangleArea) SetupSuite() {
+	fmt.Printf("所有测试开始运行前调用SetupSuite这个方法. \n")
+}
+
+//实现了TearDownSuite接口,在套件中所有测试运行完成后调用这个方法
+func (s *LargestRectangleArea) TearDownSuite() {
+	fmt.Printf("所有测试运行完成后调用TearDownSuite这个方法. \n")
+}
+
+//在每个测试运行前调用，接受套件名和测试名作为参数
+func (s *LargestRectangleArea) BeforeTest(suiteName, testName string) {
+	fmt.Printf("在每个测试运行前调用BeforeTest，接受套件名和测试名作为参数. suite:%s test:%s\n", suiteName, testName)
+}
+
+//在每个测试运行后调用，接受套件名和测试名作为参数
+func (s *LargestRectangleArea) AfterTest(suiteName, testName string) {
+	fmt.Printf("在每个测试运行后调用AfterTest，接受套件名和测试名作为参数. suite:%s test:%s\n", suiteName, testName)
+}
 
 // 解法2:类似动态规划
 func largestRectangleArea2(heights []int) int {
@@ -69,14 +96,19 @@ func largestRectangleArea(heights []int) int {
 			stackTop := ascStack[len(ascStack)-1] //(栈顶)出栈元素
 			rightLess[stackTop] = i               // 新元素是出栈元素向后找第一个比其小的元素
 			ascStack = ascStack[:len(ascStack)-1] // 出栈
-			//新栈顶元素是出栈元素向前找第一个比其小的元素
-			if len(ascStack) > 0 {
-				leftLess[stackTop] = ascStack[len(ascStack)-1]
-			} else {
-				leftLess[stackTop] = -1
-			}
+		}
+		//新栈顶元素是出栈元素向前找第一个比其小的元素
+		if len(ascStack) > 0 {
+			leftLess[i] = ascStack[len(ascStack)-1]
+		} else {
+			leftLess[i] = -1
 		}
 		ascStack = append(ascStack, i) //如果新的元素比栈顶元素大，就入栈
+	}
+	for len(ascStack) > 0 {
+		stackTop := ascStack[len(ascStack)-1] //(栈顶)出栈元素
+		rightLess[stackTop] = len(heights)    // 新元素是出栈元素向后找第一个比其小的元素
+		ascStack = ascStack[:len(ascStack)-1] // 出栈
 	}
 	//计算最大面积
 	maxArea := 0
@@ -89,13 +121,19 @@ func largestRectangleArea(heights []int) int {
 	return maxArea
 }
 
-func (s *ArraryTestSuit) TestlargestRectangleArea() {
+func (s *LargestRectangleArea) TestlargestRectangleArea() {
 	fmt.Printf("测试执行中 ********* TestlargestRectangleArea\n")
 	heights := [][]int{
+		{6, 7, 5, 2, 4, 5, 9, 3},
 		{2, 1, 5, 6, 2, 3},
 		{2, 4},
 	}
 	for _, v := range heights {
-		s.Equal(largestRectangleArea2(v), largestRectangleArea(v), "")
+		s.Equal(largestRectangleArea2(v), largestRectangleArea(v), "数组的值为:%+v", v)
 	}
+}
+
+func TestSuit(t *testing.T) {
+	//将运行MyTestSuit中所有名为TestXxx的方法
+	suite.Run(t, new(LargestRectangleArea))
 }

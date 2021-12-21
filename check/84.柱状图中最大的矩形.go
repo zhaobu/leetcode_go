@@ -87,14 +87,19 @@ func largestRectangleArea(heights []int) int {
 			stackTop := ascStack[len(ascStack)-1] //(栈顶)出栈元素
 			rightLess[stackTop] = i               // 新元素是出栈元素向后找第一个比其小的元素
 			ascStack = ascStack[:len(ascStack)-1] // 出栈
-			//新栈顶元素是出栈元素向前找第一个比其小的元素
-			if len(ascStack) > 0 {
-				leftLess[stackTop] = ascStack[len(ascStack)-1]
-			} else {
-				leftLess[stackTop] = -1
-			}
+		}
+		//新栈顶元素是出栈元素向前找第一个比其小的元素
+		if len(ascStack) > 0 {
+			leftLess[i] = ascStack[len(ascStack)-1]
+		} else {
+			leftLess[i] = -1
 		}
 		ascStack = append(ascStack, i) //如果新的元素比栈顶元素大，就入栈
+	}
+	for len(ascStack) > 0 {
+		stackTop := ascStack[len(ascStack)-1] //(栈顶)出栈元素
+		rightLess[stackTop] = len(heights)    // 新元素是出栈元素向后找第一个比其小的元素
+		ascStack = ascStack[:len(ascStack)-1] // 出栈
 	}
 	//计算最大面积
 	maxArea := 0

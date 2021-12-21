@@ -1,4 +1,4 @@
-package Solution
+package core
 
 import (
 	"fmt"
@@ -43,13 +43,13 @@ func (s *ArraryTestSuit) AfterTest(suiteName, testName string) {
 	fmt.Printf("在每个测试运行后调用AfterTest，接受套件名和测试名作为参数. suite:%s test:%s\n", suiteName, testName)
 }
 
-// func (s *ArraryTestSuit) TestExample1() {
-// 	fmt.Printf("测试执行中 ********* TestExample1\n")
-// }
+func (s *ArraryTestSuit) TestExample1() {
+	fmt.Printf("测试执行中 ********* TestExample1\n")
+}
 
-// func (s *ArraryTestSuit) TestExample2() {
-// 	fmt.Printf("测试执行中 ********* TestExample2\n")
-// }
+func (s *ArraryTestSuit) TestExample2() {
+	fmt.Printf("测试执行中 ********* TestExample2\n")
+}
 
 func TestSuit(t *testing.T) {
 	//将运行MyTestSuit中所有名为TestXxx的方法
