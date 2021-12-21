@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=876 lang=golang
  *
@@ -24,4 +26,3 @@ func middleNode(head *ListNode) *ListNode {
 }
 
 // @lc code=end
-

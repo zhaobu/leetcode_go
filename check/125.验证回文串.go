@@ -1,3 +1,7 @@
+package check
+
+import "strings"
+
 /*
  * @lc app=leetcode.cn id=125 lang=golang
  *
@@ -32,4 +36,3 @@ func isChar(ch byte) bool {
 }
 
 // @lc code=end
-

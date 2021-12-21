@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=1 lang=golang
  *
@@ -5,6 +7,7 @@
  */
 
 // @lc code=start
+
 // 解法1:使用map记录另一个数
 func twoSum(nums []int, target int) []int {
 	mapIndex := make(map[int]int, len(nums))
@@ -19,4 +22,3 @@ func twoSum(nums []int, target int) []int {
 }
 
 // @lc code=end
-

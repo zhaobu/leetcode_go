@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=84 lang=golang
  *
@@ -5,8 +7,13 @@
  */
 
 // @lc code=start
+
+func LargestRectangleArea(heights []int) int {
+	return largestRectangleArea(heights)
+}
+
 // 解法1:暴力求解,超时
-func largestRectangleArea1(heights []int) int {
+func LargestRectangleArea1(heights []int) int {
 	if len(heights) < 1 {
 		return 0
 	}
@@ -31,7 +38,7 @@ func largestRectangleArea1(heights []int) int {
 }
 
 // 解法2:类似动态规划
-func largestRectangleArea2(heights []int) int {
+func LargestRectangleArea2(heights []int) int {
 	if len(heights) < 1 {
 		return 0
 	}
@@ -73,8 +80,8 @@ func largestRectangleArea2(heights []int) int {
 	return maxArea
 }
 
-//单调递增栈
-func largestRectangleArea(heights []int) int {
+//解法3:单调递增栈写法1
+func LargestRectangleArea3(heights []int) int {
 	if len(heights) < 1 {
 		return 0
 	}
@@ -113,5 +120,37 @@ func largestRectangleArea(heights []int) int {
 	return maxArea
 }
 
-// @lc code=end
+//解法4:单调递增栈写法2
+func largestRectangleArea(heights []int) int {
+	if len(heights) < 1 {
+		return 0
+	}
+	ascStack := make([]int, 0, len(heights)) //单调递增栈,栈中存储的是heights的下标,使用时通过heights来获取高度
+	maxArea := 0                             //记录最大面积
+	heights = append(heights, 0)             //在heights最后插入一个比谁都小的0,从而在0入栈后会计算完所有的情况
+	right := 0                               //计算maxArea时右边界
+	left := 0                                //计算maxArea时左边界
 
+	for i, height := range heights {
+		// 如果新的元素较小，那就一直把栈内元素弹出来，直到栈顶比新元素小
+		for len(ascStack) > 0 && heights[ascStack[len(ascStack)-1]] >= height {
+			stackTop := ascStack[len(ascStack)-1] //(栈顶)出栈元素
+			right = i                             //当元素出栈时，说明这个新元素是出栈元素向后找第一个比其小的元素
+			ascStack = ascStack[:len(ascStack)-1] // 出栈
+			if len(ascStack) > 0 {                //当元素出栈后，说明新栈顶元素是出栈元素向前找第一个比其小的元素
+				left = ascStack[len(ascStack)-1]
+			} else {
+				left = -1
+			}
+			//计算以heights[stackTop]为高度的面积
+			curArea := (right - left - 1) * heights[stackTop]
+			if curArea > maxArea {
+				maxArea = curArea
+			}
+		}
+		ascStack = append(ascStack, i) //如果新的元素比栈顶元素大，就入栈
+	}
+	return maxArea
+}
+
+// @lc code=end

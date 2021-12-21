@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=496 lang=golang
  *
@@ -8,5 +10,5 @@
 func nextGreaterElement(nums1 []int, nums2 []int) []int {
 
 }
-// @lc code=end
 
+// @lc code=end

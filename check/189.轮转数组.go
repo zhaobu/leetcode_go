@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=189 lang=golang
  *
@@ -56,4 +58,3 @@ func reverse(nums []int) {
 }
 
 // @lc code=end
-

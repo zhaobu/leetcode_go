@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=19 lang=golang
  *
@@ -57,4 +59,3 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 }
 
 // @lc code=end
-

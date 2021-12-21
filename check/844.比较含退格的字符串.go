@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=844 lang=golang
  *
@@ -30,4 +32,3 @@ func backspaceCompare(s string, t string) bool {
 
 //TODO双指针解法
 // @lc code=end
-

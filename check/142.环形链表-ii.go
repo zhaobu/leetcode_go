@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=142 lang=golang
  *

@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=682 lang=golang
  *
@@ -8,5 +10,5 @@
 func calPoints(ops []string) int {
 
 }
-// @lc code=end
 
+// @lc code=end

@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=88 lang=golang
  *
@@ -7,7 +9,7 @@
 // @lc code=start
 
 // 解法1:使用一个临时数组,双指针
-func merge(nums1 []int, m int, nums2 []int, n int) {
+func merge1(nums1 []int, m int, nums2 []int, n int) {
 	if n < 1 {
 		return
 	}
@@ -64,4 +66,3 @@ func merge(nums1 []int, m int, nums2 []int, n int) {
 }
 
 // @lc code=end
-

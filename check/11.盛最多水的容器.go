@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=11 lang=golang
  *
@@ -31,4 +33,3 @@ func maxArea(height []int) int {
 }
 
 // @lc code=end
-

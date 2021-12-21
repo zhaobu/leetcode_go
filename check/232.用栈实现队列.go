@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=232 lang=golang
  *
@@ -71,4 +73,3 @@ func (this *MyQueue) Empty() bool {
  * param_4 := obj.Empty();
  */
 // @lc code=end
-

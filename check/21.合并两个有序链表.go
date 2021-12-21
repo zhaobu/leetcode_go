@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=21 lang=golang
  *
@@ -44,4 +46,3 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 }
 
 // @lc code=end
-

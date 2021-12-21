@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=141 lang=golang
  *
@@ -48,4 +50,3 @@ func hasCycle(head *ListNode) bool {
 }
 
 // @lc code=end
-

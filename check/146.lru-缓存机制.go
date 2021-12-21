@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=146 lang=golang
  *
@@ -105,7 +107,3 @@ func (this *LRUCache) addToHead(node *CacheNode) {
  * obj.Put(key,value);
  */
 // @lc code=end
-
-
-
-

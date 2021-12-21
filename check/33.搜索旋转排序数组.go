@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=33 lang=golang
  *
@@ -33,4 +35,3 @@ func search(nums []int, target int) int {
 }
 
 // @lc code=end
-

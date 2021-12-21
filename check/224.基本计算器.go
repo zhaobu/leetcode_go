@@ -1,3 +1,5 @@
+package check
+
 /*
  * @lc app=leetcode.cn id=224 lang=golang
  *
@@ -8,5 +10,5 @@
 func calculate(s string) int {
 
 }
-// @lc code=end
 
+// @lc code=end
