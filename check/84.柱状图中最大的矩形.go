@@ -88,7 +88,7 @@ func largestRectangleArea(heights []int) int {
 			rightLess[stackTop] = i               // 新元素是出栈元素向后找第一个比其小的元素
 			ascStack = ascStack[:len(ascStack)-1] // 出栈
 		}
-		//新栈顶元素是出栈元素向前找第一个比其小的元素
+		//当栈顶元素小于当前元素时,栈顶元素就是当前元素的左边第一个比其小的元素
 		if len(ascStack) > 0 {
 			leftLess[i] = ascStack[len(ascStack)-1]
 		} else {
@@ -96,6 +96,7 @@ func largestRectangleArea(heights []int) int {
 		}
 		ascStack = append(ascStack, i) //如果新的元素比栈顶元素大，就入栈
 	}
+	//栈里面剩余的元素需要全部弹出,因为他们还没有求rightLess,
 	for len(ascStack) > 0 {
 		stackTop := ascStack[len(ascStack)-1] //(栈顶)出栈元素
 		rightLess[stackTop] = len(heights)    // 新元素是出栈元素向后找第一个比其小的元素
