@@ -8,12 +8,8 @@ package main
 
 // @lc code=start
 
-func LargestRectangleArea(heights []int) int {
-	return largestRectangleArea(heights)
-}
-
 // 解法1:暴力求解,超时
-func LargestRectangleArea1(heights []int) int {
+func largestRectangleArea1(heights []int) int {
 	if len(heights) < 1 {
 		return 0
 	}
@@ -38,7 +34,7 @@ func LargestRectangleArea1(heights []int) int {
 }
 
 // 解法2:类似动态规划
-func LargestRectangleArea2(heights []int) int {
+func largestRectangleArea2(heights []int) int {
 	if len(heights) < 1 {
 		return 0
 	}
@@ -81,7 +77,7 @@ func LargestRectangleArea2(heights []int) int {
 }
 
 //解法3:单调递增栈写法1
-func LargestRectangleArea3(heights []int) int {
+func largestRectangleArea3(heights []int) int {
 	if len(heights) < 1 {
 		return 0
 	}
