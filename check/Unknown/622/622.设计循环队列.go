@@ -30,6 +30,10 @@ func (this *MyCircularQueue) EnQueue(value int) bool {
 	if this.IsFull() {
 		return false
 	}
+	/*
+		因为tail初始值为0,tail指向队尾的下一个位置,所以插入元素时tail就表示要插入的位置
+		所以要先插入元素,再移动tail
+	*/
 	this.q[this.tail] = value
 	this.tail = (this.tail + 1) % len(this.q)
 	return true
