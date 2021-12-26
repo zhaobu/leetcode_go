@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -54,4 +55,5 @@ func (s *ArraryTestSuit) TestExample2() {
 func TestSuit(t *testing.T) {
 	//将运行MyTestSuit中所有名为TestXxx的方法
 	suite.Run(t, new(ArraryTestSuit))
+	assert.Equal(t, 1, 1)
 }
