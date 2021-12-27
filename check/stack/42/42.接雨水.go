@@ -42,7 +42,7 @@ func trap1(height []int) int {
 	return res
 }
 
-//  类似动态动态规划,预计算每个位置左右2边最大值
+//动态动态规划,预计算每个位置左右2边最大值
 func trap2(height []int) int {
 	if height == nil || len(height) < 3 {
 		return 0
@@ -81,29 +81,64 @@ func trap2(height []int) int {
 }
 
 //用单调递减栈
+func trap3(height []int) int {
+	if height == nil || len(height) < 3 {
+		return 0
+	}
+	res := 0                          //记录雨水总量
+	st := make([]int, 0, len(height)) //单调栈存储的是下标，满足从栈底到栈顶的下标对应的数组height中的元素递减
+	for i, h := range height {
+		//如果元素>栈顶元素,当前元素是栈顶元素的右边界
+		for len(st) > 0 && h > height[st[len(st)-1]] {
+			stackTop := st[len(st)-1]
+			st = st[:len(st)-1] //出栈,然后新栈顶元素就是左边界
+			if len(st) == 0 {   //栈为空说明,左边已经没有左边界了
+				break
+			}
+			leftIndex := st[len(st)-1] //新栈顶元素就是左边界
+			width := i - leftIndex - 1 //右边界下标i-左边界下标leftIndex-1就是宽度
+			if h < height[leftIndex] {
+				res += (h - height[stackTop]) * width
+			} else {
+				res += (height[leftIndex] - height[stackTop]) * width
+			}
+		}
+		st = append(st, i) //每个遍历到的元素都要入栈一次
+	}
+	return res
+}
+
+//双指针解法
 func trap(height []int) int {
 	if height == nil || len(height) < 3 {
 		return 0
 	}
-	res := 0 //记录雨水总量
-	st := make([]int, 0, len(height))
-	for i := 0; i < len(height); i++ {
-		//如果元素>栈顶元素,当前元素是栈顶元素的右边界
-		for len(st) > 0 && height[i] > height[st[len(st)-1]] {
-			stackTop := st[len(st)-1]
-			st = st[:len(st)-1]
-			if len(st) == 0 {
-				break
-			}
-			leftMax := height[st[len(st)-1]]
-			width := i - st[len(st)-1] - 1
-			if height[i] < leftMax {
-				res += (height[i] - height[stackTop]) * width
-			} else {
-				res += (leftMax - height[stackTop]) * width
-			}
+	/*
+		左指针左边的表示已经计算过面积,只会向右移动
+		右指针右边的表示已经计算过面积,只会向左移动
+	*/
+	left, right := 0, len(height)-1
+	/*
+	 leftMax表示计算到left位置时,左边界到达过的最大高度
+	 leftMax表示计算到left位置时,左边界到达过的最大高度
+	*/
+	leftMax, rightMax := 0, 0
+	res := 0 //累加计算结果
+
+	for left < right {
+		if height[left] > leftMax {
+			leftMax = height[left]
 		}
-		st = append(st, i)
+		if height[right] > rightMax {
+			rightMax = height[right]
+		}
+		if height[left] < height[right] {
+			res += leftMax - height[left]
+			left++
+		} else {
+			res += rightMax - height[right]
+			right--
+		}
 	}
 	return res
 }
