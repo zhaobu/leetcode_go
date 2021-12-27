@@ -42,7 +42,7 @@ func trap1(height []int) int {
 	return res
 }
 
-//动态动态规划,预计算每个位置左右2边最大值
+//动态动态规划,优化暴力法的时间复杂度
 func trap2(height []int) int {
 	if height == nil || len(height) < 3 {
 		return 0
@@ -80,8 +80,38 @@ func trap2(height []int) int {
 	return res
 }
 
-//用单调递减栈
+//双指针解法,优化动态规划的空间复杂度
 func trap3(height []int) int {
+	if height == nil || len(height) < 3 {
+		return 0
+	}
+
+	left := 0                //左指针左边的表示已经计算过面积,只会向右移动
+	right := len(height) - 1 //右指针右边的表示已经计算过面积,只会向左移动
+	leftMax := 0             //leftMax表示height[0..left] 中最高柱子的高度
+	rightMax := 0            //leftMax表示height[right..end] 的最高柱子的高度
+	res := 0                 //累加计算结果
+
+	for left < right {
+		if height[left] > leftMax {
+			leftMax = height[left]
+		}
+		if height[right] > rightMax {
+			rightMax = height[right]
+		}
+		if leftMax < rightMax {
+			res += leftMax - height[left]
+			left++
+		} else {
+			res += rightMax - height[right]
+			right--
+		}
+	}
+	return res
+}
+
+//用单调递减栈
+func trap(height []int) int {
 	if height == nil || len(height) < 3 {
 		return 0
 	}
@@ -104,41 +134,6 @@ func trap3(height []int) int {
 			}
 		}
 		st = append(st, i) //每个遍历到的元素都要入栈一次
-	}
-	return res
-}
-
-//双指针解法
-func trap(height []int) int {
-	if height == nil || len(height) < 3 {
-		return 0
-	}
-	/*
-		左指针左边的表示已经计算过面积,只会向右移动
-		右指针右边的表示已经计算过面积,只会向左移动
-	*/
-	left, right := 0, len(height)-1
-	/*
-	 leftMax表示计算到left位置时,左边界到达过的最大高度
-	 leftMax表示计算到left位置时,左边界到达过的最大高度
-	*/
-	leftMax, rightMax := 0, 0
-	res := 0 //累加计算结果
-
-	for left < right {
-		if height[left] > leftMax {
-			leftMax = height[left]
-		}
-		if height[right] > rightMax {
-			rightMax = height[right]
-		}
-		if height[left] < height[right] {
-			res += leftMax - height[left]
-			left++
-		} else {
-			res += rightMax - height[right]
-			right--
-		}
 	}
 	return res
 }
