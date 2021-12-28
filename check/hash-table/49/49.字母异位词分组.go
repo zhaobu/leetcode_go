@@ -38,7 +38,7 @@ func groupAnagrams(strs []string) [][]string {
 	for _, str := range strs {
 		strByte := []byte(str)
 		sort.Slice(strByte, func(i, j int) bool { return strByte[i] < strByte[j] })
-		sortedStr := string(strByte)
+		sortedStr := string(strByte) //这里必须转换为string,因为切片不能作为map的key
 		groupMap[sortedStr] = append(groupMap[sortedStr], str)
 	}
 	res := make([][]string, 0, len(groupMap))
