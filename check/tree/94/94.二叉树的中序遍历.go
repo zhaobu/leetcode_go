@@ -42,8 +42,35 @@ func inorderTraversal1(root *TreeNode) []int {
 	return res
 }
 
-//方法2:
-func inorderTraversal(root *TreeNode) []int {
+//方法2:迭代
+func inorderTraversal2(root *TreeNode) (res []int) {
+	if root == nil {
+		return nil
+	}
+
+	stack := []*TreeNode{}
+	for root != nil || len(stack) > 0 {
+		//模拟所有左节点入栈
+		for root != nil {
+			stack = append(stack, root)
+			root = root.Left
+		}
+		//栈顶出栈
+		root = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		// 打印出栈元素
+		res = append(res, root.Val)
+		//遍历当前节点的右子节点
+		root = root.Right
+	}
+	return
+}
+
+//方法3:迭代
+func inorderTraversal(root *TreeNode) (res []int) {
+	if root == nil {
+		return nil
+	}
 }
 
 // @lc code=end
