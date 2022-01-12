@@ -66,11 +66,12 @@ func inorderTraversal2(root *TreeNode) (res []int) {
 	return
 }
 
-//方法3:迭代
+//方法3:Morris 中序遍历
 func inorderTraversal(root *TreeNode) (res []int) {
 	if root == nil {
 		return nil
 	}
+	return
 }
 
 // @lc code=end
