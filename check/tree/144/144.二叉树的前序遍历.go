@@ -65,7 +65,7 @@ func preorderTraversal2(root *TreeNode) []int {
 
 /*
 解法3:迭代,手动维护栈
-思路:访问一个节点,然后将节点入栈,访问左子树,知道访问到了最左边的叶子节点
+思路:访问一个节点,然后将节点入栈,访问左子树,直到访问到了最左边的叶子节点
 然后，弹出一个栈顶元素,访问它的右孩子，直至栈为空
 */
 func preorderTraversal3(root *TreeNode) []int {
@@ -79,22 +79,26 @@ func preorderTraversal3(root *TreeNode) []int {
 	)
 	for node != nil || len(stack) > 0 {
 		for node != nil { //根节点和左孩子入栈
-			res = append(res, node.Val)
+			res = append(res, node.Val) //前序遍历是第一次到达时就访问
 			stack = append(stack, node)
 			node = node.Left
 		}
-		node = stack[len(stack)-1].Right //每弹出一个元素,就到达右孩子
+		//获取栈顶元素
+		node = stack[len(stack)-1]
+		//遍历当前节点的右子节点
+		node = node.Right
+		//栈顶元素出栈
 		stack = stack[:len(stack)-1]
 	}
 	return res
 }
 
 /*
-解法4:迭代,手动维护栈
+解法4:迭代,手动维护栈,上一个写法的另外一种形式
 思路是先访问每个节点,然后保存节点的右子树,然后在访问节点的左子树,
 这样到达树的最左边的叶子节点时开始从栈中访问最后入栈的右子树
 */
-func preorderTraversal(root *TreeNode) []int {
+func preorderTraversa4(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
@@ -113,8 +117,8 @@ func preorderTraversal(root *TreeNode) []int {
 				return res
 			}
 			node = stack[len(stack)-1]
-			stack = stack[:len(stack)-1]
 			node = node.Right
+			stack = stack[:len(stack)-1]
 		}
 	}
 }

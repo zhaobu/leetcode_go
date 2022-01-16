@@ -59,13 +59,14 @@ func inorderTraversal2(root *TreeNode) []int {
 			stack = append(stack, node)
 			node = node.Left
 		}
-		//栈顶出栈
+		//获取栈顶元素
 		node = stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
-		// 打印出栈元素
+		//中序遍历是第二次到达时访问
 		res = append(res, node.Val)
 		//遍历当前节点的右子节点
 		node = node.Right
+		//栈顶元素出栈
+		stack = stack[:len(stack)-1]
 	}
 	return res
 }
@@ -76,7 +77,7 @@ func inorderTraversal2(root *TreeNode) []int {
 第一个出栈的就是最左边叶子节点,
 
 */
-func inorderTraversal(root *TreeNode) []int {
+func inorderTraversal3(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
@@ -95,9 +96,9 @@ func inorderTraversal(root *TreeNode) []int {
 			}
 
 			node = stack[len(stack)-1]
-			stack = stack[:len(stack)-1]
 			res = append(res, node.Val)
 			node = node.Right
+			stack = stack[:len(stack)-1]
 		}
 	}
 }
