@@ -43,14 +43,15 @@ func inorderTraversal1(root *TreeNode) []int {
 }
 
 //方法2:迭代
-func inorderTraversal2(root *TreeNode) (res []int) {
+func inorderTraversal2(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
 
 	var (
-		stack []*TreeNode
+		res   []int
 		node  = root
+		stack []*TreeNode
 	)
 	for node != nil || len(stack) > 0 {
 		//模拟所有左节点入栈
@@ -66,7 +67,7 @@ func inorderTraversal2(root *TreeNode) (res []int) {
 		//遍历当前节点的右子节点
 		node = node.Right
 	}
-	return
+	return res
 }
 
 /*
@@ -75,13 +76,14 @@ func inorderTraversal2(root *TreeNode) (res []int) {
 第一个出栈的就是最左边叶子节点,
 
 */
-func inorderTraversal(root *TreeNode) (res []int) {
+func inorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
 	var (
-		stack []*TreeNode
+		res   []int
 		node  = root
+		stack []*TreeNode
 	)
 	for {
 		if node != nil {
@@ -91,25 +93,26 @@ func inorderTraversal(root *TreeNode) (res []int) {
 			if len(stack) < 1 {
 				return res
 			}
-			//访问栈顶元素
+
 			node = stack[len(stack)-1]
-			res = append(res, node.Val)
-
-			//栈顶元素出栈
 			stack = stack[:len(stack)-1]
-
-			//下一个访问的是栈顶元素的右子树
+			res = append(res, node.Val)
 			node = node.Right
 		}
 	}
 }
 
 // 方法4:Morris 中序遍历
-func inorderTraversal4(root *TreeNode) (res []int) {
-	if root == nil {
-		return nil
-	}
-	return
-}
+// func inorderTraversal4(root *TreeNode) []int {
+// 	if root == nil {
+// 		return nil
+// 	}
+// 	var (
+// 		res   []int
+// 		node  = root
+// 		stack []*TreeNode
+// 	)
+// 	return
+// }
 
 // @lc code=end

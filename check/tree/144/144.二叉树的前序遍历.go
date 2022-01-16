@@ -94,7 +94,7 @@ func preorderTraversal3(root *TreeNode) []int {
 思路是先访问每个节点,然后保存节点的右子树,然后在访问节点的左子树,
 这样到达树的最左边的叶子节点时开始从栈中访问最后入栈的右子树
 */
-func preorderTraversal4(root *TreeNode) []int {
+func preorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
@@ -106,9 +106,7 @@ func preorderTraversal4(root *TreeNode) []int {
 	for {
 		if node != nil {
 			res = append(res, node.Val)
-			if node.Right != nil { //也可以不加该优化,就会多一次空的右节点入栈后出栈的操作
-				stack = append(stack, node.Right) //访问一个节点时,用栈保存右子树部分
-			}
+			stack = append(stack, node) //访问一个节点时,用栈保存右子树部分
 			node = node.Left
 		} else {
 			if len(stack) < 1 {
@@ -116,6 +114,7 @@ func preorderTraversal4(root *TreeNode) []int {
 			}
 			node = stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
+			node = node.Right
 		}
 	}
 }
