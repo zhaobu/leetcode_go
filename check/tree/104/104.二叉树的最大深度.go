@@ -41,7 +41,7 @@ func maxDepth1(root *TreeNode) int {
 }
 
 /*
-解法2:广度优先
+解法2:广度优先,层序遍历求高度
 */
 func maxDepth(root *TreeNode) int {
 	if root == nil {
