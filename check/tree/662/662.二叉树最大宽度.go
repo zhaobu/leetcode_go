@@ -64,7 +64,28 @@ func widthOfBinaryTree(root *TreeNode) int {
 		return 0
 	}
 	var (
-		maxWidth = 0
+		maxWidth  = 0
+		dfs       func(node *TreeNode, deepth, index int)
+		max       func(a, b int) int
+		leftIndex = map[int]int{} //用于保存每层的最左边节点的index
 	)
+	max = func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+	dfs = func(node *TreeNode, deepth, index int) {
+		if node == nil {
+			return
+		}
+		if _, ok := leftIndex[deepth]; !ok {
+			leftIndex[deepth] = index
+		}
+		maxWidth = max(maxWidth, index-leftIndex[deepth]+1)
+		dfs(node.Left, deepth+1, 2*index+1)
+		dfs(node.Right, deepth+1, 2*index+2)
+	}
+	dfs(root, 0, 0)
 	return maxWidth
 }
