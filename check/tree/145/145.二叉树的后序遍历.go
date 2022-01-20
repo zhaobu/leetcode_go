@@ -21,7 +21,7 @@ func postorderTraversal1(root *TreeNode) []int {
 		return nil
 	}
 	var (
-		res       []int
+		ret       []int
 		postorder func(node *TreeNode)
 	)
 	postorder = func(node *TreeNode) {
@@ -34,10 +34,10 @@ func postorderTraversal1(root *TreeNode) []int {
 		if node.Right != nil {
 			postorder(node.Right)
 		}
-		res = append(res, node.Val)
+		ret = append(ret, node.Val)
 	}
 	postorder(root)
-	return res
+	return ret
 }
 
 /*
@@ -48,7 +48,7 @@ func postorderTraversal2(root *TreeNode) []int {
 		return nil
 	}
 	var (
-		res     []int
+		ret     []int
 		node    = root
 		stack   []*TreeNode
 		preNode *TreeNode //记录上次访问的节点,用来判断是不是第2次出栈,也就是第三次到达节点
@@ -66,7 +66,7 @@ func postorderTraversal2(root *TreeNode) []int {
 			只有右边没有节点或者是上一个访问的节点是当前节点的右节点时,才表示是第三次到达
 		*/
 		if node.Right == nil || node.Right == preNode {
-			res = append(res, node.Val)
+			ret = append(ret, node.Val)
 			preNode = node
 			node = nil
 			stack = stack[:len(stack)-1]
@@ -75,7 +75,7 @@ func postorderTraversal2(root *TreeNode) []int {
 			node = node.Right
 		}
 	}
-	return res
+	return ret
 }
 
 /*
@@ -86,7 +86,7 @@ func postorderTraversal3(root *TreeNode) []int {
 		return nil
 	}
 	var (
-		res     []int
+		ret     []int
 		node    = root
 		stack   []*TreeNode
 		preNode *TreeNode //上次访问的节点
@@ -98,12 +98,12 @@ func postorderTraversal3(root *TreeNode) []int {
 			node = node.Left
 		} else {
 			if len(stack) < 1 {
-				return res
+				return ret
 			}
 
 			node = stack[len(stack)-1]
 			if node.Right == nil || node.Right == preNode {
-				res = append(res, node.Val)
+				ret = append(ret, node.Val)
 				preNode = node
 				node = nil
 				stack = stack[:len(stack)-1]
