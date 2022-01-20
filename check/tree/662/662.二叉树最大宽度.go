@@ -15,7 +15,11 @@ package main
  *     Right *TreeNode
  * }
  */
-func widthOfBinaryTree(root *TreeNode) int {
+
+/*
+ 解法1:层序遍历
+*/
+func widthOfBinaryTree1(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
@@ -49,5 +53,18 @@ func widthOfBinaryTree(root *TreeNode) int {
 		}
 		curLevel = nextLevel
 	}
+	return maxWidth
+}
+
+/*
+ 解法2:深度优先
+*/
+func widthOfBinaryTree(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	var (
+		maxWidth = 0
+	)
 	return maxWidth
 }
