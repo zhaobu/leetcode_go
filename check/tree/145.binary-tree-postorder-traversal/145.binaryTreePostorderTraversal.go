@@ -81,7 +81,7 @@ func postorderTraversal2(root *TreeNode) []int {
 /*
  方法3:迭代,上一种写法的另一种形式
 */
-func postorderTraversal3(root *TreeNode) []int {
+func postorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}

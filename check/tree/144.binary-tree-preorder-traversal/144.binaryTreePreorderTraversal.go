@@ -98,7 +98,7 @@ func preorderTraversal3(root *TreeNode) []int {
 思路是先访问每个节点,然后保存节点的右子树,然后在访问节点的左子树,
 这样到达树的最左边的叶子节点时开始从栈中访问最后入栈的右子树
 */
-func preorderTraversa4(root *TreeNode) []int {
+func preorderTraversa(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}

@@ -77,7 +77,7 @@ func inorderTraversal2(root *TreeNode) []int {
 第一个出栈的就是最左边叶子节点,
 
 */
-func inorderTraversal3(root *TreeNode) []int {
+func inorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
