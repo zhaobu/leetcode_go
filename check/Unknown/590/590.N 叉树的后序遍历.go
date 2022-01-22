@@ -42,14 +42,14 @@ func postorder1(root *Node) []int {
 /*
 解法2:迭代,复用二叉树的后续遍历思想
 */
-func postorder(root *Node) []int {
+func postorder2(root *Node) []int {
 	ret := []int{}
 	if root == nil {
 		return ret
 	}
 
 	stack := []*Node{root}
-	preNode := (*Node)(nil) //记录上上一个访问的节点
+	preNode := (*Node)(nil) //记录上一个访问的节点
 
 	for len(stack) > 0 {
 		top := stack[len(stack)-1]
