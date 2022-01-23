@@ -113,7 +113,7 @@ func flatten3(root *TreeNode) {
 }
 
 /*
- 解法4: 使用全部进栈后出栈才访问的迭代方式进行前序遍历,遍历过程中就处理为链表
+ 解法4: 寻找前驱节点
 */
 func flatten(root *TreeNode) {
 	if root == nil {
