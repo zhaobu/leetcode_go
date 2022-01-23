@@ -120,25 +120,23 @@ func flatten(root *TreeNode) {
 		return
 	}
 
-	var (
-		stack   = []*TreeNode{root}
-		preNode *TreeNode //上一个访问的节点
-	)
-	//前序遍历二叉树
-	for len(stack) > 0 {
-		curNode := stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
-		if curNode.Right != nil {
-			stack = append(stack, curNode.Right)
+	node := root
+	for node != nil {
+		if node.Left != nil {
+			//找到前驱节点
+			predecessor := node.Left
+			for predecessor.Right != nil {
+				predecessor = predecessor.Right
+			}
+			// 将当前节点的右子节点赋给前驱节点的右子节点
+			predecessor.Right = node.Right
+			// 将当前节点的左子节点赋给当前节点的右子节点，
+			node.Right = node.Left
+			// 将当前节点的左子节点设为空
+			node.Left = nil
 		}
-		if curNode.Left != nil {
-			stack = append(stack, curNode.Left)
-		}
-		if preNode != nil {
-			preNode.Left = nil
-			preNode.Right = curNode
-		}
-		preNode = curNode
+		// 继续处理链表中的下一个节点
+		node = node.Right
 	}
 	return
 }
