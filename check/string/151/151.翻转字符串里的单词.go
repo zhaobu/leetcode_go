@@ -12,18 +12,18 @@ import "fmt"
 func reverseWords(s string) string {
 	//去除多余的空格
 	b := make([]byte, 0, len(s))
-	preSpace := true  //前一个字符是否空格
-	bWord := []byte{} //待加入的新的单词
+	preSpace := true //前一个字符是否空格
 	for i := 0; i < len(s); i++ {
 		if s[i] != ' ' {
 			b = append(b, s[i])
 			preSpace = false
 		} else if !preSpace {
-			if i < len(s)-1 {
-				b = append(b, ' ')
-			}
+			b = append(b, ' ')
 			preSpace = true
 		}
+	}
+	if preSpace {
+		b = b[:len(b)-1]
 	}
 	fmt.Printf("string(b)=[%s]\n", string(b))
 	// 翻转字符串
