@@ -9,6 +9,11 @@ import "fmt"
  */
 
 // @lc code=start
+/*
+思路:
+1.先去除多余的空格
+2.翻转整个字符串,然后翻转每个单词
+*/
 func reverseWords(s string) string {
 	//去除多余的空格
 	b := make([]byte, 0, len(s))
