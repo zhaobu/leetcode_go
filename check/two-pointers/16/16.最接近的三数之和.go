@@ -14,16 +14,15 @@ func threeSumClosest(nums []int, target int) int {
 // @lc code=end
 
 /*
-对应的题目为 https://leetcode-cn.com/problems/sub-sort-lcci/
+题目为 [面试题 16.16. 部分排序](https://leetcode-cn.com/problems/sub-sort-lcci/)
 输入： [1,2,4,  7,10,11,7,12,6,7,  16,18,19]
 输出： [3,9]
 
-[0]
-[-1,-1]
+输入： [0]
+输出： [-1,-1]
 
-[1,3,5,7,9]
-[-1,-1]
-
+输入： [1,3,5,7,9]
+输出：[-1,-1]
 
 */
 func subSort(array []int) []int {
