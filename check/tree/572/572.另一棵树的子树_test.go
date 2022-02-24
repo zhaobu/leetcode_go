@@ -24,8 +24,8 @@ func Test_isSubtree(t *testing.T) {
 	root.Left.Right = &TreeNode{Val: 2}
 
 	subRoot := &TreeNode{Val: 4}
-	root.Left = &TreeNode{Val: 1}
-	root.Right = &TreeNode{Val: 2}
+	subRoot.Left = &TreeNode{Val: 1}
+	subRoot.Right = &TreeNode{Val: 2}
 
 	tests := []struct {
 		name string
