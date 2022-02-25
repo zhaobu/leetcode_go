@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 /*
  * @lc app=leetcode.cn id=151 lang=golang
@@ -9,12 +12,39 @@ import "fmt"
  */
 
 // @lc code=start
+
 /*
-思路:
+解法2:
+ 使用库自带的split（拆分），reverse（翻转）和 join（连接）等方法
+1.使用 split 将字符串按空格分割成字符串数组；
+2.使用 reverse 将字符串数组进行反转；
+3.使用 join 方法将字符串数组拼成一个字符串。
+*/
+func reverseWords2(s string) string {
+	ret := ""
+	if len(s) < 1 {
+		return ret
+	}
+	strArr := strings.Fields(s)
+
+	// fmt.Printf("strArr=%+v,len(strArr)=%d\n", strArr, len(strArr))
+	//反转字符串数组
+	for i, j := 0, len(strArr)-1; i < j; i, j = i+1, j-1 {
+		strArr[i], strArr[j] = strArr[j], strArr[i]
+	}
+	// fmt.Printf("strArr=%+v,len(strArr)=%d\n", strArr, len(strArr))
+	ret = strings.Join(strArr, " ")
+
+	// fmt.Printf("ret=%+v\n", ret)
+	return ret
+}
+
+/*
+解法1:
 1.先去除多余的空格
 2.翻转整个字符串,然后翻转每个单词
 */
-func reverseWords(s string) string {
+func reverseWords1(s string) string {
 	//去除多余的空格
 	b := make([]byte, 0, len(s))
 	preSpace := true //前一个字符是否空格
