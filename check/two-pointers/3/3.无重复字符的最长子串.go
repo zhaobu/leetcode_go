@@ -6,6 +6,14 @@ package main
  * [3] 无重复字符的最长子串
  */
 
+func lengthOfLongestSubstring(s string) int {
+	if len(s) < 1 {
+		return 0
+	}
+
+	return -1
+}
+
 /*
  解法1
  + . 从做往右依次求以每个字符结尾的最长无重复字符子串的长度,并和记录的最大值比较更新
@@ -19,7 +27,7 @@ package main
 
 */
 // @lc code=start
-func lengthOfLongestSubstring(s string) int {
+func lengthOfLongestSubstring1(s string) int {
 	if len(s) < 1 {
 		return 0
 	}
