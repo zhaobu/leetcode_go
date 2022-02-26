@@ -5,25 +5,84 @@ package main
  *
  * [3] 无重复字符的最长子串
  */
+/*
+解法3
+
+*/
 
 func lengthOfLongestSubstring(s string) int {
 	if len(s) < 1 {
 		return 0
 	}
+	charMap := map[byte]int{}
+	maxLen := 0
+	var max = func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+	for i, j := 0, 0; i < len(s); i++ {
 
-	return -1
+		for j = j + 1; j < len(s); j++ {
+			charMap[s[i]] = j
+			if _, ok := charMap[s[j]]; ok {
+				break
+			}
+
+		}
+		maxLen = max(maxLen, j-i)
+		delete(charMap, s[i])
+	}
 }
 
 /*
- 解法1
- + . 从做往右依次求以每个字符结尾的最长无重复字符子串的长度,并和记录的最大值比较更新
- + . lastCharIdx 表示当前字符最近出现的位置
- + . 用一个map charMap记录已经遍历过的位置所有字符的最近出现的下标
- + . 用一个变量 preStartIdx 记录以上一个字符结尾的最长无重复字符子串的开始下标
- 进行如下比较:
- 1. 如果lastCharIdx 不存在或者 lastCharIdx < preStartIdx 说明可以直接把当前字符拼接在上一个
- 字符结尾的最长无重复字符子串后面
- 2. 如果不满足1说明以当前字符结尾的最长无重复字符子串的开始位置只能是 lastCharIdx+1
+ 解法2
+1.从左往右遍历字符串
+2.2个变量j和i,j表示以字符i结尾的最长无重复字符串的开始位置,
+charMap表示s[i]之前出现过的位置
+3.i从左向右遍历,如果s[i]之前没出现过,i就会一直向右遍历,j始终指向不重复字符子串的开始
+ 如果遇到重复的,说明charMap[i]之前有值,说明j要指向s[i]之前出现的位置的下一个位置也就是
+ charMap[s[i]]+1
+*/
+func lengthOfLongestSubstring2(s string) int {
+	if len(s) < 1 {
+		return 0
+	}
+	charMap := map[byte]int{} //记录已遍历的每个字符最近出现的位置
+	maxLen := 0               //记录找到的最长无重复字符子串的长度
+	var max = func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+
+	/*
+	 abcabcbb
+	 j表示以当前字符结尾的最长无重复字符子串的开始位置
+	*/
+	for i, j := 0, 0; i < len(s); i++ {
+		if _, ok := charMap[s[i]]; ok {
+			j = max(j, charMap[s[i]]+1)
+		}
+		charMap[s[i]] = i
+		maxLen = max(maxLen, i-j+1)
+	}
+
+	return maxLen
+}
+
+/*3
+解法1
++ 从做往右依次求以每个字符结尾的最长无重复字符子串的长度,并和记录的最大值比较更新
++ lastCharIdx 表示当前字符最近出现的位置
++ 用一个map charMap记录已经遍历过的位置所有字符的最近出现的下标
++ 用一个变量 preStartIdx 记录以上一个字符结尾的最长无重复字符子串的开始下标
+进行如下比较:
+1. 如果lastCharIdx 不存在或者 lastCharIdx < preStartIdx 说明可以直接把当前字符拼接在上一个
+字符结尾的最长无重复字符子串后面
+2. 如果不满足1说明以当前字符结尾的最长无重复字符子串的开始位置只能是 lastCharIdx+1
 
 */
 // @lc code=start

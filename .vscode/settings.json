@@ -15,7 +15,7 @@
     },
     "go.formatTool": "goimports",
     "go.delveConfig": {
-        "debugAdapter": "dlv-dap",
+        "debugAdapter": "legacy",
         "dlvLoadConfig": {
             "followPointers": true,
             "maxVariableRecurse": 5,
