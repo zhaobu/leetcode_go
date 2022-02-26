@@ -5,16 +5,20 @@ package main
  *
  * [3] 无重复字符的最长子串
  */
+// @lc code=start
+
 /*
 解法3
-
+1. 从左往右遍历,i为无重复字符串的开始位置,j表示该字符串的结束位置
+2. 枚举以每个s[i]开始的字符串,找到合适的j的位置
+3. 第 i+1个字符作为起始位置时，首先从 i+1 到j 位置都是不重复的,所以从j的下一个位置
+ 开始判断
 */
 
 func lengthOfLongestSubstring(s string) int {
 	if len(s) < 1 {
 		return 0
 	}
-	charMap := map[byte]int{}
 	maxLen := 0
 	var max = func(a, b int) int {
 		if a > b {
@@ -22,18 +26,19 @@ func lengthOfLongestSubstring(s string) int {
 		}
 		return b
 	}
-	for i, j := 0, 0; i < len(s); i++ {
 
-		for j = j + 1; j < len(s); j++ {
-			charMap[s[i]] = j
-			if _, ok := charMap[s[j]]; ok {
+	charMap := map[byte]int{}
+	for i, j := 0, -1; i < len(s); i++ {
+		for ; j+1 < len(s); j++ {
+			if _, ok := charMap[s[j+1]]; ok {
 				break
 			}
-
+			charMap[s[j+1]] = j + 1
 		}
-		maxLen = max(maxLen, j-i)
+		maxLen = max(maxLen, j-i+1)
 		delete(charMap, s[i])
 	}
+	return maxLen
 }
 
 /*
