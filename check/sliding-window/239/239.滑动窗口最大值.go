@@ -6,8 +6,54 @@ package main
  * [239] 滑动窗口最大值
  */
 
-// @lc code=start
+/*
+ 解法2
+ 滑动窗口写法2
+
+*/
+
 func maxSlidingWindow(nums []int, k int) []int {
+	ret := []int{}
+	if len(nums) < 1 {
+		return ret
+	}
+	if k == 1 {
+		return nums
+	}
+
+	//单调递减双端队列,存储的是nums数组的下标
+	descDeque := make([]int, 0, k)
+
+	// i表示滑动窗口的最后一个元素下标
+	for i := 0; i < len(nums); i++ {
+
+		//从队尾弹出所有比nums[i]要小的元素,维护单调递减队列
+		for len(descDeque) > 0 && nums[descDeque[len(descDeque)-1]] < nums[i] {
+			descDeque = descDeque[:len(descDeque)-1]
+		}
+		descDeque = append(descDeque, i)
+		// fmt.Printf("descDeque=%+v\n", descDeque)
+		// 窗口的大小小于k时
+		if i < k-1 {
+			continue
+		}
+		//单调递减队列的队头元素就是窗口的最大值
+		ret = append(ret, nums[descDeque[0]])
+		// 如果窗口向右滑动后,队头元素超出范围就要去掉
+		if descDeque[0] <= i-k+1 {
+			descDeque = descDeque[1:]
+		}
+	}
+
+	return ret
+}
+
+/*
+ 解法1
+ 滑动窗口写法1
+*/
+// @lc code=start
+func maxSlidingWindow1(nums []int, k int) []int {
 	if nums == nil || len(nums) < 1 || k < 1 {
 		return nil
 	}
