@@ -5,6 +5,46 @@ package main
  *
  * [239] 滑动窗口最大值
  */
+// @lc code=start
+
+/*
+ 解法3
+ 可以看成是暴力算法的优化
+ 1.用三个变量,i,j,maxIdx分别表示滑动窗口的左,右边界和窗口内的最大值下标
+ 2.移动窗口到下一个位置,如果上一个窗口的最大值还在当前窗口内,用新进到窗口的元素和上一个窗口的最大值比较.
+ 如果不在,从i遍历到j,求得新窗口的最大值
+*/
+func maxSlidingWindow(nums []int, k int) []int {
+	ret := []int{}
+	if len(nums) < 1 {
+		return ret
+	}
+	if k == 1 {
+		return nums
+	}
+	maxIdx := -1   //滑动窗口内最大值的下标
+	i := 0         //滑动窗口左边界
+	j := i + k - 1 //滑动窗口右边界
+	for ; j < len(nums); i, j = i+1, j+1 {
+		//如果上一个窗口内的最大值下标还在当前窗口内,就和当前窗口的最后一个元素比较大小
+		if maxIdx >= i {
+			if nums[j] >= nums[maxIdx] {
+				maxIdx = j
+			}
+		} else {
+			//如果不在,就重新遍历求最大值的下标
+			maxIdx = i
+			for k = i + 1; k <= j; k++ {
+				if nums[k] >= nums[maxIdx] {
+					maxIdx = k
+				}
+			}
+		}
+		ret = append(ret, nums[maxIdx])
+	}
+
+	return ret
+}
 
 /*
  解法2
@@ -12,7 +52,7 @@ package main
 
 */
 
-func maxSlidingWindow(nums []int, k int) []int {
+func maxSlidingWindow2(nums []int, k int) []int {
 	ret := []int{}
 	if len(nums) < 1 {
 		return ret
