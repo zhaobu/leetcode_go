@@ -8,13 +8,38 @@ package main
 // @lc code=start
 
 /*
+解法1
+遍历一遍,记录最低的股票价格, 每天都尝试卖.
+如果能获取的利润更大就更新最大利润记录
+即可求最大利润
+*/
+func maxProfit1(prices []int) int {
+	if len(prices) < 2 {
+		return 0
+	}
+	minPrice := prices[0] //记录已遍历过的最低价格
+	ret := 0              //记录最大利润
+	for i := 1; i < len(prices); i++ {
+		if prices[i] < minPrice { //更新历史最低股票价格
+			minPrice = prices[i]
+		} else {
+			sale := prices[i] - minPrice
+			if sale > ret { //把今天的股票卖掉的利润和历史最大利润比价
+				ret = sale
+			}
+		}
+	}
+	return ret
+}
+
+/*
 解法2
 动态规划
 1.dp[i][j]表示第i天买第j天卖的利润,也就是prices[j] - price[i]
 2.计算dp[i][j]可以转换为计算dp[i][i+1]+dp[i+1][i+2]+ ... + dp[j-1][j]
 3.通过2的转换后,就变成了求最大连续子序列和的问题
 */
-func maxProfit(prices []int) int {
+func maxProfit2(prices []int) int {
 	if len(prices) < 2 {
 		return 0
 	}
@@ -47,26 +72,65 @@ func maxProfit(prices []int) int {
 }
 
 /*
-解法1
-遍历一遍,记录最低的股票价格, 每天都尝试卖.
-如果能获取的利润更大就更新最大利润记录
-即可求最大利润
+解法3
+解法2的优化写法:https://leetcode.com/problems/best-time-to-buy-and-sell-stock/discuss/39038/Kadane's-Algorithm-Since-no-one-has-mentioned-about-this-so-far-%3A)-(In-case-if-interviewer-twists-the-input)
+
 */
-func maxProfit1(prices []int) int {
+func maxProfit3(prices []int) int {
 	if len(prices) < 2 {
 		return 0
 	}
-	minPrice := prices[0] //记录已遍历过的最低价格
-	ret := 0              //记录最大利润
+	/*
+		1. maxCur可以看成是以i结尾的最大连续子序列的值
+	*/
+	maxCur := 0
+	maxSoFar := 0
+	var max func(a, b int) int
+	max = func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+
 	for i := 1; i < len(prices); i++ {
-		if prices[i] < minPrice { //更新历史最低股票价格
-			minPrice = prices[i]
-		} else {
-			sale := prices[i] - minPrice
-			if sale > ret { //把今天的股票卖掉的利润和历史最大利润比价
+		maxCur = max(0, maxCur+prices[i]-prices[i-1])
+		maxSoFar = max(maxCur, maxSoFar)
+	}
+	return maxSoFar
+}
+
+/*
+解法4:方法不通用,扩展思路
+1. 使用一个单调递增栈,并且保证每个元素能够进栈并出栈一次
+2. 当栈顶元素a遇到更小的元素b时就出栈,即使后面遇到更大的元素c, c-b > c-a,
+所以弹出a也不会影响到求最大利润
+3. 元素在出栈时表示卖掉该值股票,并且卖掉时,能获取的最大利润就是ascStack[栈顶]-ascStack[栈底]
+这样就能统计所有卖掉股票的情况
+*/
+func maxProfit4(prices []int) int {
+	if len(prices) < 2 {
+		return 0
+	}
+
+	ret := 0
+	ascStack := []int{}        //单调递增栈
+	prices = append(prices, 0) //在尾部新增一个0,保证遍历到这个最后元素时,栈里面的元素能够全部弹出
+	for i, v := range prices {
+		// fmt.Printf("ascStack=%+v\n", ascStack)
+		for len(ascStack) > 0 && ascStack[len(ascStack)-1] > v {
+			/*
+				栈顶元素遇到更小元素时说明
+			*/
+			top := ascStack[len(ascStack)-1]
+			sale := top - ascStack[0]
+			// fmt.Printf("top=%+v,sale=%+v\n", top, sale)
+			if sale > ret {
 				ret = sale
 			}
+			ascStack = ascStack[:len(ascStack)-1]
 		}
+		ascStack = append(ascStack, prices[i])
 	}
 	return ret
 }
