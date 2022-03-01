@@ -48,7 +48,7 @@ dp状态转移方程:
 当字符串长度>3也就是j-i>2时 dp[i][j] = s[i]==s[j] && dp[i+1][j-1]
 
 */
-func longestPalindrome(s string) string {
+func longestPalindrome2(s string) string {
 	if len(s) < 2 {
 		return s
 	}
@@ -93,6 +93,40 @@ func longestPalindrome(s string) string {
 	// for i, v := range dp {
 	// 	fmt.Printf("dp[%d]=%+v\n", i, v)
 	// }
+	return s[start : start+maxLen+1]
+}
+
+/*d
+解法3
+扩展中心算法
+1. 从s[1]到s[len-2]位置,每个位置向2边扩展,计算最大的回文串
+2. 每个位置i都可以作为回文串的中心,能求出所有奇数长度的回文串
+3. 每个位置i和右边位置i+1中间的间隙作为中心计算一次,能求出所有偶数长度的回文串
+*/
+func longestPalindrome(s string) string {
+	if len(s) < 2 {
+		return s
+	}
+	start := 0  //最大回文串的开始下标
+	maxLen := 0 //最大回文串的长度-1(最后再+1就可以表示长度,不要在循环里面每次都+1)
+
+	var findPalindrome = func(i, j int) {
+		for i >= 0 && j < len(s) && s[i] == s[j] {
+			length := j - i
+			if length > maxLen {
+				start = i
+				maxLen = length
+			}
+			i--
+			j++
+		}
+		return
+	}
+	for i := len(s) - 2; i >= 1; i-- {
+		findPalindrome(i-1, i+1)
+		findPalindrome(i, i+1)
+	}
+	findPalindrome(0, 1)
 	return s[start : start+maxLen+1]
 }
 
