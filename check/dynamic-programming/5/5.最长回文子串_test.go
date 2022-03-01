@@ -19,13 +19,19 @@ func Test_longestPalindrome(t *testing.T) {
 			},
 			want: "bab",
 		},
-
 		{
 			name: "1",
 			args: args{
 				s: "aaaa",
 			},
 			want: "aaaa",
+		},
+		{
+			name: "1",
+			args: args{
+				s: "ac",
+			},
+			want: "a",
 		},
 	}
 	for _, tt := range tests {
