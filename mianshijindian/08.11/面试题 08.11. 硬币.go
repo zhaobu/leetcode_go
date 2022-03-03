@@ -12,7 +12,7 @@ package main
 如果待凑的是0分,则只有一个解就是所有硬币个数都为0  dp[i][0]=1
 如果硬币种类数为0, 则凑齐任意分的方法总数都为0 dp[0][i]=0
 */
-func waysToChange(n int) int {
+func waysToChange1(n int) int {
 	if n == 0 {
 		return 1
 	}
@@ -33,4 +33,27 @@ func waysToChange(n int) int {
 		}
 	}
 	return dp[len(coins)][n] % 1000000007
+}
+
+/*
+解法2 动态规划优化,也就是官方解法1,对解法的优化
+https://leetcode-cn.com/problems/coin-lcci/solution/ying-bi-by-leetcode-solution/
+*/
+var coins = []int{1, 5, 10, 25}
+
+func waysToChange(n int) int {
+	if n == 0 {
+		return 1
+	}
+
+	//dp[i][j]表示前i种硬币凑齐j分的方法总数
+	dp := make([]int, n+1)
+	dp[0] = 1
+
+	for i := 0; i < len(coins); i++ {
+		for j := coins[i]; j <= n; j++ {
+			dp[j] = dp[j] + dp[j-coins[i]]
+		}
+	}
+	return dp[n] % 1000000007
 }
