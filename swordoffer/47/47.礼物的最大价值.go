@@ -5,7 +5,7 @@ import "fmt"
 /*
  * @lc app=leetcode.cn id=47 lang=golang
  *
- * [47] 礼物的最大价值
+ * 剑指 Offer 47. 礼物的最大价值
  */
 
 /*
