@@ -38,10 +38,18 @@ func waysToChange1(n int) int {
 /*
 解法2 动态规划优化,也就是官方解法1,对解法的优化
 https://leetcode-cn.com/problems/coin-lcci/solution/ying-bi-by-leetcode-solution/
+f(i,v)=f(i−1,v)+f(i−1,v−ci)+f(i−1,v−2ci​)⋯f(i−1,v−kci​)
+主要是根据
+dp[i,j] = dp[i-1][j] + dp[i-1][j-coins[i]] + dp[i-1][j-2coins[i]] + ...  +dp[i-1][j-kcoins[i]]
+dp[i][j-coins[i]] = dp[i-1][j-coins[i]] + dp[i-1][j-2coins[i]] + ...  +dp[i-1][j-kcoins[i]]
+2个递推公式得出优化后的递推公式:
+dp[i][j] = dp[i-1][j] + dp[i][k-coins[i]]
+其中 k=j/coins[i]
+
 */
 var coins = []int{1, 5, 10, 25}
 
-func waysToChange(n int) int {
+func waysToChange2(n int) int {
 	if n == 0 {
 		return 1
 	}
@@ -56,4 +64,20 @@ func waysToChange(n int) int {
 		}
 	}
 	return dp[n] % 1000000007
+}
+
+/*
+解法3 官方题解解法2
+数学公式推导
+https://leetcode-cn.com/problems/coin-lcci/solution/ying-bi-by-leetcode-solution/
+*/
+func waysToChange(n int) int {
+	ans := 0
+	mod := 1000000007
+	for i := 0; i*25 <= n; i++ {
+		rest := n - i*25
+		a, b := rest/10, rest%10/5
+		ans = (ans + (a+1)*(a+b+1)%mod) % mod
+	}
+	return ans
 }
