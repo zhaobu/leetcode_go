@@ -194,3 +194,28 @@ func Test_delRepeatNode(t *testing.T) {
 
 	linkList.Print()
 }
+func BinarySearchFirstGT(a []int, v int) int {
+	if len(a) < 1 {
+		return -1
+	}
+	low, high := 0, len(a)-1
+	for low <= high {
+		mid := low + (high-low)>>1
+		if a[mid] >= v {
+			if mid == 0 || a[mid-1] < v { //当a[mid]>=v时,判断mid左边的值是否<v
+				return mid
+			} else {
+				high = mid - 1
+			}
+		} else {
+			low = mid + 1
+		}
+	}
+	return -1
+}
+func Test_BinarySearchFirstGT(t *testing.T) {
+	a := []int{2}
+	v := 5
+	zaplog.Infof("查找a=%+v,v=%d,ret=%d", a, v, BinarySearchFirstGT(a, v))
+
+}
