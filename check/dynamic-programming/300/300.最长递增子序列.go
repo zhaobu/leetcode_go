@@ -85,7 +85,7 @@ func lengthOfLIS2(nums []int) int {
 
 /*
 解法2 贪心 + 二分查找
-优化查找 curIdx 的位置
+优化解法2的查找 curIdx 的位置
 
 */
 func lengthOfLIS(nums []int) int {

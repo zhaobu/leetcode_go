@@ -47,12 +47,12 @@ dp[i][j] = dp[i-1][j] + dp[i][k-coins[i]]
 其中 k=j/coins[i]
 
 */
-var coins = []int{1, 5, 10, 25}
 
 func waysToChange2(n int) int {
 	if n == 0 {
 		return 1
 	}
+	var coins = []int{1, 5, 10, 25}
 
 	//dp[i][j]表示前i种硬币凑齐j分的方法总数
 	dp := make([]int, n+1)
