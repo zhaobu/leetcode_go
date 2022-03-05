@@ -5,6 +5,9 @@ package main
  *
  * [213] 打家劫舍 II
  */
+
+// @lc code=start
+
 /*
 解法1 动态规划
 
@@ -25,7 +28,6 @@ dp[i] = max(dp[i-1], dp[i-2]+nums[i])
 如果不偷第 i 间: dp[i] = dp[i-1] 也是就是第[0,i-1]间房最高金额
 只不过是i的初始值不一样
 */
-// @lc code=start
 func rob1(nums []int) int {
 	if len(nums) == 1 {
 		return nums[0]
