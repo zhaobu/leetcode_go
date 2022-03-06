@@ -97,7 +97,7 @@ func maxProfit2(prices []int) int {
 
 /*
 解法3 动态规划
-[英文网站高赞回答] (https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/discuss/75928/Share-my-DP-solution-(By-State-Machine-Thinking))
+[根据英文网站高赞回答实现] (https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/discuss/75928/Share-my-DP-solution-(By-State-Machine-Thinking))
 
 状态定义:
 s0:
@@ -167,7 +167,7 @@ func maxProfit(prices []int) int {
 	for i := 1; i < len(prices); i++ {
 		olds0, olds1 := s0, s1        //必须提前保存,同一轮循环中使用同一个值
 		s0 = max(s0, s2)              //1. 从昨天的s0 reset 2. 从昨天的s2转移
-		s1 = max(s1, olds0-prices[i]) // 1. 从昨天的s1 reset 2. 从昨天的s0朱阿姨
+		s1 = max(s1, olds0-prices[i]) // 1. 从昨天的s1 reset 2. 从昨天的s0转移
 		s2 = olds1 + prices[i]        // 从昨天的s1转移
 	}
 
