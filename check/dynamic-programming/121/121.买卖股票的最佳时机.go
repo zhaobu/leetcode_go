@@ -180,7 +180,7 @@ func maxProfit5(prices []int) int {
 
 /*
 解法6 动态规划 股票问题通用解法
-解法5 的状态压缩版,优化空间复杂度
+解法5的状态压缩版,优化空间复杂度
 */
 func maxProfit(prices []int) int {
 	if len(prices) < 2 {
