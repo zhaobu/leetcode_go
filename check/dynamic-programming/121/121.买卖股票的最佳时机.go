@@ -135,4 +135,74 @@ func maxProfit4(prices []int) int {
 	return ret
 }
 
+/*
+解法5 动态规划 股票问题通用解法
+
+状态定义:
+dp[i][0]表示第i天,不持有股票时的最大利润
+dp[i][1]表示第i天,持有股票时的最大利润
+
+basecase:
+dp[0][0] = 0
+dp[0][1] = -prices[0]
+
+状态转移方程:
+第i天不持有: 1. 第i-1天也不持有,第i天没操作 2. 第i-1天持有,但第i天卖了
+dp[i][0] = max(dp[i-1][0], dp[i-1][1]+prices[i])
+第i天持有: 1. 第i-1天也持有,第i天没操作 2. 第i-1天没持有,第i天买了
+因为只能进行一次操作,所以第i-1天没持有dp[i-1][0]=0
+dp[i][1] = max(dp[i-1][1], -prices[i])
+
+可以参考: https://labuladong.gitee.io/algo/3/27/100/
+*/
+func maxProfit5(prices []int) int {
+	if len(prices) < 2 {
+		return 0
+	}
+	dp := make([][2]int, len(prices))
+	dp[0][0] = 0
+	dp[0][1] = -prices[0]
+
+	var max = func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+
+	for i := 1; i < len(prices); i++ {
+		dp[i][0] = max(dp[i-1][0], dp[i-1][1]+prices[i])
+		dp[i][1] = max(dp[i-1][1], -prices[i])
+	}
+
+	return dp[len(prices)-1][0]
+}
+
+/*
+解法6 动态规划 股票问题通用解法
+解法5 的状态压缩版,优化空间复杂度
+*/
+func maxProfit(prices []int) int {
+	if len(prices) < 2 {
+		return 0
+	}
+	dp := make([]int, 2)
+	dp[0] = 0
+	dp[1] = -prices[0]
+
+	var max = func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+
+	for i := 1; i < len(prices); i++ {
+		dp[0] = max(dp[0], dp[1]+prices[i])
+		dp[1] = max(dp[1], -prices[i])
+	}
+
+	return dp[0]
+}
+
 // @lc code=end
