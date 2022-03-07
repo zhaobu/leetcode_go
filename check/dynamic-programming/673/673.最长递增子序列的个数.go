@@ -10,7 +10,7 @@ package main
 /*
 解法1 动态规划
 */
-func findNumberOfLIS1(nums []int) int {
+func findNumberOfLIS(nums []int) int {
 	if len(nums) == 1 {
 		return 1
 	}

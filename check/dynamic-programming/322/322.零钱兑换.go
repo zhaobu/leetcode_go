@@ -21,7 +21,7 @@ dp[0]=0 表示凑够金额0需要0个硬币
 dp[i]=dp[i-coin]+1
 用1枚当前硬币后,剩余需要凑够的钱为 i-coin
 */
-func coinChange1(coins []int, amount int) int {
+func coinChange(coins []int, amount int) int {
 	if len(coins) < 1 {
 		return -1
 	}
@@ -60,7 +60,7 @@ func coinChange1(coins []int, amount int) int {
 超时,只为拓展解题思路
 此外还可以用利用hashMap记忆
 */
-func coinChange(coins []int, amount int) int {
+func coinChange2(coins []int, amount int) int {
 	if len(coins) < 1 {
 		return -1
 	}

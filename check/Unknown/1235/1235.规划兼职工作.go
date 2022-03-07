@@ -40,7 +40,11 @@ func jobScheduling(startTime []int, endTime []int, profit []int) int {
 	}
 
 	for i := 1; i < len(jobs); i++ {
-		//如果选择做改建工作
+		/*
+			1. 从i-1开始到0 逆序找到endtime不晚于jobs[i]的starttime的第一份工作
+			2. 如果找不到前一份工作,但jobs[i]又必须做,则赚到的钱就是jobs[i].profit
+			3. pre默认初始化为i,这样可以保证找不到时dp[pre]=0.
+		*/
 		pre := i
 		for j := i - 1; j >= 0; j-- {
 			if jobs[j].endTime <= jobs[i].startTime {
@@ -48,6 +52,7 @@ func jobScheduling(startTime []int, endTime []int, profit []int) int {
 				break
 			}
 		}
+		//从不做第i件工作和做第i件工作中找到最大值
 		dp[i] = max(dp[i-1], dp[pre]+jobs[i].profit)
 	}
 	return dp[len(jobs)-1]
