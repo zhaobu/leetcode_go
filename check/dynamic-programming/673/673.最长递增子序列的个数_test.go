@@ -13,25 +13,32 @@ func Test_findNumberOfLIS(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 		{
-			name: "1",
+			name: "test1",
 			args: args{
 				nums: []int{1, 3, 5, 4, 7},
 			},
 			want: 2,
 		},
 		{
-			name: "2",
+			name: "test2",
 			args: args{
 				nums: []int{2, 2, 2, 2, 2},
 			},
 			want: 5,
 		},
 		{
-			name: "2",
+			name: "test3",
 			args: args{
 				nums: []int{1, 2, 4, 3, 5, 4, 7, 2},
 			},
 			want: 3,
+		},
+		{
+			name: "test4",
+			args: args{
+				nums: []int{3, 1, 2},
+			},
+			want: 1,
 		},
 	}
 	for _, tt := range tests {

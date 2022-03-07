@@ -7,41 +7,54 @@ package main
  */
 
 // @lc code=start
-func findNumberOfLIS(nums []int) int {
+/*
+解法1 动态规划
+*/
+func findNumberOfLIS1(nums []int) int {
 	if len(nums) == 1 {
 		return 1
 	}
 
-	// dp[i]表示nums[i]结尾的最长递增子序列长度
-	dp := make([]int, len(nums))
-	dp[0] = 1
+	// dpLen[i]表示nums[i]结尾的最长递增子序列长度
+	dpLen := make([]int, len(nums))
+	dpLen[0] = 1
+
+	// dpNum[i]表示nums[i]结尾的最长递增子序列的个数
+	dpNum := make([]int, len(nums))
+	dpNum[0] = 1
 
 	maxLen := 1
-	sameMaxLenNum := 1
-	maxLenNum := 1
+	maxNum := 1
 	for i := 1; i < len(nums); i++ {
-		dp[i] = 1
+		dpLen[i] = 1 //默认最长递增子序列为nums[i]
+		dpNum[i] = 1
 		for j := i - 1; j >= 0; j-- {
 			if nums[j] < nums[i] {
-				dpNew := dp[j] + 1
-				if dpNew < dp[i] {
-					continue
+				dpLenNew := dpLen[j] + 1
+				if dpLenNew > dpLen[i] { //遇到更长的能让nums[i]拼接在后面的子序列后就更新
+					dpLen[i] = dpLenNew
+					dpNum[i] = dpNum[j] //每次遇到更大的都要重置
+				} else if dpLenNew == dpLen[i] { //遇到和已经求得的dpLen[i]相同长度的子序列就合计一下
+					dpNum[i] += dpNum[j]
 				}
-				dp[i] = dpNew
 			}
 		}
-		if dp[i] > maxLen {
-			maxLen = dp[i]
-			sameMaxLenNum = 1
-		} else if dp[i] == maxLen {
-			sameMaxLenNum++
+
+		if dpLen[i] > maxLen {
+			maxLen = dpLen[i]
+			maxNum = dpNum[i]
+		} else if dpLen[i] == maxLen {
+			maxNum += dpNum[i]
 		}
-		if sameMaxLenNum > maxLenNum {
-			maxLenNum = sameMaxLenNum
-		}
+
 	}
 
-	return maxLenNum
+	return maxNum
 }
+
+/*
+解法1 二分查找
+
+*/
 
 // @lc code=end
