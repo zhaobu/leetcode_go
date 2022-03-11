@@ -12,12 +12,19 @@ func Test_wiggleMaxLength(t *testing.T) {
 		want int
 	}{
 		// TODO: Add test cases.
+		// {
+		// 	name: "test1",
+		// 	args: args{
+		// 		nums: []int{0, 0},
+		// 	},
+		// 	want: 1,
+		// },
 		{
-			name: "test1",
+			name: "test2",
 			args: args{
-				nums: []int{0, 0},
+				nums: []int{1, 17, 5, 10, 13, 15, 10, 5, 16, 8},
 			},
-			want: 1,
+			want: 7,
 		},
 	}
 	for _, tt := range tests {

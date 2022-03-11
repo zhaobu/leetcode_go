@@ -135,17 +135,21 @@ func wiggleMaxLength(nums []int) int {
 		return n
 	}
 	ans := 1
+	// res := []int{nums[0]}
 	prevDiff := nums[1] - nums[0]
 	if prevDiff != 0 {
 		ans = 2
+		// res = append(res, nums[1])
 	}
 	for i := 2; i < n; i++ {
 		diff := nums[i] - nums[i-1]
 		if diff > 0 && prevDiff <= 0 || diff < 0 && prevDiff >= 0 {
 			ans++
 			prevDiff = diff
+			// res = append(res, nums[i])
 		}
 	}
+	// fmt.Printf("nums=%+v\n,res=%+v\n", nums, res)
 	return ans
 }
 
