@@ -1,5 +1,9 @@
 package main
 
+import (
+	. "leetcode/check/tree"
+)
+
 /*
  * @lc app=leetcode.cn id=144 lang=golang
  *
@@ -68,7 +72,7 @@ func preorderTraversal2(root *TreeNode) []int {
 思路:访问一个节点,然后将节点入栈,访问左子树,直到访问到了最左边的叶子节点
 然后，弹出一个栈顶元素,访问它的右孩子，直至栈为空
 */
-func preorderTraversal3(root *TreeNode) []int {
+func preorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
@@ -77,6 +81,11 @@ func preorderTraversal3(root *TreeNode) []int {
 		stack = []*TreeNode{}
 		node  = root
 	)
+	/*
+		  	  0
+		  1      2
+		3   4  5    6
+	*/
 	for node != nil || len(stack) > 0 {
 		for node != nil { //根节点和左孩子入栈
 			res = append(res, node.Val) //前序遍历是第一次到达时就访问
@@ -98,7 +107,7 @@ func preorderTraversal3(root *TreeNode) []int {
 思路是先访问每个节点,然后保存节点的右子树,然后在访问节点的左子树,
 这样到达树的最左边的叶子节点时开始从栈中访问最后入栈的右子树
 */
-func preorderTraversa(root *TreeNode) []int {
+func preorderTraversal4(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
