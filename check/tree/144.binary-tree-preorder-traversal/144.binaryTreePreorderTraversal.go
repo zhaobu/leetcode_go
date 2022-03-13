@@ -72,7 +72,7 @@ func preorderTraversal2(root *TreeNode) []int {
 思路:访问一个节点,然后将节点入栈,访问左子树,直到访问到了最左边的叶子节点
 然后，弹出一个栈顶元素,访问它的右孩子，直至栈为空
 */
-func preorderTraversal(root *TreeNode) []int {
+func preorderTraversal3(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
@@ -130,6 +130,38 @@ func preorderTraversal4(root *TreeNode) []int {
 			stack = stack[:len(stack)-1]
 		}
 	}
+}
+
+/*
+解法5: mirrors遍历
+*/
+func preorderTraversal(root *TreeNode) []int {
+	ret := []int{}
+	if root == nil {
+		return ret
+	}
+	for root != nil {
+		if root.Left != nil {
+			// 如果当前节点的左子节点不为空，在当前节点的左子树中找到当前节点在中序遍历下的前驱节点
+			predNode := root.Left
+			for predNode.Right != nil && predNode.Right != root {
+				predNode = predNode.Right
+			}
+			if predNode.Right == nil {
+				predNode.Right = root
+				ret = append(ret, root.Val)
+				root = root.Left
+			} else if predNode.Right == root {
+				predNode.Right = nil
+				root = root.Right
+			}
+		} else { //如果当前节点的左子节点为空，将当前节点加入答案，并遍历当前节点的右子节点
+			ret = append(ret, root.Val)
+			root = root.Right
+		}
+	}
+
+	return ret
 }
 
 // @lc code=end
