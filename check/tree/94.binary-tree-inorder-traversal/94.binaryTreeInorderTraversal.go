@@ -77,7 +77,7 @@ func inorderTraversal2(root *TreeNode) []int {
 第一个出栈的就是最左边叶子节点,
 
 */
-func inorderTraversal(root *TreeNode) []int {
+func inorderTraversal3(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
@@ -103,17 +103,48 @@ func inorderTraversal(root *TreeNode) []int {
 	}
 }
 
-// 方法4:Morris 中序遍历
-// func inorderTraversal4(root *TreeNode) []int {
-// 	if root == nil {
-// 		return nil
-// 	}
-// 	var (
-// 		res   []int
-// 		node  = root
-// 		stack []*TreeNode
-// 	)
-// 	return
-// }
+/*
+方法4:Morris 中序遍历
+中序遍历的结果中每个ret[i]的前驱节点就是ret[i-1]
+所以在遍历到每个节点时,先把该节点的前驱节点的right指向自己
+表示遍历完前驱节点后下一个要遍历的节点就是自己
+*/
+func inorderTraversal(root *TreeNode) []int {
+	ret := []int{}
+	if root == nil {
+		return ret
+	}
+
+	for root != nil {
+		if root.Left != nil {
+			//找到当前节点的前驱节点
+			preNode := root.Left
+			/*
+			 必须加上preNode.Right != root,因为第二次找前驱节点时
+			 前驱节点的right已经指向自己
+			*/
+			for preNode.Right != nil && preNode.Right != root {
+				preNode = preNode.Right
+			}
+
+			if preNode.Right == nil { //如果前驱节点的right为空,就指向自己.并处理左节点
+				preNode.Right = root
+				root = root.Left
+			} else if preNode.Right == root { //如果发现前驱节点的right已经指向自己,相当于是第二次访问,直接打印
+				preNode.Right = nil
+				ret = append(ret, root.Val)
+				root = root.Right
+			}
+		} else {
+			/*
+				1. 如果节点的左孩子为空表示到了叶子结点,就直接打印
+				2. 此时rigth已经指向中序遍历的下一个节点.所以直接遍历right
+			*/
+			ret = append(ret, root.Val)
+			root = root.Right
+		}
+	}
+	return ret
+}
 
 // @lc code=end
