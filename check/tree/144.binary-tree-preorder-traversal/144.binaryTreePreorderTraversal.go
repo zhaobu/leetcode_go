@@ -89,11 +89,11 @@ func preorderTraversal(root *TreeNode) []int {
 	for node != nil || len(stack) > 0 {
 		for node != nil { //根节点和左孩子入栈
 			res = append(res, node.Val) //前序遍历是第一次到达时就访问
-			stack = append(stack, node)
+			stack = append(stack, node) //进栈时相当于第一次访问
 			node = node.Left
 		}
 		//获取栈顶元素
-		node = stack[len(stack)-1]
+		node = stack[len(stack)-1] //从栈顶弹出时相当于第二次访问
 		//遍历当前节点的右子节点
 		node = node.Right
 		//栈顶元素出栈

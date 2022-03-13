@@ -53,7 +53,11 @@ func postorderTraversal2(root *TreeNode) []int {
 		stack   []*TreeNode
 		preNode *TreeNode //记录上次访问的节点,用来判断是不是第2次出栈,也就是第三次到达节点
 	)
-
+	/*
+		  	  0
+		  1      2
+		3   4  5    6
+	*/
 	for node != nil || len(stack) > 0 {
 		for node != nil {
 			stack = append(stack, node)
@@ -68,7 +72,7 @@ func postorderTraversal2(root *TreeNode) []int {
 		if node.Right == nil || node.Right == preNode {
 			ret = append(ret, node.Val)
 			preNode = node
-			node = nil
+			node = nil //注意此处必须node置为nil,如果没有这一步,就不会从栈中弹出下一个元素,而是进入死循环
 			stack = stack[:len(stack)-1]
 		} else {
 			//如果不是第三次到达,也不用出栈,就先访问右子树
