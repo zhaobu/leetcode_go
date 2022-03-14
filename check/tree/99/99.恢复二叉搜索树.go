@@ -123,7 +123,7 @@ func recoverTree2(root *TreeNode) {
 }
 
 /*
-	解法2 mirrors 中序遍历求解
+	解法3 mirrors 中序遍历求解
 */
 
 func recoverTree(root *TreeNode) {
