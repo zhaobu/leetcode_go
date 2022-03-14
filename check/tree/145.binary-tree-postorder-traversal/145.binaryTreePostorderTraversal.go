@@ -47,6 +47,9 @@ func postorderTraversal1(root *TreeNode) []int {
 
 /*
 解法2:迭代
+注意点:
+1. 要用一个preNode节点保存上一次访问的节点,以便判断当前节点的右孩子有没有访问
+2. 在访问一个节点后必须node = nil ,如果不这样做,下一次循环不会从stack中弹出下一个要访问的元素
 */
 func postorderTraversal2(root *TreeNode) []int {
 	if root == nil {
