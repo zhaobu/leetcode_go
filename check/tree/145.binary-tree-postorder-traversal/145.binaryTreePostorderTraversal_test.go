@@ -1,15 +1,10 @@
 package main
 
 import (
+	. "leetcode/check/tree"
 	"reflect"
 	"testing"
 )
-
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
 
 func Test_postorderTraversal(t *testing.T) {
 	type args struct {
@@ -20,7 +15,18 @@ func Test_postorderTraversal(t *testing.T) {
 		args args
 		want []int
 	}{
-		// TODO: Add test cases.
+		{
+			/*
+				  	  0
+				  1      2
+				3   4  5    6
+			*/
+			name: "test1",
+			args: args{
+				root: BuildTree("0123456"),
+			},
+			want: []int{3, 4, 1, 5, 6, 2, 0},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

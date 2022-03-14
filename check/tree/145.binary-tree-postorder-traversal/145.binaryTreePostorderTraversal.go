@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	. "leetcode/check/tree"
+)
+
 /*
  * @lc app=leetcode.cn id=145 lang=golang
  *
@@ -85,7 +90,7 @@ func postorderTraversal2(root *TreeNode) []int {
 /*
  方法3:迭代,上一种写法的另一种形式
 */
-func postorderTraversal(root *TreeNode) []int {
+func postorderTraversal3(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
@@ -116,6 +121,57 @@ func postorderTraversal(root *TreeNode) []int {
 			}
 		}
 	}
+}
+
+/*
+解法4: mirrors遍历
+*/
+func postorderTraversal(root *TreeNode) []int {
+	ret := []int{}
+	if root == nil {
+		return ret
+	}
+	reverse := func(node *TreeNode) {
+		curRet := []int{}
+		for ; node != nil; node = node.Right {
+			curRet = append(curRet, node.Val)
+		}
+		fmt.Printf("1 curRet=%+v\n", curRet)
+		//逆序翻转
+		for i, j := 0, len(curRet)-1; i < j; i, j = i+1, j-1 {
+			curRet[i], curRet[j] = curRet[j], curRet[i]
+		}
+		// fmt.Printf("2 curRet=%+v\n", curRet)
+		ret = append(ret, curRet...)
+	}
+	/*
+		  	  0
+		  1      2
+		3   4  5    6
+	*/
+	node := root //保存根节点
+	for node != nil {
+		if node.Left != nil {
+			predNode := node.Left
+			for predNode.Right != nil && predNode.Right != node {
+				predNode = predNode.Right
+			}
+			if predNode.Right == nil {
+				predNode.Right = node
+				node = node.Left
+			} else if predNode.Right == node {
+				predNode.Right = nil
+				//倒序输出当前节点
+				reverse(node.Left)
+				node = node.Right
+			}
+		} else {
+			node = node.Right
+		}
+	}
+	// 如果没有这一行,从root开始的一直向右的节点不会访问到
+	reverse(root)
+	return ret
 }
 
 // @lc code=end
