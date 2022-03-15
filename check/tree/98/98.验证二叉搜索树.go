@@ -49,9 +49,9 @@ func isValidBST1(root *TreeNode) bool {
 }
 
 /*
- 解法1 中序遍历递归
+ 解法2 中序遍历递归
 */
-func isValidBST(root *TreeNode) bool {
+func isValidBST2(root *TreeNode) bool {
 	if root == nil {
 		return true
 	}
@@ -73,6 +73,32 @@ func isValidBST(root *TreeNode) bool {
 	}
 
 	return bst(root)
+}
+
+/*
+ 解法3 中序遍历迭代
+*/
+func isValidBST(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	var preNode *TreeNode
+	stack := []*TreeNode{}
+	for root != nil || len(stack) > 0 {
+		for root != nil {
+			stack = append(stack, root)
+			root = root.Left
+		}
+		root = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if preNode != nil && root.Val <= preNode.Val {
+			return false
+		}
+		preNode = root
+		root = root.Right
+	}
+
+	return true
 }
 
 // @lc code=end
