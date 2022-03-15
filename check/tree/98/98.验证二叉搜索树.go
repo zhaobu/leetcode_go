@@ -49,30 +49,30 @@ func isValidBST1(root *TreeNode) bool {
 }
 
 /*
- 解法1 中序遍历
+ 解法1 中序遍历递归
 */
 func isValidBST(root *TreeNode) bool {
 	if root == nil {
 		return true
 	}
 	var preNode *TreeNode
-	isBST := true
-	var bst func(root *TreeNode)
-	bst = func(root *TreeNode) {
+	var bst func(root *TreeNode) bool
+	bst = func(root *TreeNode) bool {
 		if root == nil {
-			return
+			return true
 		}
-		bst(root.Left)
+		if !bst(root.Left) {
+			return false
+		}
 		// fmt.Printf("root=%+v\n", root.Val)
 		if preNode != nil && root.Val <= preNode.Val {
-			isBST = false
+			return false
 		}
 		preNode = root
-		bst(root.Right)
-		return
+		return bst(root.Right)
 	}
-	bst(root)
-	return isBST
+
+	return bst(root)
 }
 
 // @lc code=end
