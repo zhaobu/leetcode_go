@@ -17,15 +17,34 @@ const (
 	POstOrder
 )
 
-var testArgs []*TestArgs
+var testArgs [][]*TestArgs
 
 func init() {
-	testArgs = []*TestArgs{
+	//前序遍历测试数据
+	pre := []*TestArgs{
 		{
 			root: BuildTree("123##45"),
 			data: "1,2,#,#,3,4,#,#,5,#,#,",
 		},
 	}
+
+	//中序遍历测试数据
+	inor := []*TestArgs{
+		{
+			root: BuildTree("123##45"),
+			data: "#,2,#,1,#,4,#,3,#,5,#,",
+		},
+	}
+
+	//后序遍历测试数据
+	post := []*TestArgs{
+		{
+			root: BuildTree("123##45"),
+			data: "#,#,2,#,#,4,#,#,5,3,1,",
+		},
+	}
+
+	testArgs = [][]*TestArgs{pre, inor, post}
 }
 
 func TestCodec_serialize(t *testing.T) {
@@ -39,13 +58,29 @@ func TestCodec_serialize(t *testing.T) {
 		want string
 	}{
 		// TODO: Add test cases.
+		// {
+		// 	name: "测试前序",
+		// 	this: &Codec{},
+		// 	args: args{
+		// 		root: testArgs[PreOrder][0].root,
+		// 	},
+		// 	want: testArgs[PreOrder][0].data,
+		// },
+		// {
+		// 	name: "测试中序",
+		// 	this: &Codec{},
+		// 	args: args{
+		// 		root: testArgs[InOrder][0].root,
+		// 	},
+		// 	want: testArgs[InOrder][0].data,
+		// },
 		{
-			name: "test1",
+			name: "测试后序",
 			this: &Codec{},
 			args: args{
-				root: testArgs[0].root,
+				root: testArgs[POstOrder][0].root,
 			},
-			want: testArgs[0].data,
+			want: testArgs[POstOrder][0].data,
 		},
 	}
 	for _, tt := range tests {
@@ -68,13 +103,29 @@ func TestCodec_deserialize(t *testing.T) {
 		args args
 		want *TreeNode
 	}{
+		// {
+		// 	name: "测试前序",
+		// 	this: &Codec{},
+		// 	args: args{
+		// 		data: testArgs[PreOrder][0].data,
+		// 	},
+		// 	want: testArgs[PreOrder][0].root,
+		// },
+		// {
+		// 	name: "测试中序",
+		// 	this: &Codec{},
+		// 	args: args{
+		// 		data: testArgs[InOrder][0].data,
+		// 	},
+		// 	want: testArgs[InOrder][0].root,
+		// },
 		{
-			name: "test1",
+			name: "测试后序",
 			this: &Codec{},
 			args: args{
-				data: testArgs[0].data,
+				data: testArgs[POstOrder][0].data,
 			},
-			want: testArgs[0].root,
+			want: testArgs[POstOrder][0].root,
 		},
 	}
 	for _, tt := range tests {
