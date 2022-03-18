@@ -43,8 +43,9 @@ func permute1(nums []int) [][]int {
 
 /*
 解法2 dfs
+使用used来标记已经哪些元素已使用
 */
-func permute(nums []int) [][]int {
+func permute2(nums []int) [][]int {
 	ret := [][]int{}
 	if len(nums) < 1 {
 		return ret
@@ -68,6 +69,40 @@ func permute(nums []int) [][]int {
 	}
 
 	dfs(make([]int, 0, len(nums)))
+
+	return ret
+}
+
+/*
+解法3 dfs
+1. 直接用nums内的元素交换实现不同排列
+2. dfs表示当前正在交换下标为swapIndex的元素
+3. 每一层都是从swapIndex开始一直交换到len(nums)-1
+*/
+func permute(nums []int) [][]int {
+	ret := [][]int{}
+	if len(nums) < 1 {
+		return ret
+	}
+
+	/*
+		1. 表示当前正在交换下标为swapIndex的元素
+		2. 从swapIndex开始一直交换到len(nums)-1
+	*/
+	var dfs func(swapIndex int)
+	dfs = func(swapIndex int) {
+		if swapIndex == len(nums) {
+			ret = append(ret, append([]int{}, nums...))
+			return
+		}
+		for i := swapIndex; i < len(nums); i++ {
+			nums[swapIndex], nums[i] = nums[i], nums[swapIndex]
+			dfs(swapIndex + 1)
+			nums[swapIndex], nums[i] = nums[i], nums[swapIndex]
+		}
+	}
+
+	dfs(0)
 
 	return ret
 }
