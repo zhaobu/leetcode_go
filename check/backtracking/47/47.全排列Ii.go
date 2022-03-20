@@ -15,7 +15,7 @@ import (
 /*
 解法1 dfs
 */
-func permuteUnique1(nums []int) [][]int {
+func permuteUnique(nums []int) [][]int {
 	ret := [][]int{}
 	if len(nums) < 1 {
 		return ret
@@ -70,7 +70,7 @@ func permuteUnique1(nums []int) [][]int {
 nums[i] == nums[i-1]&&used[i-1]跳过: 表示重复元素用后面一个
 nums[i] == nums[i-1]&&!used[i-1]跳过: 表示重复元素用用前面一个
 */
-func permuteUnique(nums []int) [][]int {
+func permuteUnique2(nums []int) [][]int {
 	ret := [][]int{}
 	if len(nums) < 1 {
 		return ret
