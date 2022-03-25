@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 )
 
@@ -50,7 +49,7 @@ func canPartitionKSubsets(nums []int, k int) bool {
 	if nums[0] > sum {
 		return false
 	}
-	fmt.Printf("nums=%+v\n", nums)
+	// fmt.Printf("nums=%+v\n", nums)
 	var dfs func(start int)
 	dfs = func(start int) {
 		if start == len(nums) {
