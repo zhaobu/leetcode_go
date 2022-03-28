@@ -11,6 +11,10 @@ import (
  */
 
 // @lc code=start
+
+/*
+解法1 backtrack
+*/
 func restoreIpAddresses(s string) []string {
 	n := len(s)
 	if n < 4 {
@@ -28,26 +32,24 @@ func restoreIpAddresses(s string) []string {
 				if s[start] != '0' || start == n-1 {
 					num, _ := strconv.Atoi(s[start:])
 					if num <= 255 {
-						record = append(record, '.')
-						record = append(record, s[start:]...)
+						record = append(record, append([]byte{'.'}, s[start:]...)...)
 						ret = append(ret, string(record))
 					}
 				}
 			}
 			return
 		}
+		if i > 0 {
+			record = append(record, '.')
+		}
 		// fmt.Printf("record=%+v\n", string(record))
 		for j := 1; j <= 3 && j+start <= n; j++ {
+			if j > 1 && s[start] == '0' {
+				break
+			}
 			num, _ := strconv.Atoi(s[start : start+j])
 			if num > 255 {
 				continue
-			}
-			if s[start] == '0' && j > 1 {
-				continue
-			}
-			// fmt.Printf("num=%+v\n", num)
-			if len(record) > 0 && record[len(record)-1] != '.' {
-				record = append(record, '.')
 			}
 			record = append(record, s[start:start+j]...)
 			dfs(record, start+j, i+1)
