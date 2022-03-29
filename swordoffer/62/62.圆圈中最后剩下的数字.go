@@ -30,9 +30,12 @@ func lastRemaining1(n int, m int) int {
 解法2 递归
 主要用到公式:
 f(n,m) = (f(n-1, m) +m) % n
+f(n,m)表示最终留下的元素的序号
+公式推导参考图片
 */
 func lastRemaining2(n int, m int) int {
 	if n == 1 {
+		//如果是只有1个数字0,则不能删除,留下的就是0
 		return 0
 	}
 	x := lastRemaining2(n-1, m)
