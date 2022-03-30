@@ -103,11 +103,12 @@ func myAtoi(s string) int {
 		state = stateTable[state][getCharIndex(char)]
 		if state == InNumber {
 			num := int(char - '0')
-			ret = ret*10 + sign*num
-			if ret > Max {
+			if ret > Max/10 || (ret == Max/10 && num > Max%10) {
 				ret = Max
-			} else if ret < Min {
+			} else if ret < Min/10 || (ret == Min/10 && num > -Min%10) {
 				ret = Min
+			} else {
+				ret = ret*10 + sign*num
 			}
 		} else if state == Signed {
 			if char == '-' {
