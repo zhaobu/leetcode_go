@@ -110,4 +110,46 @@ func findKthLargest2(nums []int, k int) int {
 	return nums[rank]
 }
 
+/*
+解法3 二叉堆
+如何在一个包含 n 个数据的数组中，查找前 K 大数据呢?
+维护一个大小为 K 的小顶堆，顺序遍历数组，从数组中取出取数据
+1. 如果堆中元素<k,元素直接入堆
+2. 如果堆中元素=k则与堆顶元素比较:
+如果比堆顶元素大，我们就把堆顶元素删除，并且将这个元素插入到堆中
+如果比堆顶元素小，则不做处理,继续遍历数组。
+数组中的数据都遍历完之后，堆中的数据就是前 K 大数据
+*/
+func findKthLargest(nums []int, k int) int {
+	heap := make([]int, k) //大小为k的小顶堆
+	count := 0             //堆中元素个数
+
+	heapify := func(i int) {
+		for {
+
+		}
+	}
+
+	insert := func(data int) {
+		/*
+			1. 如果堆满,需要先删除堆顶元素,然后再插入新元素
+			2. 这里2步合二为一,直接用新元素替换堆顶元素,相当于删除,然后再heapify
+		*/
+		if len(heap) == k {
+			heap[0] = data
+		}
+		heap = append(heap, data)
+		count++
+		heapify(0)
+	}
+
+	for i := 0; i < len(nums); i++ {
+		if len(heap) < k || nums[i] > heap[0] {
+			insert(nums[i])
+		}
+	}
+
+	return heap[0]
+}
+
 // @lc code=end
