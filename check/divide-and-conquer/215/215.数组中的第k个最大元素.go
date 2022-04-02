@@ -169,7 +169,7 @@ func findKthLargest3(nums []int, k int) int {
 }
 
 /*
-解法3 二叉堆 小顶堆
+解法4 二叉堆 小顶堆
 思想和解法2一样,只不过写法不一样,先建好大小为k的小顶堆,然后再遍历剩下的元素
 */
 func findKthLargest(nums []int, k int) int {
