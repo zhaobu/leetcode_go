@@ -12,22 +12,22 @@ func Test_findKthLargest(t *testing.T) {
 		args args
 		want int
 	}{
-		// {
-		// 	name: "test1",
-		// 	args: args{
-		// 		nums: []int{3, 2, 3, 1, 2, 4, 5, 5, 6},
-		// 		k:    4,
-		// 	},
-		// 	want: 4,
-		// },
-		// {
-		// 	name: "test2",
-		// 	args: args{
-		// 		nums: []int{3, 1, 2, 4},
-		// 		k:    2,
-		// 	},
-		// 	want: 3,
-		// },
+		{
+			name: "test1",
+			args: args{
+				nums: []int{3, 2, 3, 1, 2, 4, 5, 5, 6},
+				k:    4,
+			},
+			want: 4,
+		},
+		{
+			name: "test2",
+			args: args{
+				nums: []int{3, 1, 2, 4},
+				k:    2,
+			},
+			want: 3,
+		},
 		{
 			name: "test3",
 			args: args{

@@ -111,7 +111,7 @@ func findKthLargest2(nums []int, k int) int {
 }
 
 /*
-解法3 二叉堆
+解法3 二叉堆 小顶堆
 如何在一个包含 n 个数据的数组中，查找前 K 大数据呢?
 维护一个大小为 K 的小顶堆，顺序遍历数组，从数组中取出取数据
 1. 如果堆中元素<k,元素直接入堆
@@ -120,36 +120,175 @@ func findKthLargest2(nums []int, k int) int {
 如果比堆顶元素小，则不做处理,继续遍历数组。
 数组中的数据都遍历完之后，堆中的数据就是前 K 大数据
 */
-func findKthLargest(nums []int, k int) int {
+func findKthLargest3(nums []int, k int) int {
 	heap := make([]int, k) //大小为k的小顶堆
 	count := 0             //堆中元素个数
 
+	// 自上往下堆化
 	heapify := func(i int) {
 		for {
-
+			minPos := i //当前节点和2个子节点中最小元素的下标
+			if (2*i+1) < count && heap[minPos] > heap[2*i+1] {
+				minPos = 2*i + 1
+			}
+			if (2*i+2) < count && heap[minPos] > heap[2*i+2] {
+				minPos = 2*i + 2
+			}
+			if minPos == i {
+				break
+			}
+			heap[i], heap[minPos] = heap[minPos], heap[i] //交换最大节点和当前节点
+			i = minPos
 		}
 	}
 
+	//自下往上堆化
 	insert := func(data int) {
-		/*
-			1. 如果堆满,需要先删除堆顶元素,然后再插入新元素
-			2. 这里2步合二为一,直接用新元素替换堆顶元素,相当于删除,然后再heapify
-		*/
-		if len(heap) == k {
-			heap[0] = data
-		}
-		heap = append(heap, data)
+		heap[count] = data
 		count++
-		heapify(0)
+		i := count - 1    //当前节点从堆的最后一个元素开始
+		p := (i - 1) >> 1 //父节点下标
+		for p >= 0 && heap[i] < heap[p] {
+			heap[i], heap[p] = heap[p], heap[i] //交换父节点和当前节点
+			i = p
+			p = (i - 1) >> 1
+		}
 	}
 
 	for i := 0; i < len(nums); i++ {
-		if len(heap) < k || nums[i] > heap[0] {
+		if count < k { //如果堆不满,插入新元素,从下到上堆化
 			insert(nums[i])
+		} else if nums[i] > heap[0] { //如果堆满,直接用新元素替换堆顶元素,相当于删除,然后再从上到下堆化
+			heap[0] = nums[i]
+			heapify(0)
 		}
+
 	}
 
 	return heap[0]
+}
+
+/*
+解法3 二叉堆 小顶堆
+思想和解法2一样,只不过写法不一样,先建好大小为k的小顶堆,然后再遍历剩下的元素
+*/
+func findKthLargest(nums []int, k int) int {
+
+	// 自上往下堆化
+	heapify := func(heap []int, count, i int) {
+		for {
+			minPos := i //当前节点和2个子节点中最小元素的下标
+			if (2*i+1) < count && heap[minPos] > heap[2*i+1] {
+				minPos = 2*i + 1
+			}
+			if (2*i+2) < count && heap[minPos] > heap[2*i+2] {
+				minPos = 2*i + 2
+			}
+			if minPos == i {
+				break
+			}
+			heap[i], heap[minPos] = heap[minPos], heap[i] //交换最大节点和当前节点
+			i = minPos
+		}
+	}
+
+	//建大小为k的小顶堆
+	for i := k>>1 - 1; i >= 0; i-- {
+		heapify(nums, k, i)
+	}
+
+	//后面每个元素都和堆顶元素比较
+	for i := k; i < len(nums); i++ {
+		if nums[i] > nums[0] {
+			nums[0] = nums[i] //直接用新元素替换堆顶元素,相当于删除,然后再从上到下堆化
+			heapify(nums, k, 0)
+		}
+
+	}
+
+	return nums[0]
+}
+
+/*
+解法5 二叉堆 小顶堆
+1. 遍历所有元素堆化构建大顶堆
+2. 删除n-k次堆顶元素,剩下k个元素时,堆顶元素就是第k大的元素
+*/
+func findKthLargest5(nums []int, k int) int {
+
+	// 自上往下堆化
+	heapify := func(heap []int, count, i int) {
+		for {
+			minPos := i //当前节点和2个子节点中最小元素的下标
+			if (2*i+1) < count && heap[minPos] > heap[2*i+1] {
+				minPos = 2*i + 1
+			}
+			if (2*i+2) < count && heap[minPos] > heap[2*i+2] {
+				minPos = 2*i + 2
+			}
+			if minPos == i {
+				break
+			}
+			heap[i], heap[minPos] = heap[minPos], heap[i] //交换最大节点和当前节点
+			i = minPos
+		}
+	}
+
+	n := len(nums) //堆中元素个数
+	//建堆
+	for i := n>>1 - 1; i >= 0; i-- {
+		heapify(nums, n, i)
+	}
+
+	m := n - k
+	//删除堆顶元素m次
+	for i := 1; i <= m; i++ {
+		//把最后一个元素和堆顶元素交换,相当于删除堆顶元素,然后自上往下堆化
+		nums[0], nums[n-i] = nums[n-i], nums[0]
+		heapify(nums, n-i, 0)
+	}
+	return nums[0]
+}
+
+/*
+解法6 二叉堆 大顶堆
+1. 遍历所有元素堆化构建大顶堆
+2. 删除堆顶元素k-1次,堆顶元素就是第k大的元素
+*/
+func findKthLargest6(nums []int, k int) int {
+
+	// 自上往下堆化
+	heapify := func(heap []int, count, i int) {
+		for {
+			maxPos := i //当前节点和2个子节点中最大元素的下标
+			if (2*i+1) < count && heap[maxPos] < heap[2*i+1] {
+				maxPos = 2*i + 1
+			}
+			if (2*i+2) < count && heap[maxPos] < heap[2*i+2] {
+				maxPos = 2*i + 2
+			}
+			if maxPos == i {
+				break
+			}
+			heap[i], heap[maxPos] = heap[maxPos], heap[i] //交换最大节点和当前节点
+			i = maxPos
+		}
+	}
+
+	n := len(nums) //堆中元素个数
+	//建堆
+	for i := n>>1 - 1; i >= 0; i-- {
+		heapify(nums, n, i)
+	}
+
+	m := k - 1
+	//删除堆顶元素m次
+	for i := 1; i <= m; i++ {
+		//把最后一个元素和堆顶元素交换,相当于删除堆顶元素,然后自上往下堆化
+		nums[0], nums[n-i] = nums[n-i], nums[0]
+		heapify(nums, n-i, 0)
+	}
+	return nums[0]
 }
 
 // @lc code=end
