@@ -3,6 +3,7 @@ package main
 import (
 	"container/heap"
 	"fmt"
+	"sort"
 )
 
 /*
@@ -25,7 +26,7 @@ import (
 把i看成行,j看成列,初始化时,初始化每一行, 如果m<K. 只需要初始化前m行即可,然后每次弹出栈时,再把j相加
 不断往右下角走
 */
-func kSmallestPairs(nums1, nums2 []int, k int) (ans [][]int) {
+func kSmallestPairs1(nums1, nums2 []int, k int) (ans [][]int) {
 	m, n := len(nums1), len(nums2)
 	h := hp{nil, nums1, nums2}
 	//初始化每一行
@@ -76,12 +77,13 @@ func (h *hp) Pop() interface{} {
 解法2 优先级对列 自己实现二叉堆
 思路和解法1一样,自己实现堆
 */
-func kSmallestPairs1(nums1, nums2 []int, k int) (ans [][]int) {
+func kSmallestPairs(nums1, nums2 []int, k int) (ans [][]int) {
 
 	type Data struct {
 		i int
 		j int
 	}
+
 	m, n := len(nums1), len(nums2)
 	ret := make([][]int, 0, k)
 
@@ -93,27 +95,107 @@ func kSmallestPairs1(nums1, nums2 []int, k int) (ans [][]int) {
 
 	insert := func(data *Data) {
 		//往堆中插入元素
-		// heap = append(heap, data)
-		// //堆化
-		// i := len(heap) - 1
-		// for (i>>1) > 0 && less(heap[]) {
-
-		// }
+		heap = append(heap, data)
+		//堆化
+		i := len(heap) - 1
+		p := (i - 1) >> 1
+		for p >= 0 && less(heap[i], heap[p]) {
+			heap[i], heap[p] = heap[p], heap[i]
+			i = p
+			p = (i - 1) >> 1
+		}
 	}
 
 	heapify := func(start int) {
-
+		count := len(heap)
+		for {
+			minPos := start
+			left, right := 2*start+1, 2*start+2
+			if left < count && less(heap[left], heap[minPos]) {
+				minPos = left
+			}
+			if right < count && less(heap[right], heap[minPos]) {
+				minPos = right
+			}
+			if minPos == start {
+				break
+			}
+			heap[start], heap[minPos] = heap[minPos], heap[start]
+			start = minPos
+		}
 	}
 
-	//往堆中插入k个元素
+	//构建大小为k的小顶堆
 	for i := 0; i < k && i < m; i++ {
-		heap = append(heap, &Data{i: i, j: 0})
+		insert(&Data{i: i, j: 0})
 	}
 
-	//自顶向下堆化
-	heapify(0)
-
+	//不断删除堆顶元素k次,并重新让新元素入堆
+	for len(heap) > 0 && k > 0 {
+		top := heap[0]
+		ret = append(ret, []int{nums1[top.i], nums2[top.j]})
+		k--
+		if top.j+1 < n {
+			//如果删除堆顶元素后还要插入新元素,直接替换堆顶相当于删除
+			heap[0] = &Data{i: top.i, j: top.j + 1}
+		} else {
+			//如果删除堆顶元素后不需要插入新元素
+			heap = heap[1:]
+		}
+		//重新调整堆
+		heapify(0)
+	}
 	return ret
+}
+
+func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
+	m, n := len(nums1), len(nums2)
+
+	// 二分查找第 k 小的数对和
+	left, right := nums1[0]+nums2[0], nums1[m-1]+nums2[n-1]+1
+	pairSum := left + sort.Search(right-left, func(sum int) bool {
+		sum += left
+		cnt := 0
+		i, j := 0, n-1
+		for i < m && j >= 0 {
+			if nums1[i]+nums2[j] > sum {
+				j--
+			} else {
+				cnt += j + 1
+				i++
+			}
+		}
+		return cnt >= k
+	})
+
+	// 找数对和小于 pairSum 的数对
+	i := n - 1
+	for _, num1 := range nums1 {
+		for i >= 0 && num1+nums2[i] >= pairSum {
+			i--
+		}
+		for _, num2 := range nums2[:i+1] {
+			ans = append(ans, []int{num1, num2})
+			if len(ans) == k {
+				return
+			}
+		}
+	}
+
+	// 找数对和等于 pairSum 的数对
+	i = n - 1
+	for _, num1 := range nums1 {
+		for i >= 0 && num1+nums2[i] > pairSum {
+			i--
+		}
+		for j := i; j >= 0 && num1+nums2[j] == pairSum; j-- {
+			ans = append(ans, []int{num1, nums2[j]})
+			if len(ans) == k {
+				return
+			}
+		}
+	}
+	return
 }
 
 // @lc code=end

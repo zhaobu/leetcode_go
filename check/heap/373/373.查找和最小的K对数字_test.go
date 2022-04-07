@@ -41,18 +41,18 @@ func Test_kSmallestPairs(t *testing.T) {
 		// 		{1, 1},
 		// 	},
 		// },
-		// {
-		// 	name: "test3",
-		// 	args: args{
-		// 		nums1: []int{1, 2},
-		// 		nums2: []int{3},
-		// 		k:     3,
-		// 	},
-		// 	want: [][]int{
-		// 		{1, 3},
-		// 		{2, 3},
-		// 	},
-		// },
+		{
+			name: "test3",
+			args: args{
+				nums1: []int{1, 2},
+				nums2: []int{3},
+				k:     3,
+			},
+			want: [][]int{
+				{1, 3},
+				{2, 3},
+			},
+		},
 		{
 			name: "test4",
 			args: args{
