@@ -77,7 +77,7 @@ func (h *hp) Pop() interface{} {
 解法2 优先级对列 自己实现二叉堆
 思路和解法1一样,自己实现堆
 */
-func kSmallestPairs(nums1, nums2 []int, k int) (ans [][]int) {
+func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
 
 	type Data struct {
 		i int
@@ -148,11 +148,28 @@ func kSmallestPairs(nums1, nums2 []int, k int) (ans [][]int) {
 	return ret
 }
 
-func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
-	m, n := len(nums1), len(nums2)
+/*
+解法3 二叉堆
+使用大顶堆求解
+*/
+func kSmallestPairs3(nums1, nums2 []int, k int) (ans [][]int) {
+	return
+}
 
+/*
+解法4 二分查找
+*/
+func kSmallestPairs(nums1, nums2 []int, k int) (ans [][]int) {
+	m, n := len(nums1), len(nums2)
+	ans = make([][]int, 0, k)
 	// 二分查找第 k 小的数对和
 	left, right := nums1[0]+nums2[0], nums1[m-1]+nums2[n-1]+1
+	/*
+		1. sort.Search里面用二分是mid的取值范围是[0,right-left),也就是把sum看成是
+		二分时的下标.
+		2. sum+=left后sum的范围就是[left,right)
+		3. sort.Search求得的是最小的sum满足小于等于left+sum的数对数目刚好大于等于 k
+	*/
 	pairSum := left + sort.Search(right-left, func(sum int) bool {
 		sum += left
 		cnt := 0
@@ -161,6 +178,10 @@ func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
 			if nums1[i]+nums2[j] > sum {
 				j--
 			} else {
+				/*
+					1. 如果nums1[i]+nums2[j]<=sum,则j的取值范围[0,j]之内都满足.
+					2. 所以对于每一个i,都有j+1个数对满足条件
+				*/
 				cnt += j + 1
 				i++
 			}
@@ -171,6 +192,10 @@ func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
 	// 找数对和小于 pairSum 的数对
 	i := n - 1
 	for _, num1 := range nums1 {
+		/*
+			因为num1是从小到大遍历的,所以当num1变大时,num2的第一个满足条件的下标肯定会变小
+			所以i不用每次都从n-1开始遍历,只需要才能继续从上一个num1求的的i判断
+		*/
 		for i >= 0 && num1+nums2[i] >= pairSum {
 			i--
 		}
