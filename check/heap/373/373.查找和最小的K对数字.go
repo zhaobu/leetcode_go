@@ -149,15 +149,7 @@ func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
 }
 
 /*
-解法3 二叉堆
-使用大顶堆求解
-*/
-func kSmallestPairs3(nums1, nums2 []int, k int) (ans [][]int) {
-	return
-}
-
-/*
-解法4 二分查找
+解法3 二分查找
 */
 func kSmallestPairs(nums1, nums2 []int, k int) (ans [][]int) {
 	m, n := len(nums1), len(nums2)
