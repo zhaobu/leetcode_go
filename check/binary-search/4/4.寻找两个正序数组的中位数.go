@@ -90,6 +90,7 @@ func findMedianSortedArrays1(nums1 []int, nums2 []int) float64 {
 
 /*
 解法2 暴力法
+不满足时间复杂度为log(m+n)的要求
 */
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	m, n := len(nums1), len(nums2)
