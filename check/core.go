@@ -14,8 +14,3 @@ type UnionFind interface {
 	GetCount() int
 	Init(cap int)
 }
-
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}

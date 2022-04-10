@@ -77,7 +77,7 @@ func (h *hp) Pop() interface{} {
 解法2 优先级对列 自己实现二叉堆
 思路和解法1一样,自己实现堆
 */
-func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
+func kSmallestPairs(nums1, nums2 []int, k int) (ans [][]int) {
 
 	type Data struct {
 		i int
@@ -139,8 +139,11 @@ func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
 			//如果删除堆顶元素后还要插入新元素,直接替换堆顶相当于删除
 			heap[0] = &Data{i: top.i, j: top.j + 1}
 		} else {
-			//如果删除堆顶元素后不需要插入新元素
-			heap = heap[1:]
+			//最后一个元素和对顶元素交换,然后删除最后一个元素
+			heap[0], heap[len(heap)-1] = heap[len(heap)-1], heap[0]
+			heap = heap[:len(heap)-1]
+
+			//此处不能写成heap = heap[1:],必须是最后一个元素和堆顶交换,然后删除最后一个元素
 		}
 		//重新调整堆
 		heapify(0)
@@ -151,7 +154,7 @@ func kSmallestPairs2(nums1, nums2 []int, k int) (ans [][]int) {
 /*
 解法3 二分查找
 */
-func kSmallestPairs(nums1, nums2 []int, k int) (ans [][]int) {
+func kSmallestPairs3(nums1, nums2 []int, k int) (ans [][]int) {
 	m, n := len(nums1), len(nums2)
 	ans = make([][]int, 0, k)
 	// 二分查找第 k 小的数对和

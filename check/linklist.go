@@ -1,18 +1,35 @@
-package main
+package check
 
 import (
 	"fmt"
 	"math/rand"
 )
 
-func (l *ListNode) Print() string {
-	res := ""
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+// func (l *ListNode) String() string {
+// 	res := ""
+// 	num := 0
+// 	for l != nil && num < 10000 {
+// 		res += fmt.Sprintf("val:%d,address:%p --> ", l.Val, l)
+// 		l = l.Next
+// 		num++
+// 	}
+// 	return res
+// }
+
+func (l *ListNode) String() string {
+	res := "["
 	num := 0
 	for l != nil && num < 10000 {
-		res += fmt.Sprintf("val:%d,address:%p --> ", l.Val, l)
+		res += fmt.Sprintf("%d,", l.Val)
 		l = l.Next
 		num++
 	}
+	res += "]"
 	return res
 }
 
@@ -45,8 +62,8 @@ func (i *Input) copy() *Input {
 	}
 }
 
-func (i *Input) Print() string {
-	return fmt.Sprintf("head:%s", i.head.Print())
+func (i *Input) String() string {
+	return fmt.Sprintf("head:%s", i.head.String())
 }
 
 // 给list添加一个环
