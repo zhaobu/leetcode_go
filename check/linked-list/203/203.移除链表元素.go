@@ -1,3 +1,5 @@
+package main
+
 /*
  * @lc app=leetcode.cn id=203 lang=golang
  *
@@ -35,4 +37,3 @@ func removeElements(head *ListNode, val int) *ListNode {
 }
 
 // @lc code=end
-
