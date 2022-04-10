@@ -3,14 +3,10 @@ package main
 import (
 	"fmt"
 	"leetcode/check"
+	. "leetcode/check"
 	"reflect"
 	"testing"
 )
-
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
 
 func Test_reverseOnce(t *testing.T) {
 	type args struct {

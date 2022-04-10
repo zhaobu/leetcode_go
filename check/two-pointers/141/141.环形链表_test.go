@@ -1,11 +1,9 @@
 package main
 
-import "testing"
-
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import (
+	. "leetcode/check"
+	"testing"
+)
 
 func Test_hasCycle(t *testing.T) {
 	type args struct {

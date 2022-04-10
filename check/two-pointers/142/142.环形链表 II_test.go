@@ -1,6 +1,7 @@
 package main
 
 import (
+	. "leetcode/check"
 	"reflect"
 	"testing"
 )

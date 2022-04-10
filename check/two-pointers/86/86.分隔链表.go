@@ -1,3 +1,9 @@
+package main
+
+import (
+	. "leetcode/check"
+)
+
 /*
  * @lc app=leetcode.cn id=86 lang=golang
  *
@@ -37,4 +43,3 @@ func partition(head *ListNode, x int) *ListNode {
 }
 
 // @lc code=end
-

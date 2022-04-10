@@ -1,14 +1,10 @@
 package main
 
 import (
+	. "leetcode/check"
 	"reflect"
 	"testing"
 )
-
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
 
 func Test_middleNode(t *testing.T) {
 	type args struct {

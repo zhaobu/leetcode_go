@@ -1,3 +1,9 @@
+package main
+
+import (
+	. "leetcode/check"
+)
+
 /*
  * @lc app=leetcode.cn id=160 lang=golang
  *
@@ -45,4 +51,3 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 }
 
 // @lc code=end
-
