@@ -91,7 +91,7 @@ func mergeKLists1(lists []*ListNode) *ListNode {
 解法2 二叉堆
 另一种写法
 */
-func mergeKLists(lists []*ListNode) *ListNode {
+func mergeKLists2(lists []*ListNode) *ListNode {
 	m := len(lists)
 	if m == 0 {
 		return nil
@@ -162,6 +162,52 @@ func mergeKLists(lists []*ListNode) *ListNode {
 	}
 
 	return head.Next
+}
+
+/*
+解法3 分治算法
+类似归并排序每次只合并2个链表
+*/
+func mergeKLists(lists []*ListNode) *ListNode {
+	m := len(lists)
+	if m == 0 {
+		return nil
+	}
+	if m == 1 {
+		return lists[0]
+	}
+
+	//构建大小为k的小顶堆
+
+	merge := func(l1, l2 *ListNode) *ListNode {
+		help := &ListNode{}
+		p1, p2 := l1, l2
+		last := help
+		for ; p1 != nil && p2 != nil; last = last.Next {
+			if p1.Val <= p2.Val {
+				last.Next = p1
+				p1 = p1.Next
+			} else {
+				last.Next = p2
+				p2 = p2.Next
+			}
+		}
+
+		/*
+			1. 合并链表时,分为2部分写效率更高,如果合并数组,效率一样,但写在一个for循环里面代码更简洁
+		*/
+		if p1 != nil {
+			last.Next = p1
+		} else if p2 != nil {
+			last.Next = p2
+		}
+		return help.Next
+	}
+
+	mid := (m - 1) >> 1
+	// fmt.Printf("m=%d,mid=%d\n", m, mid)
+	//注意分治时,把数组分成了三部分[0,mid),mid,[mid,len-1]
+	return merge(merge(mergeKLists(lists[:mid]), mergeKLists(lists[mid+1:])), lists[mid])
 }
 
 // @lc code=end
