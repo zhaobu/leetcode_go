@@ -1,12 +1,9 @@
 package main
 
-import "testing"
-
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
+import (
+	. "leetcode/check/tree"
+	"testing"
+)
 
 func Test_maxDepth(t *testing.T) {
 	type args struct {

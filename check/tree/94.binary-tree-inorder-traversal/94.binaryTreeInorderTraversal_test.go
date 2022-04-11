@@ -1,15 +1,10 @@
 package main
 
 import (
+	. "leetcode/check/tree"
 	"reflect"
 	"testing"
 )
-
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
 
 func Test_inorderTraversal(t *testing.T) {
 	type args struct {
