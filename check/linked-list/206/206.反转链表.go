@@ -54,17 +54,17 @@ func reverseList(head *ListNode) *ListNode {
 		return head
 	}
 
-	return reverseListInt(head, nil)
-}
-
-//head表示当前正在反转的节点,newHead表示已经反转的节点的头部
-func reverseListInt(head, newHead *ListNode) *ListNode {
-	if head == nil {
-		return newHead
+	var reverseListInt func(head, newHead *ListNode) *ListNode
+	//head表示当前正在反转的节点,newHead表示已经反转的节点的头部
+	reverseListInt = func(head, newHead *ListNode) *ListNode {
+		if head == nil {
+			return newHead
+		}
+		next := head.Next                 //先记录下一个要反转的节点
+		head.Next = newHead               //当前节点进行反转
+		return reverseListInt(next, head) //反转下一个节点
 	}
-	next := head.Next                 //先记录下一个要反转的节点
-	head.Next = newHead               //当前节点进行反转
-	return reverseListInt(next, head) //反转下一个节点
+	return reverseListInt(head, nil)
 }
 
 // @lc code=end
