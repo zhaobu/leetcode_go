@@ -129,4 +129,37 @@ func firstMissingPositive(nums []int) int {
 	return i + 1
 }
 
+/*
+解法3 交换
+1. 长度为m的数组最多能存储从[1,m]这些正整数如果全部存储的是这些正数,那最小未出现的就是m+1,
+否则最小未出现的正整数就是第一个未存储的正整数
+2. 如果nums[i]在[1,m]之间,那就吧他放到下标为nums[i]-1的位置
+3. 这样最终,下标i位置上放的数就是i+1. 如果不是这样说明第一个没出现过的正整数就是i+1
+*/
+func firstMissingPositive3(nums []int) int {
+	m := len(nums)
+	if m < 1 {
+		return 1
+	}
+	// fmt.Printf("nums=%+v;", nums)
+
+	for i := 0; i < m; {
+		if nums[i] < 1 || nums[i] > m { //如果nums[i]不在[1,m]范围内,也不用处理
+			i++
+			continue
+		}
+		index := nums[i] - 1        //nums[i]应该放在下标为index的位置上,交换nums[i]和nums[index]
+		if nums[index] == nums[i] { // 如果nums[i]已经放在正确的位置上面,就应该去处理下一个i
+			i++
+			continue
+		}
+		nums[index], nums[i] = nums[i], nums[index]
+	}
+	// fmt.Printf("nums=%+v\n", nums)
+	i := 0
+	for ; i < m && nums[i] == i+1; i++ {
+	}
+	return i + 1
+}
+
 // @lc code=end
