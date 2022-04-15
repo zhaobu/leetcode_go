@@ -11,11 +11,11 @@ func Test_longestValidParentheses(t *testing.T) {
 		args args
 		want int
 	}{
-		// {
-		// 	name: "test1",
-		// 	args: args{s: "()(())"},
-		// 	want: 6,
-		// },
+		{
+			name: "test1",
+			args: args{s: "()(())"},
+			want: 6,
+		},
 		{
 			name: "test2",
 			args: args{s: ")()())()()("},
