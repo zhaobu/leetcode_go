@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	. "leetcode/check"
 )
 
@@ -227,12 +226,16 @@ func sortList(head *ListNode) *ListNode {
 		if head == nil || head.Next == nil {
 			return head
 		}
-		fmt.Printf("head=%+v;", head)
+		// fmt.Printf("head=%+v;", head)
 
 		help1, help2 := &ListNode{}, &ListNode{}
 		p1, p2, pivot := help1, help2, head
-		for cur := pivot; cur != nil; cur = cur.Next {
-			if cur.Val <= pivot.Val {
+		for cur := pivot.Next; cur != nil; cur = cur.Next {
+			/*
+				1. 因为循环结束后把=pivot的分区点会连接在<pivot的部分后面
+				所以这里不能是<=
+			*/
+			if cur.Val < pivot.Val {
 				p1.Next = cur
 				p1 = p1.Next
 			} else {
@@ -240,19 +243,15 @@ func sortList(head *ListNode) *ListNode {
 				p2 = p2.Next
 			}
 		}
-		p1.Next = nil
-		p2.Next = nil
+		p2.Next = nil   //大于等于分区点的部分链表next置空
+		p1.Next = head  //分区点连接到小于分区点的部分链表后面
+		head.Next = nil //分区点的next置空
 
-		fmt.Printf("help1=%+v,help2=%+v,pivot=%+v\n", help1.Next, help2.Next, pivot)
-		left := quickSort(help1.Next.Next)
-		right := quickSort(help2.Next)
+		// fmt.Printf("help1=%+v,help2=%+v,pivot=%+v\n", help1.Next, help2.Next, pivot)
+		left := quickSort(help1.Next)  //排序前半部分
+		right := quickSort(help2.Next) //排序后半部分
 
-		//把3段连接起来
-		cur := left
-		for cur.Next != nil {
-			cur = cur.Next
-		}
-		cur.Next = right
+		head.Next = right
 		return left
 	}
 
