@@ -68,7 +68,7 @@ func maxProfit1(prices []int) int {
 观察解法1的状态转移方程,只和dp[i-1]相关,所以完全可以只用一维的[2]int来代替
 */
 
-func maxProfit2(prices []int) int {
+func maxProfit(prices []int) int {
 	if len(prices) < 2 {
 		return 0
 	}
@@ -88,8 +88,9 @@ func maxProfit2(prices []int) int {
 	}
 
 	for i := 1; i < len(prices); i++ {
+		dp0 := dp[0]
 		dp[0] = max(dp[0], dp[1]+prices[i])
-		dp[1] = max(dp[1], dp[0]-prices[i])
+		dp[1] = max(dp[1], dp0-prices[i])
 	}
 
 	return dp[0]
@@ -101,7 +102,7 @@ func maxProfit2(prices []int) int {
 买入所有股票上升的区间就是能获得的最高利润
 
 */
-func maxProfit(prices []int) int {
+func maxProfit3(prices []int) int {
 	if len(prices) < 2 {
 		return 0
 	}
