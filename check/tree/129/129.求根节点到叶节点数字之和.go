@@ -65,26 +65,27 @@ func sumNumbers(root *TreeNode) int {
 		return 0
 	}
 	ret := 0
-	var dfs func(root *TreeNode, num int)
-	dfs = func(root *TreeNode, num int) {
-		if root == nil {
-			return
+	queue1 := []*TreeNode{root}
+	queue2 := []int{root.Val}
+
+	for len(queue1) > 0 {
+		head1 := queue1[0]
+		queue1 = queue1[1:]
+		head2 := queue2[0]
+		queue2 = queue2[1:]
+		if head1.Left == nil && head1.Right == nil {
+			ret += head2
+			continue
 		}
-		num = num*10 + root.Val
-		if root.Left == nil && root.Right == nil { //只要没有子节点说明已经到了叶子节点
-			ret += num
-			return
-		} else {
-			if root.Left != nil {
-				dfs(root.Left, num)
-			}
-			if root.Right != nil {
-				dfs(root.Right, num)
-			}
+		if head1.Left != nil {
+			queue1 = append(queue1, head1.Left)
+			queue2 = append(queue2, head2*10+head1.Left.Val)
+		}
+		if head1.Right != nil {
+			queue1 = append(queue1, head1.Right)
+			queue2 = append(queue2, head2*10+head1.Right.Val)
 		}
 	}
-
-	dfs(root, 0)
 	return ret
 }
 
