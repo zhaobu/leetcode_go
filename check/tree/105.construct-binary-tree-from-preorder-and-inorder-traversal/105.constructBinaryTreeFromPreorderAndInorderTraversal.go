@@ -40,7 +40,7 @@ func buildTree1(preorder []int, inorder []int) *TreeNode {
 	   	1 2 3 4 5 * 0 * 6 7 8 9  left * root * right
 	*/
 	root.Left = buildTree(preorder[1:index+1], inorder[0:index])
-	root.Right = buildTree(preorder[index+1:len(preorder)], inorder[index+1:len(inorder)])
+	root.Right = buildTree(preorder[index+1:], inorder[index+1:])
 	return root
 }
 

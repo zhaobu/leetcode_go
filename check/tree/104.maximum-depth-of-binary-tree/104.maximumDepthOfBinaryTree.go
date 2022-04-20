@@ -1,5 +1,9 @@
 package main
 
+import (
+	. "leetcode/check/tree"
+)
+
 /*
  * @lc app=leetcode.cn id=104 lang=golang
  *
