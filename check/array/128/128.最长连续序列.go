@@ -53,15 +53,72 @@ func longestConsecutive1(nums []int) int {
 }
 
 /*
-解法1 并查集
-
+解法2 并查集
+1. 利用并查集把相邻元素合并为一个集合
+2. 在执行union时,把较小元素的根节点指向较大元素的根节点
+3. 遍历并查集的每个集合,集合的根节点-集合中最小的元素就是当前集合的长度
 */
 func longestConsecutive(nums []int) int {
 	if len(nums) < 2 {
 		return len(nums)
 	}
 
-	return 0
+	count := 0                       //集合的个数
+	parents := map[int]int{}         //并查集父节点
+	for i := 0; i < len(nums); i++ { //初始化并查集,每种元素一个集合
+		parents[nums[i]] = nums[i]
+		count++
+	}
+
+	//查找v所在的集合
+	find := func(v int) int {
+		if _, ok := parents[v]; !ok {
+			return -1
+		}
+		//路径分裂:使路径上的每个节点都指向其祖父节点（parent的parent）
+		for v != parents[v] {
+			p := parents[v]
+			parents[v] = parents[p]
+			v = p
+		}
+		return v
+	}
+
+	/*
+		两个集合联合在一起
+		Quick Union 的 union(v1, v2)：让 v1 的根节点指向 v2 的根节点
+	*/
+	union := func(v1, v2 int) {
+		p1 := find(v1)
+		p2 := find(v2)
+		if p1 == p2 {
+			return
+		}
+		parents[p1] = p2
+		count--
+		return
+	}
+
+	//遍历到元素v时,如果v+1也存在,就把他们连通成一个集合
+	for _, v := range parents {
+		if _, ok := parents[v+1]; ok {
+			union(v, v+1)
+		}
+	}
+	ret := 0
+	/*
+		1. 因为是union(v,v+1),也就是把v的根节点指向v+1的根节点.所以根节点的值始终是最大的
+		2. 遍历所有元素,当i为最长序列所在集合时,集合的根节点就是最长序列的最后一个元素
+		所以元素个数也就是find(i) - i + 1
+	*/
+	for i := range parents {
+		cur := find(i) - i + 1
+		if cur > ret {
+			ret = cur
+		}
+	}
+
+	return ret
 }
 
 // @lc code=end
