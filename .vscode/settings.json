@@ -20,7 +20,7 @@
             "followPointers": true,
             "maxVariableRecurse": 5,
             "maxStringLen": 2000,
-            "maxArrayValues": 25,
+            "maxArrayValues": 1000,
             "maxStructFields": -1
         },
         "apiVersion": 2,
