@@ -1,9 +1,9 @@
 package main
 
 /*
- * @lc app=leetcode.cn id=210 lang=golang
+ * @lc app=leetcode.cn id=207 lang=golang
  *
- * [210] 课程表 II
+ * [207] 课程表
  */
 
 // @lc code=start
@@ -15,15 +15,7 @@ package main
 2. 在图中删除该点和所有以它为起点的边
 3. 重复1和2，直到图为空或没有入度为0的点
 */
-func findOrder1(numCourses int, prerequisites [][]int) []int {
-	/*
-		edge[i]=[a,b,c]表示以i为起点的边有(i,a),(i,b),(i,c)
-			edge = [[2]    #表示0->2,以0为起点的边为(0,2)
-			    [2]     #表示1->2,以1为起点的边为(1,2)
-			    [3, 4]  #表示2->3,2->4,以2为起点的边为(3,4)
-			    []      #表示没有以3为起点的边
-			    []]     #表示没有以4为起点的边
-	*/
+func canFinish1(numCourses int, prerequisites [][]int) bool {
 	edge := make([][]int, numCourses) //邻接表存储图的边
 	/*
 		indeg[i]=k表示以i为终点的边有k条
@@ -59,16 +51,13 @@ func findOrder1(numCourses int, prerequisites [][]int) []int {
 			}
 		}
 	}
-	if len(ret) == numCourses {
-		return ret
-	}
-	return []int{}
+	return len(ret) == numCourses
 }
 
 /*
 解法2 拓扑排序,栈实现(图的深度优先遍历)
 */
-func findOrder(numCourses int, prerequisites [][]int) []int {
+func canFinish(numCourses int, prerequisites [][]int) bool {
 
 	edge := make([][]int, numCourses) //邻接表存储图
 	/*
@@ -122,21 +111,7 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
 		}
 	}
 
-	if circle { //存在环
-		return []int{}
-	}
-
-	/*
-		1. 如果初始化时是初始化的逆邻接表,就不用反转
-		2. 因为是深度优先,所以越是靠近栈底的越是最后才能选修的,越是靠近栈顶的越是没有前置课程的
-		3. 栈底是最后一门课,栈顶是第一门课,反转后即为一种结果
-
-	*/
-	// for i, j := 0, len(ret)-1; i < j; i, j = i+1, j-1 {
-	// 	ret[i], ret[j] = ret[j], ret[i]
-	// }
-
-	return ret
+	return !circle
 }
 
 // @lc code=end
