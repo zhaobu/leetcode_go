@@ -46,34 +46,44 @@ func findKthNumber(n int, k int) int {
 	}
 
 	/*
-		求以cur为根节点的这颗子树满足条件的节点个数
+		层序遍历,求以cur为根节点的这颗子树满足条件的节点个数
 	*/
-	getNum := func(cur int) int {
-		count := 0
-		first, last := cur, cur
+	getNum := func(cur int) (count int, nodes []int) {
+		first, last := cur, cur //当前层第一个节点为first,最后一个节点为last
 		for first <= n {
 			count += min(last, n) - first + 1
-			first *= 10
-			last = last*10 + 9
+			// for i := first; i <= n && i <= last; i++ {
+			// 	nodes = append(nodes, i)
+			// }
+			first *= 10        //下一层第一个节点为当前层第一个节点*10
+			last = last*10 + 9 //下一层最后一个节点为当前层最后一个节点*10+9
 		}
-		return count
+		return
 	}
 
 	i := 1 //第i小的数
+	// ret := []int{}
 	for i < k {
-		num := getNum(cur)
+		num, _ := getNum(cur)
 		if i+num <= k {
 			/*
-				1. 如果以cur为根的树满足条件的节点+i<k,
-				说明第k小的数不在这颗树当中,应该往右继续查找以兄弟节点为根的子树
+				1. 如果以cur为根的树满足条件的节点num+i<k,说明第k小的数不在这颗树当中
+				2. 当前子树节点应该全部跳过,所以i = i+num
 			*/
 			i += num
-			cur++
+			// ret = append(ret, nodes...)
+			cur++ //往右继续查找第一个兄弟节点为根的子树
 		} else {
+			/*
+				1. 如果以cur为根的树满足条件的节点num+i>k,说明第k小的节点就在以cur为根节点的子树当中
+				2. 把当前树的根节点cur加到结果当中,继续从当前树的第一个孩子节点开始查找
+			*/
 			i += 1
-			cur *= 10
+			// ret = append(ret, nodes[:2]...)
+			cur *= 10 //cur跳到子树最左边第一个孩子节点开始继续查找
 		}
 	}
+	// fmt.Printf("len=%d,ret=%+v\n", len(ret), ret)
 	return cur
 }
 

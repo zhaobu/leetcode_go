@@ -12,21 +12,21 @@ func Test_findKthNumber(t *testing.T) {
 		args args
 		want int
 	}{
-		{
-			name: "test1",
-			args: args{
-				n: 13,
-				k: 2,
-			},
-			want: 10,
-		},
+		// {
+		// 	name: "test1",
+		// 	args: args{
+		// 		n: 13,
+		// 		k: 2,
+		// 	},
+		// 	want: 10,
+		// },
 		{
 			name: "test2",
 			args: args{
-				n: 2,
-				k: 2,
+				n: 20,
+				k: 15,
 			},
-			want: 2,
+			want: 4,
 		},
 	}
 	for _, tt := range tests {
