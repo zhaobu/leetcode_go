@@ -67,7 +67,7 @@ func rob1(nums []int) int {
 根据状态转移方程可以得知
 dp[i] 只和 dp[i-1] 和dp[i-2] 相关,所以可以用3个变量替代dp数组
 */
-func rob(nums []int) int {
+func rob2(nums []int) int {
 	if len(nums) == 1 {
 		return nums[0]
 	}
@@ -101,6 +101,109 @@ func rob(nums []int) int {
 	}
 
 	return maxValue
+}
+
+/*
+解法3
+*/
+func rob3(nums []int) int {
+	m := len(nums)
+	if m == 1 {
+		return nums[0]
+	}
+
+	max := func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+
+	if m == 2 {
+		return max(nums[0], nums[1])
+	}
+
+	/*
+	   情况1: 从第0间房屋偷到n-2
+	   情况2: 从第1间房屋偷到n-1
+
+	   dp0[i]: 从第0件开始,偷到第i件时能偷到的最高金额
+	   dp1[i]: 从第1件开始,偷到第i件时能偷到的最高金额
+	*/
+
+	dp0 := make([]int, len(nums))
+	dp1 := make([]int, len(nums))
+
+	dp0[0] = nums[0]
+	dp0[1] = max(nums[0], nums[1])
+
+	dp1[1] = nums[1]
+	dp1[2] = max(nums[1], nums[2])
+
+	for i := 2; i < m; i++ {
+		if i < len(nums)-1 {
+			dp0[i] = max(dp0[i-2]+nums[i], dp0[i-1])
+		}
+		if i > 2 {
+			dp1[i] = max(dp1[i-2]+nums[i], dp1[i-1])
+		}
+	}
+
+	return max(dp0[m-2], dp1[m-1])
+}
+
+/*
+解法4
+解法3的空间复杂度优化版
+*/
+func rob(nums []int) int {
+	m := len(nums)
+	if m == 1 {
+		return nums[0]
+	}
+
+	max := func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+
+	if m == 2 {
+		return max(nums[0], nums[1])
+	}
+
+	/*
+	   情况1: 从第0间房屋偷到n-2
+	   情况2: 从第1间房屋偷到n-1
+
+	   dp0[i]: 从第0件开始,偷到第i件时能偷到的最高金额
+	   dp1[i]: 从第1件开始,偷到第i件时能偷到的最高金额
+	*/
+
+	dp0 := [2]int{}
+	dp1 := [2]int{}
+
+	dp0[0] = nums[0]
+	dp0[1] = max(nums[0], nums[1])
+
+	dp1[0] = nums[1]
+	dp1[1] = max(nums[1], nums[2])
+
+	for i := 2; i < m; i++ {
+		if i < len(nums)-1 {
+			olddp1 := dp0[1]
+			dp0[1] = max(dp0[0]+nums[i], dp0[1])
+			dp0[0] = olddp1
+		}
+		if i > 2 {
+			olddp1 := dp1[1]
+			dp1[1] = max(dp1[0]+nums[i], dp1[1])
+			dp1[0] = olddp1
+		}
+	}
+
+	return max(dp0[1], dp1[1])
 }
 
 // @lc code=end
