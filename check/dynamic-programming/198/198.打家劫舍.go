@@ -52,7 +52,7 @@ func rob1(nums []int) int {
 /*
 解法2 动态规划 优化空间复杂度
 */
-func rob(nums []int) int {
+func rob2(nums []int) int {
 	if len(nums) == 1 {
 		return nums[0]
 	}
@@ -78,6 +78,34 @@ func rob(nums []int) int {
 
 	//不返回dp而返回dp1是为了兼容len(nums)=2时的情况
 	return dp1
+}
+
+/*
+解法3 动态规划
+*/
+func rob(nums []int) int {
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	max := func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+
+	/*
+		dp[0]表示偷到下标为i的房屋时不偷房间nums[i]时能偷到的最大价值
+		dp[1]表示偷到下标为i的房屋时偷房间nums[i]时能偷到的最大价值
+	*/
+	dp := [2]int{0, nums[0]}
+	for i := 1; i < len(nums); i++ {
+		tmp := dp[0]              //保存不偷上一个房间时的最大价值
+		dp[0] = max(dp[0], dp[1]) //如果本房间也不偷,则上一个房间可偷也可以不偷,所以是dp[0]和dp[1]中的较大值
+		dp[1] = tmp + nums[i]     //如果偷本房间,则上一个房间不能偷
+	}
+
+	return max(dp[0], dp[1]) //最后一个房间也可以有2个选择,选其中价值最大的情况返回
 }
 
 // @lc code=end
