@@ -85,7 +85,7 @@ func swapPairs1(head *ListNode) *ListNode {
 }
 
 //递归
-func swapPairs(head *ListNode) *ListNode {
+func swapPairs2(head *ListNode) *ListNode {
 	if head == nil || head.Next == nil { //节点为空或者只有一个节点直接返回
 		return head
 	}
@@ -98,6 +98,27 @@ func swapPairs(head *ListNode) *ListNode {
 	// 2.再处理第2个节点,把他和第1个节点连接
 	newHead.Next = head
 	return newHead //返回第二个节点
+}
+
+/*
+解法3 迭代
+*/
+func swapPairs(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+	help := &ListNode{Next: head}
+	pre, cur := help, head
+	for cur != nil && cur.Next != nil {
+		next := cur.Next.Next
+		pre.Next = cur.Next
+		cur.Next.Next = cur
+		cur.Next = next
+		pre = cur
+		cur = next
+	}
+
+	return help.Next
 }
 
 // @lc code=end
