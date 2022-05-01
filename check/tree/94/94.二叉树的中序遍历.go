@@ -19,7 +19,6 @@ import (
  *     Right *TreeNode
  * }
  */
-
 //方法1:递归
 func inorderTraversal1(root *TreeNode) []int {
 	if root == nil {
