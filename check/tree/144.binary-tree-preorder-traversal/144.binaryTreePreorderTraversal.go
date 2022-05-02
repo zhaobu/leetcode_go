@@ -140,6 +140,11 @@ func preorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return ret
 	}
+	/*
+				  1
+			2	        3
+		  4	   5      6    7
+	*/
 	for root != nil {
 		if root.Left != nil {
 			// 如果当前节点的左子节点不为空，在当前节点的左子树中找到当前节点在中序遍历下的前驱节点
