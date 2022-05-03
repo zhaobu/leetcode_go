@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
  * @lc app=leetcode.cn id=64 lang=golang
  *
@@ -49,7 +51,7 @@ dp[i][j]只和dp[i-1][j]和dp[i][j-1]也就是本行前一列dp和上一行同�
 dp[j-1]就是本行前一列dp, dp[j]就是上一行同一列dp.
 3. 二维dp可以空间压缩为1维dp
 */
-func minPathSum(grid [][]int) int {
+func minPathSum2(grid [][]int) int {
 	m, n := len(grid), len(grid[0])
 	dp := make([]int, n)
 
@@ -104,6 +106,68 @@ func minPathSum3(grid [][]int) int {
 				}
 			}
 		}
+	}
+	return dp[n-1]
+}
+
+/*
+扩展: 求出小路径
+*/
+func minPathSum(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+	dp := make([]int, n)
+
+	min := func(a, b int) (int, int) {
+		if a < b {
+			return a, -1
+		}
+		return b, 1
+	}
+	/*
+		1. 如果是从上一行转移过来,就为1
+		2. 如果是从左1列转移过来,就为-1
+	*/
+	record := make([][]int, m)
+	for i := range record {
+		record[i] = make([]int, n)
+	}
+
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			dp[j] += grid[i][j]
+			if j > 0 {
+				if i > 0 {
+					dp[j], record[i][j] = min(dp[j-1]+grid[i][j], dp[j])
+				} else {
+					dp[j] += dp[j-1]
+					record[i][j] = -1
+				}
+			} else {
+				if i > 0 {
+					record[i][j] = 1
+				}
+			}
+		}
+	}
+	fmt.Printf("record=%+v\n", record)
+	//求dp[n-1]的转移路径
+	count := m + n - 1
+	type Point struct {
+		i int
+		j int
+	}
+	points := make([]*Point, count)
+	for i, j, k := m-1, n-1, count-1; k >= 0; k-- {
+		points[k] = &Point{i: i, j: j}
+		if record[i][j] == 1 {
+			i--
+		} else if record[i][j] == -1 {
+			j--
+		}
+	}
+	//打印路径
+	for i, v := range points {
+		fmt.Printf("第%d步: grid[%d,%d]:%d\n", i, v.i, v.j, grid[v.i][v.j])
 	}
 	return dp[n-1]
 }
