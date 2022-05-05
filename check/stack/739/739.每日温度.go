@@ -9,7 +9,7 @@ package main
 // @lc code=start
 
 /*
-解法2: 倒推法,有些类似动态规划
+解法1: 倒推法,有些类似动态规划
 i 用来扫描所有的元素，从右往左扫描（ 逐渐递减），一开始i指向倒数第2个元素
 对于每一个 ，一开始令 j = i +1
 1. 如果 temperatures[i] < temperatures[j] 那么 ret[i] = j-i 然后 i--
@@ -17,16 +17,14 @@ i 用来扫描所有的元素，从右往左扫描（ 逐渐递减），一开�
 3. 否则，设置 j = j + ret[j],回到步骤1
 */
 func dailyTemperatures(temperatures []int) []int {
-	if len(temperatures) < 1 {
-		return nil
+	m := len(temperatures)
+	ret := make([]int, m)
+	if m == 1 {
+		return ret
 	}
-	if len(temperatures) == 1 {
-		return []int{0}
-	}
-	ret := make([]int, len(temperatures))
 
-	for i, j := len(temperatures)-2, 0; i >= 0; i-- {
-		j = i + 1
+	for i := m - 2; i >= 0; i-- {
+		j := i + 1
 		for {
 			if temperatures[j] > temperatures[i] {
 				ret[i] = j - i
@@ -51,18 +49,18 @@ func dailyTemperatures(temperatures []int) []int {
 }
 
 /*
- 解法1
+ 解法2
  利用单调递减栈,
  1. 当栈顶元素出栈时,说明栈顶元素遇到了右边第一个更大的元素
  2. 当元素入栈时,说明栈顶元素就是当前元素左边第一个更大的元素
 */
 func dailyTemperatures1(temperatures []int) []int {
-	var ret []int
-	if len(temperatures) < 1 {
+	m := len(temperatures)
+	ret := make([]int, m)
+	if m == 1 {
 		return ret
 	}
-	ret = make([]int, len(temperatures))
-	descStack := make([]int, 0, len(temperatures))
+	descStack := []int{}
 
 	for i, v := range temperatures {
 		// fmt.Printf("i=%d, 入栈前 descStack=%+v\n", i, descStack)
