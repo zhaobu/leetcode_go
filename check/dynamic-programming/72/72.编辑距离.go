@@ -186,7 +186,7 @@ func minDistance2(word1 string, word2 string) int {
 动态规划,相当于用 DP table 优化递归,唯一不同的是，DP table 是自底向上求解，递归解法是自顶向下求解：
 */
 
-func minDistance(word1 string, word2 string) int {
+func minDistance3(word1 string, word2 string) int {
 	n1, n2 := len(word1), len(word2)
 	if n1 < 1 {
 		return n2
@@ -240,6 +240,69 @@ func minDistance(word1 string, word2 string) int {
 	}
 
 	return dp[n1][n2]
+}
+
+/*
+解法4 动态规划
+	0 1 2 3 4 5 6 7
+	1
+	2
+	3
+	4
+	5
+	6
+	7
+空间优化
+*/
+func minDistance(word1 string, word2 string) int {
+	m, n := len(word1), len(word2)
+	/*
+	   dp[i][j]表示由word1[0,i-1]到word2[0,j-1]的编辑距离
+	*/
+	dp := make([]int, n+1)
+
+	min := func(a, b, c int) int {
+		if a < b {
+			if a < c {
+				return a
+			}
+			return c
+		} else {
+			if b < c {
+				return b
+			}
+			return c
+		}
+	}
+
+	for i := 0; i <= m; i++ {
+		leftTop, old := 0, 0 //old用来保留左上角也就是dp[i-1][j-1]
+		for j := 0; j <= n; j++ {
+			if i == 0 {
+				old = dp[j]
+				dp[j] = j
+			} else if j == 0 {
+				old = dp[j]
+				dp[j] = i
+			} else {
+				leftTop = old
+				old = dp[j]
+				//往word1插入一个字符
+				dp1 := dp[j] + 1
+				//往word2插入一个字符
+				dp2 := dp[j-1] + 1
+				//word1转换一个字符
+				dp3 := leftTop
+				if word1[i-1] != word2[j-1] {
+					dp3 += 1
+				}
+				dp[j] = min(dp1, dp2, dp3)
+			}
+		}
+		// fmt.Printf("dp[%d]=%+v\n", i, dp)
+	}
+
+	return dp[n]
 }
 
 // @lc code=end
