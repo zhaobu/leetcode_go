@@ -119,6 +119,7 @@ func (this *Codec) deserialize(data string) *TreeNode {
 		return nil
 	}
 	strArr := strings.Split(data, ",")
+
 	strArr = strArr[:len(strArr)-1] //去掉逗号分割后最后一个空值
 	var buildTree func() *TreeNode
 	buildTree = func() *TreeNode {
@@ -126,6 +127,9 @@ func (this *Codec) deserialize(data string) *TreeNode {
 		if n == 0 {
 			return nil
 		}
+		/*
+			1. 后序遍历反序列化要从后往前,依次是root, right, left
+		*/
 		cur := strArr[n-1]
 		strArr = strArr[:n-1]
 		if cur == "#" {
