@@ -39,9 +39,10 @@ func subarraySum(nums []int, k int) int {
 	n := len(nums)
 
 	ret := 0
-	record := map[int]int{0: 1} //用来统计每一个累加和出现的次数
-	preSum := make([]int, n+1)  //前缀和
-	sum := 0                    //记录累加和
+	record := make(map[int]int, n) //用来统计每一个累加和出现的次数
+	record[0] = 1
+	preSum := make([]int, n+1) //前缀和
+	sum := 0                   //记录累加和
 	for i, v := range nums {
 		sum += v
 		preSum[i+1] = sum
