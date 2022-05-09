@@ -45,7 +45,11 @@ func subarraySum(nums []int, k int) int {
 	for i, v := range nums {
 		sum += v
 		preSum[i+1] = sum
-
+		/*
+			1. preSum[i+1]表示以nums[i]结尾的前缀和
+			2. 假设[j,i]之间的和等于k,也就是 preSum[i+1]-preSum[j+1]=k
+			3. 用record记录preSum[j+1]的个数,可以方便求出所有满足第2条的j的数量
+		*/
 		if count, ok := record[sum-k]; ok {
 			// fmt.Printf("record=%+v,preSum=%+v,count=%d,sum-k=%d\n", record, preSum, count, sum-k)
 			ret += count
