@@ -117,7 +117,10 @@ func flatten3(root *TreeNode) {
 }
 
 /*
- 解法4: 寻找前驱节点
+解法4: 寻找左子树的最右节点
+1. 先找到左子树的最右节点leftRight,然后把右子树挂到该节点的后面,也就是leftRight.Right = cur.Right
+2. 处理当前节点,把right指向left,把left置空
+3. 继续处理cur.Right,也就是该节点的原左子树
 */
 func flatten(root *TreeNode) {
 	if root == nil {
