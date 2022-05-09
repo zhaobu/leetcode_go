@@ -51,7 +51,7 @@ func kthSmallest1(root *TreeNode, k int) int {
 /*
 解法2 递归优化版
 */
-func kthSmallest(root *TreeNode, k int) int {
+func kthSmallest2(root *TreeNode, k int) int {
 	find := false //增加find变量,可以在找到后就不用继续后面的递归
 	ret := 0
 	index := 1
@@ -73,6 +73,32 @@ func kthSmallest(root *TreeNode, k int) int {
 	}
 
 	inorder(root)
+	return ret
+}
+
+/*
+解法3 更简洁写法
+总结就是k--或者k++要放在前面写,如果先判断k然后再--,就会造成2次一样的k
+*/
+func kthSmallest(root *TreeNode, k int) int {
+
+	ret := 0
+	var dfs func(node *TreeNode)
+	dfs = func(node *TreeNode) {
+		if node == nil {
+			return
+		}
+		dfs(node.Left)
+		k--
+		if k == 0 {
+			ret = node.Val
+			return
+		}
+		dfs(node.Right)
+	}
+
+	dfs(root)
+
 	return ret
 }
 
