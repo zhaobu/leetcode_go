@@ -50,11 +50,12 @@ func canJump(nums []int) bool {
 		return b
 	}
 	m := len(nums)
-	curMax := 0
+	curMax := 0 //能达到的最大下标
 	for i := 0; i < m; i++ {
-		if i > curMax {
+		if i > curMax { //如果已经遍历到的下标超过记录的能到达的最大下标
 			return false
 		}
+		//事实更新能够到达的最大下标
 		curMax = max(curMax, nums[i]+i)
 	}
 
