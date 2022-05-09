@@ -59,13 +59,12 @@ func longestIncreasingPath1(matrix [][]int) int {
 }
 
 /*
-解法2
+解法2 dfs
 */
-var dirs = [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
-
 func longestIncreasingPath2(matrix [][]int) int {
 	m, n := len(matrix), len(matrix[0])
 
+	dirs := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
 	ret := 0
 	/*
 		record[i][j]记录从matrix[i][j]作为起始点的最长递增路径的长度
@@ -101,13 +100,18 @@ func longestIncreasingPath2(matrix [][]int) int {
 				record[i][j] = max(record[i][j], dfs(i1, j1)+1)
 			}
 		}
+		/*
+			当matrix[i][j]往4个方向都计算一遍最长递增路径后,取4个方向上的最大值就是结果
+		*/
 		return record[i][j]
 	}
 
 	for i := range matrix {
 		for j := range matrix[i] {
 			//每个点都作为起点计算一次
-			ret = max(dfs(i, j), ret)
+			if record[i][j] == 0 {
+				ret = max(dfs(i, j), ret)
+			}
 		}
 	}
 
@@ -117,9 +121,59 @@ func longestIncreasingPath2(matrix [][]int) int {
 /*
 解法3 拓扑排序
 */
-
 func longestIncreasingPath(matrix [][]int) int {
-	return 0
+	m, n := len(matrix), len(matrix[0])
+
+	dirs := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+
+	outDegs := make([][]int, m) //每个节点的出度
+	queue := [][2]int{}
+	//初始化每个节点的出度
+	for i := range matrix {
+		outDegs[i] = make([]int, n)
+		for j := range matrix[i] {
+			for _, dir := range dirs {
+				i1, j1 := i+dir[0], j+dir[1]
+				if (i1 >= 0 && i1 < m) && (j1 >= 0 && j1 < n) && matrix[i1][j1] > matrix[i][j] {
+					outDegs[i][j]++
+				}
+			}
+			//4个方向上的节点都比当前节点小
+			if outDegs[i][j] == 0 {
+				queue = append(queue, [2]int{i, j})
+			}
+		}
+	}
+
+	ret := 0
+	/*
+		1. 记录当前层的节点个数
+		2. 每出队一个元素,就--,当变为0时就表示当前层遍历完成
+	*/
+	curLevelNum := len(queue)
+	// 广度优先搜索
+	for len(queue) > 0 {
+		head := queue[0]
+		queue = queue[1:]
+		curLevelNum--
+		//更新head节点四周的节点的出度
+		i, j := head[0], head[1]
+		for _, dir := range dirs {
+			i1, j1 := i+dir[0], j+dir[1]
+			//如果某一个方向上有一个节点比当前节点小,那这个节点一定有一条往当前节点的边
+			if (i1 >= 0 && i1 < m) && (j1 >= 0 && j1 < n) && matrix[i][j] > matrix[i1][j1] {
+				outDegs[i1][j1]--
+				if outDegs[i1][j1] == 0 {
+					queue = append(queue, [2]int{i1, j1})
+				}
+			}
+		}
+		if curLevelNum == 0 {
+			ret++
+			curLevelNum = len(queue)
+		}
+	}
+	return ret
 }
 
 // @lc code=end
