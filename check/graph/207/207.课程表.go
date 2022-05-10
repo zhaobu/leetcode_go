@@ -16,24 +16,23 @@ package main
 3. 重复1和2，直到图为空或没有入度为0的点
 */
 func canFinish1(numCourses int, prerequisites [][]int) bool {
-	edge := make([][]int, numCourses) //邻接表存储图的边
+	edges := make([][]int, numCourses) //邻接表存储图的边
 	/*
 		indeg[i]=k表示以i为终点的边有k条
 	*/
 	indeg := make([]int, numCourses) //每个点的入度
-	ret := make([]int, 0, numCourses)
 	//初始化边
 	for _, v := range prerequisites {
-		start, end := v[1], v[0]
-		edge[start] = append(edge[start], end)
-		indeg[end]++
+		from, to := v[1], v[0]
+		edges[from] = append(edges[from], to)
+		indeg[to]++
 	}
-	// fmt.Printf("edge=%+v,indeg=%+v\n", edge, indeg)
+	// fmt.Printf("edges=%+v,indeg=%+v\n", edges, indeg)
 
 	queue := []int{}
 	//一次性将所有入度为0的点全部入队
-	for i := range indeg {
-		if indeg[i] == 0 {
+	for i, v := range indeg {
+		if v == 0 {
 			queue = append(queue, i)
 		}
 	}
@@ -41,25 +40,24 @@ func canFinish1(numCourses int, prerequisites [][]int) bool {
 		//删除入度为0的点
 		head := queue[0]
 		queue = queue[1:]
-		ret = append(ret, head)
+		numCourses--
 		//删除所有以该点为起点的所有边,并判断删除边后的点入度是否为0
-		for endIdx := 0; endIdx < len(edge[head]); endIdx++ {
-			end := edge[head][endIdx]
-			indeg[end]--
-			if indeg[end] == 0 {
-				queue = append(queue, end)
+		for _, to := range edges[head] {
+			indeg[to]--
+			if indeg[to] == 0 {
+				queue = append(queue, to)
 			}
 		}
 	}
-	return len(ret) == numCourses
+	return numCourses == 0
 }
 
 /*
 解法2 拓扑排序,栈实现(图的深度优先遍历)
 */
-func canFinish(numCourses int, prerequisites [][]int) bool {
+func canFinish3(numCourses int, prerequisites [][]int) bool {
 
-	edge := make([][]int, numCourses) //邻接表存储图
+	edges := make([][]int, numCourses) //邻接表存储图
 	/*
 		0: 「未搜索」：我们还没有搜索到这个节点；
 		1: 「搜索中」：我们搜索过这个节点，但还没有回溯到该节点，即该节点还没有入栈，还有相邻的节点没有搜索完成）；
@@ -75,7 +73,7 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 		// 将当前搜索的节点 u 标记为「搜索中」，
 		visited[u] = 1
 		//遍历该节点的每一个相邻节点 v
-		for _, v := range edge[u] {
+		for _, v := range edges[u] {
 			if visited[v] == 0 { //如果 v 为「未搜索」，那么我们开始搜索 v，待搜索完成回溯到 u
 				dfs(v)
 				if circle { //如果已经判断出有环,就提前结束
@@ -100,7 +98,7 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 	//初始化边
 	for _, v := range prerequisites {
 		start, end := v[1], v[0]
-		edge[end] = append(edge[end], start)
+		edges[end] = append(edges[end], start)
 	}
 
 	//遍历每一个点

@@ -17,31 +17,31 @@ package main
 */
 func findOrder(numCourses int, prerequisites [][]int) []int {
 	/*
-		edge[i]=[a,b,c]表示以i为起点的边有(i,a),(i,b),(i,c)
-			edge = [[2]    #表示0->2,以0为起点的边为(0,2)
+		edges[i]=[a,b,c]表示以i为起点的边有(i,a),(i,b),(i,c)
+			edges = [[2]    #表示0->2,以0为起点的边为(0,2)
 			    [2]     #表示1->2,以1为起点的边为(1,2)
 			    [3, 4]  #表示2->3,2->4,以2为起点的边为(3,4)
 			    []      #表示没有以3为起点的边
 			    []]     #表示没有以4为起点的边
 	*/
-	edge := make([][]int, numCourses) //邻接表存储图的边
+	edges := make([][]int, numCourses) //邻接表存储图的边
 	/*
 		indeg[i]=k表示以i为终点的边有k条
 	*/
 	indeg := make([]int, numCourses) //每个点的入度
-	ret := []int{}
-	//初始化边
+	//初始化有向边
 	for _, v := range prerequisites {
-		start, end := v[1], v[0]
-		edge[start] = append(edge[start], end)
-		indeg[end]++
+		from, to := v[1], v[0]
+		edges[from] = append(edges[from], to)
+		indeg[to]++
 	}
-	// fmt.Printf("edge=%+v,indeg=%+v\n", edge, indeg)
+	// fmt.Printf("edges=%+v,indeg=%+v\n", edges, indeg)
 
 	queue := []int{}
+	ret := make([]int, 0, numCourses)
 	//一次性将所有入度为0的点全部入队
-	for i := range indeg {
-		if indeg[i] == 0 {
+	for i, v := range indeg {
+		if v == 0 {
 			queue = append(queue, i)
 		}
 	}
@@ -51,18 +51,17 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
 		queue = queue[1:]
 		ret = append(ret, head)
 		//删除所有以该点为起点的所有边,并判断删除边后的点入度是否为0
-		for endIdx := 0; endIdx < len(edge[head]); endIdx++ {
-			end := edge[head][endIdx]
-			indeg[end]--
-			if indeg[end] == 0 {
-				queue = append(queue, end)
+		for _, to := range edges[head] {
+			indeg[to]--
+			if indeg[to] == 0 {
+				queue = append(queue, to)
 			}
 		}
 	}
-	if len(ret) == numCourses {
-		return ret
+	if len(ret) != numCourses {
+		return nil
 	}
-	return []int{}
+	return ret
 }
 
 /*
@@ -74,7 +73,7 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
 
 func findOrder2(numCourses int, prerequisites [][]int) []int {
 
-	edge := make([][]int, numCourses) //邻接表存储图
+	edges := make([][]int, numCourses) //邻接表存储图
 	/*
 		1. visited 记录哪些节点被遍历过，而 onPath 记录当前递归堆栈中有哪些节点
 		2. 类比贪吃蛇游戏，visited 记录蛇经过过的格子，而 onPath 仅仅记录蛇身。
@@ -97,7 +96,7 @@ func findOrder2(numCourses int, prerequisites [][]int) []int {
 		visited[u] = true
 		onPath[u] = true
 		//遍历该节点的每一个相邻节点 v
-		for _, v := range edge[u] {
+		for _, v := range edges[u] {
 			dfs(v)
 		}
 		//回溯
@@ -108,7 +107,7 @@ func findOrder2(numCourses int, prerequisites [][]int) []int {
 	//初始化边
 	for _, v := range prerequisites {
 		start, end := v[1], v[0]
-		edge[end] = append(edge[end], start)
+		edges[end] = append(edges[end], start)
 	}
 
 	/*
@@ -141,7 +140,7 @@ func findOrder2(numCourses int, prerequisites [][]int) []int {
 */
 func findOrder3(numCourses int, prerequisites [][]int) []int {
 
-	edge := make([][]int, numCourses) //邻接表存储图
+	edges := make([][]int, numCourses) //邻接表存储图
 	/*
 		0: 「未搜索」：我们还没有搜索到这个节点；
 		1: 「搜索中」：我们搜索过这个节点，但还没有回溯到该节点，即该节点还没有入栈，还有相邻的节点没有搜索完成）；
@@ -149,8 +148,7 @@ func findOrder3(numCourses int, prerequisites [][]int) []int {
 	*/
 	visited := make([]byte, numCourses) //记录点的访问状态
 	circle := false                     //是否存在环
-
-	ret := []int{}
+	ret := make([]int, 0, numCourses)   //栈用来,存储结果
 
 	var dfs func(u int)
 	dfs = func(u int) {
@@ -163,7 +161,7 @@ func findOrder3(numCourses int, prerequisites [][]int) []int {
 		// 将当前搜索的节点 u 标记为「搜索中」，
 		visited[u] = 1
 		//遍历该节点的每一个相邻节点 v
-		for _, v := range edge[u] {
+		for _, v := range edges[u] {
 			dfs(v)
 		}
 		//当 u 的所有相邻节点都为「已完成」时，我们将 u 放入栈中，并将其标记为「已完成」。
@@ -173,14 +171,14 @@ func findOrder3(numCourses int, prerequisites [][]int) []int {
 
 	//初始化边
 	for _, v := range prerequisites {
-		start, end := v[1], v[0]
-		edge[end] = append(edge[end], start)
+		from, to := v[0], v[1]
+		edges[from] = append(edges[from], to)
 	}
 
 	/*
 		图中并不是所有节点都相连，所以要用一个 for 循环将所有节点都作为起点调用一次 DFS 搜索算法
 	*/
-	for i := 0; i < numCourses && !circle; i++ {
+	for i := range edges {
 		dfs(i)
 	}
 
