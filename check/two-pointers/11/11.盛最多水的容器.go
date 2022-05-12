@@ -65,7 +65,10 @@ package main
  */
 
 // @lc code=start
-func maxArea(height []int) int {
+/*
+解法1 双指针
+*/
+func maxArea1(height []int) int {
 	if height == nil || len(height) < 2 {
 		return 0
 	}
@@ -86,6 +89,79 @@ func maxArea(height []int) int {
 		}
 	}
 	return max
+}
+
+/*
+解法2 双指针优化
+*/
+func maxArea2(height []int) int {
+	m := len(height)
+	ret := 0
+
+	for i, j := 0, m-1; i < j; {
+		cur := 0
+		if height[i] <= height[j] {
+			cur = (j - i) * height[i]
+			k := i + 1
+			/*
+				1. 因为height[i] <= height[j],所以对于右边界j来说j往左走时,不存在j2使由i,j2构成的面积比由i,j构成的面积
+				更大的情况,所以应该让i往右走
+				2. i往右走时应该寻找比height[i]更大的i,但同时i应该小于j
+			*/
+			for k < j && height[k] <= height[i] {
+				k++
+			}
+			i = k
+		} else if height[i] > height[j] {
+			cur = (j - i) * height[j]
+			k := j - 1
+			for k > i && height[k] <= height[j] {
+				k--
+			}
+			j = k
+		}
+		if cur > ret {
+			ret = cur
+		}
+	}
+
+	return ret
+}
+
+/*
+解法3 单调栈
+1. i从左往右遍历每一个高度,用一个单调递增栈保存遍历过的高度
+2. 对于每一个i,求出由每一个栈元素j和i组成的面积,并更新最大值
+3. 单调栈其实过滤的是那些在栈顶元素j和i之间的那些情况,因为那些情况height比
+栈顶的height小,同时下标也比栈顶的大,自然面积不可能更大
+*/
+func maxArea(height []int) int {
+	m := len(height)
+
+	min := func(a, b int) int {
+		if a < b {
+			return a
+		}
+		return b
+	}
+
+	stack := []int{0}
+	ret := 0
+	for i := 1; i < m; i++ {
+		if i+1 == m || height[i+1] < height[i] {
+			for j := len(stack) - 1; j >= 0; j-- {
+				cur := (i - stack[j]) * min(height[i], height[stack[j]])
+				if cur > ret {
+					ret = cur
+				}
+			}
+		}
+		if height[i] > height[stack[len(stack)-1]] {
+			stack = append(stack, i)
+		}
+	}
+
+	return ret
 }
 
 // @lc code=end
