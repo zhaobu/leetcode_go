@@ -27,7 +27,7 @@ ops出栈1次,nums出栈2次,进行一次计算,计算结果入栈nums.
 6. 当遍历完中缀表达式后,此时ops栈中可能有计算符号,则需要进行多次calOnce,直到ops栈为空
 ops中不可能还有(,因为遇到)时已经把(弹出了
 */
-func calculate(s string) int {
+func calculate1(s string) int {
 	nums := []int{} //存储数字
 	ops := []byte{} //存储 (,+,-,*,/
 
@@ -108,6 +108,39 @@ func calculate(s string) int {
 		calOnce()
 	}
 	return nums[0]
+}
+
+/*
+解法2 针对该题目条件更优解法
+*/
+func calculate(s string) (ans int) {
+	stack := []int{}
+	preSign := '+'
+	num := 0
+	for i, ch := range s {
+		isDigit := '0' <= ch && ch <= '9'
+		if isDigit {
+			num = num*10 + int(ch-'0')
+		}
+		if !isDigit && ch != ' ' || i == len(s)-1 {
+			switch preSign {
+			case '+':
+				stack = append(stack, num)
+			case '-':
+				stack = append(stack, -num)
+			case '*':
+				stack[len(stack)-1] *= num
+			default:
+				stack[len(stack)-1] /= num
+			}
+			preSign = ch
+			num = 0
+		}
+	}
+	for _, v := range stack {
+		ans += v
+	}
+	return
 }
 
 // @lc code=end
