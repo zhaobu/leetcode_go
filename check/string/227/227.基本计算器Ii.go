@@ -9,7 +9,7 @@ package main
 // @lc code=start
 
 /*
-解法1 双栈
+解法1 双栈通用解法(因为此题,字符不包含(),所以更简单)
 中缀表达式计算值的常规思路
 1. 用2个栈nums和ops分别存储操作数和操作符,注意数字可能大于9,ops中不存储)
 2. 如果当前字符是数字, 根据记录的上一个字符的类型,计算出实际的数字,并且入栈nums
@@ -33,12 +33,12 @@ func calculate(s string) int {
 
 	/*
 		1. 出栈一个操作数,出栈2个数字,并进行计算,然后计算结果入栈
-		2. 调用该函数时,必须保证ops不为空
+		2. 调用该函数时,必须保证ops不为空,且栈顶元素为计算符号
 	*/
 	calOnce := func() {
-		if ops[len(ops)-1] == '(' {
-			return
-		}
+		// if ops[len(ops)-1] == '(' {
+		// 	return
+		// }
 		ans := 0
 		n1, n2 := nums[len(nums)-2], nums[len(nums)-1]
 		op := ops[len(ops)-1]
@@ -90,7 +90,7 @@ func calculate(s string) int {
 				1. 出栈一个操作符和2个操作数进行计算,直到操作数栈顶的优先级低于当前操作数
 				1. 注意此时有可能ops栈顶是(,但是calOnce里面有校验,所以可以不用管
 			*/
-			for len(ops) > 0 && getType(ops[len(ops)-1]) >= curType {
+			for len(ops) > 0 && getType(ops[len(ops)-1]) != 4 && getType(ops[len(ops)-1]) >= curType {
 				calOnce()
 			}
 			ops = append(ops, s[i])
