@@ -105,7 +105,7 @@ func maxArea2(height []int) int {
 			k := i + 1
 			/*
 				1. 因为height[i] <= height[j],所以对于右边界j来说j往左走时,不存在j2使由i,j2构成的面积比由i,j构成的面积
-				更大的情况,所以应该让i往右走
+				更大的情况,也就是说就算后面j再怎么变,也用不上当前的i了,所以应该让i往右走
 				2. i往右走时应该寻找比height[i]更大的i,但同时i应该小于j
 			*/
 			for k < j && height[k] <= height[i] {
@@ -115,6 +115,9 @@ func maxArea2(height []int) int {
 		} else if height[i] > height[j] {
 			cur = (j - i) * height[j]
 			k := j - 1
+			/*
+				和height[i] <= height[j]时同理
+			*/
 			for k > i && height[k] <= height[j] {
 				k--
 			}
