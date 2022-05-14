@@ -11,12 +11,19 @@ func Test_calculate(t *testing.T) {
 		args args
 		want int
 	}{
+		// {
+		// 	name: "test1",
+		// 	args: args{
+		// 		s: "(1+(4+5+2)-3)+(6+8)",
+		// 	},
+		// 	want: 23,
+		// },
 		{
-			name: "test1",
+			name: "test2",
 			args: args{
-				s: "(1+(4+5+2)-3)+(6+8)",
+				s: " 3+5 / 2 ",
 			},
-			want: 23,
+			want: 5,
 		},
 	}
 	for _, tt := range tests {

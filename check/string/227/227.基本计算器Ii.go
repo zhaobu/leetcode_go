@@ -114,33 +114,71 @@ func calculate1(s string) int {
 解法2 针对该题目条件更优解法
 */
 func calculate(s string) (ans int) {
-	stack := []int{}
-	preSign := '+'
-	num := 0
-	for i, ch := range s {
-		isDigit := '0' <= ch && ch <= '9'
-		if isDigit {
-			num = num*10 + int(ch-'0')
+	getType := func(c byte) int {
+		if c == ' ' {
+			return 0
+		} else if c >= '0' && c <= '9' {
+			return 1
+		} else if c == '+' {
+			return 2
+		} else if c == '-' {
+			return 3
+		} else if c == '*' {
+			return 4
+		} else {
+			return 5
 		}
-		if !isDigit && ch != ' ' || i == len(s)-1 {
-			switch preSign {
-			case '+':
-				stack = append(stack, num)
-			case '-':
-				stack = append(stack, -num)
-			case '*':
-				stack[len(stack)-1] *= num
-			default:
-				stack[len(stack)-1] /= num
+	}
+
+	getNum := func(j int) (num, i int) {
+		for i = j; i < len(s); i++ {
+			t := getType(s[i])
+			if t == 0 {
+				continue
+			} else if t != 1 {
+				break
 			}
-			preSign = ch
-			num = 0
+			num = num*10 + int(s[i]-'0')
+		}
+		return
+	}
+
+	stack := []int{}
+	curSymbol := 1 //当前的符号,1表示正数,-1表示负数
+	for i := 0; i < len(s); {
+		curType := getType(s[i])
+		if curType == 0 {
+			i++
+		} else if curType == 1 {
+			//取出一个完整的数字
+			num, j := getNum(i)
+			stack = append(stack, num*curSymbol)
+			i = j
+		} else if curType == 2 {
+			curSymbol = 1
+			i++
+		} else if curType == 3 {
+			curSymbol = -1
+			i++
+		} else {
+			//取出下一个数
+			num, j := getNum(i + 1)
+			i = j
+
+			lastNum := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if curType == 4 {
+				stack = append(stack, lastNum*num)
+			} else {
+				stack = append(stack, lastNum/num)
+			}
 		}
 	}
-	for _, v := range stack {
-		ans += v
+	ret := 0
+	for i := range stack {
+		ret += stack[i]
 	}
-	return
+	return ret
 }
 
 // @lc code=end
