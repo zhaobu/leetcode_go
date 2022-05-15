@@ -9,48 +9,60 @@ package main
 // @lc code=start
 
 /*
-解法1 hash表暴力法(超时)
+解法1 滑动窗口
+1. 用nums1的第一个元素对齐nums2的每一个下标,并且求得每次对齐时的最长公共子数组,并更新最大值
+2. 用nums2的第一个元素对齐nums1的每一个下标,并且求得每次对齐时的最长公共子数组,并更新最大值
+3. 在每次对齐时,如果发现已经求得的最长公共子数组长度比剩下的元素还大,那后面的匹配情况就没必要进行了
+比如 nums1 = [1,2,3,2,1], num2 = [3,2,1,4,7], 当用nums2的第一个元素匹配到nums1的下标2时已经
+求得的最长公共子数组为3,那nums1后面的下标就没必要进行匹配了
 */
-func findLength1(nums1 []int, nums2 []int) int {
-	/*
-		arr1 记录nums1中每种元素的所有下标
-		arr2 记录nums2中每种元素的所有下标
-	*/
-
-	arr1, arr2 := map[int][]int{}, map[int][]int{}
-
-	for i, v := range nums1 {
-		arr1[v] = append(arr1[v], i)
-	}
-
-	for i, v := range nums2 {
-		arr2[v] = append(arr2[v], i)
-	}
-	// fmt.Printf("arr1=%+v,arr2=%+v\n", arr1, arr2)
+func findLength(nums1 []int, nums2 []int) int {
 	n1, n2 := len(nums1), len(nums2)
+
 	ret := 0
-	for value, indexs1 := range arr1 {
-		if indexs2, ok := arr2[value]; ok {
-			for _, index1 := range indexs1 {
-				for _, index2 := range indexs2 {
-					// fmt.Printf("value=%+v, i=%+v, j=%+v \n", value, i, j)
-					count := 0
-					for i, j := index1, index2; i < n1 && j < n2 && (nums1[i] == nums2[j]); i, j = i+1, j+1 {
-						count++
-					}
-					if count > ret {
-						ret = count
-					}
-				}
+	/*
+		1. i, j分别表示nums1和nums2的开始下标
+		2. nums1和nums2的下标分别从i,j开始,统计最长的公共子数组
+	*/
+	getMax := func(i, j int) {
+		count := 0
+		for ; i < n1 && j < n2; i, j = i+1, j+1 {
+			if nums1[i] == nums2[j] {
+				count++
+			} else { //只要nums1和nums2所在元素不等,公共子数组长度就变为0
+				count = 0
+			}
+			if count > ret {
+				ret = count
 			}
 		}
 	}
 
+	//分别用nums2的第一个元素对齐nums1的每一个下标
+	for i := range nums1 {
+		getMax(i, 0)
+		/*
+			如果nums1剩下的元素个数比已经求得的最长公共子数组长度还短,那后面的匹配就没必要进行了
+		*/
+		if ret >= n1-i {
+			break
+		}
+	}
+
+	//分别用nums1的第一个元素对齐nums2的每一个下标
+	for i := range nums2 {
+		getMax(0, i)
+		if ret >= n2-i {
+			break
+		}
+	}
 	return ret
 }
 
 /*
 解法2 动态规划
+dp[i][j]表示nums1[:i]和nums2[:j]的最长公共后缀
+要求的最长公共子数组就转变为在求最长公共后缀的dp过程中更新最大值即可
 */
 func findLength2(nums1 []int, nums2 []int) int {
 	n1, n2 := len(nums1), len(nums2)
@@ -85,7 +97,7 @@ func findLength2(nums1 []int, nums2 []int) int {
 /*
 解法3 动态规划优化
 */
-func findLength(nums1 []int, nums2 []int) int {
+func findLength3(nums1 []int, nums2 []int) int {
 	n1, n2 := len(nums1), len(nums2)
 
 	/*
