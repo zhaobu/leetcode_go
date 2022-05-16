@@ -54,7 +54,7 @@ func inorderSuccessor1(root *TreeNode, p *TreeNode) *TreeNode {
 }
 
 /*
-解法2 二叉搜素数性质
+解法2 二叉搜索数性质
 */
 func inorderSuccessor(root *TreeNode, p *TreeNode) *TreeNode {
 	ret := p.Right
