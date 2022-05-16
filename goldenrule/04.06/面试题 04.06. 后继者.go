@@ -76,8 +76,8 @@ func inorderSuccessor(root *TreeNode, p *TreeNode) *TreeNode {
 		} else {
 			/*
 				1. 如果cur > p,则后继可能就是cur或者在cur的左子树上
-				2. 如果cur就是后继,说明cur的左子树不存在>p的节点.
-				3. 如果cur的后继在左子树上,也需要往左遍历
+				2. 如果cur就是后继,说明cur的左子树不存在 > p的节点.后面的遍历也不会再进到此分支
+				3. 如果cur的后继在左子树上,则就继续在左子树上查找
 			*/
 			ret = cur
 			cur = cur.Left
