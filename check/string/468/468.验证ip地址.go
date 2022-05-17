@@ -1,5 +1,7 @@
 package main
 
+import "strings"
+
 /*
  * @lc app=leetcode.cn id=468 lang=golang
  *
@@ -11,7 +13,7 @@ package main
 /*
 解法1 dfs(不推荐,容易漏掉各种情况)
 */
-func validIPAddress(queryIP string) string {
+func validIPAddress1(queryIP string) string {
 
 	/*
 		验证ipv4地址的合法字符
@@ -124,7 +126,76 @@ func validIPAddress(queryIP string) string {
 }
 
 /*
-解法2 先切割,再判断每一段
+解法2 先分割,再判断每一段
 */
+func validIPAddress(queryIP string) string {
+
+	/*
+		1. 验证是否合法ipv4地址
+	*/
+	checkIPv4 := func(str string) bool {
+		if len(str) == 0 || len(str) > 3 { //最多3位数255
+			return false
+		}
+		num := 0
+		for i, ch := range str {
+			if ch < '0' || ch > '9' {
+				return false
+			}
+			if ch == '0' && i == 0 && len(str) > 1 {
+				return false
+			}
+			num = num*10 + int(ch-'0')
+		}
+		if num > 255 {
+			return false
+		}
+		return true
+	}
+
+	checkIPv6 := func(str string) bool {
+		if len(str) == 0 || len(str) > 4 { //最多4位数
+			return false
+		}
+		for _, ch := range str {
+			if !((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')) {
+				return false
+			}
+		}
+		return true
+	}
+
+	//先尝试判断是个ipv4
+	strs := strings.Split(queryIP, ".")
+	if len(strs) == 4 {
+		valid := true
+		for i := range strs {
+			if !checkIPv4(strs[i]) {
+				valid = false
+				break
+			}
+		}
+		if valid {
+			return "IPv4"
+		}
+	}
+
+	//再尝试判断是个ipv6
+	strs = strings.Split(queryIP, ":")
+	if len(strs) == 8 {
+		valid := true
+		for i := range strs {
+			if !checkIPv6(strs[i]) {
+				valid = false
+				break
+			}
+		}
+		if valid {
+			return "IPv6"
+		}
+	}
+
+	return "Neither"
+}
 
 // @lc code=end
