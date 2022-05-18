@@ -38,6 +38,7 @@ func kthSmallest(matrix [][]int, k int) int {
 		//找出第一个
 		for i := 0; i < m; i++ {
 			index := search(i, num)
+			//如果某一行已经找不到<=num的数,那更大的行更不可能找到
 			if index == -1 {
 				break
 			}
