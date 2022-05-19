@@ -22,7 +22,7 @@ import (
 */
 
 /*
- 解法1 dfs
+解法1 dfs
 */
 func isSubStructure(A *TreeNode, B *TreeNode) bool {
 	if B == nil {
@@ -46,25 +46,39 @@ func isSubStructure(A *TreeNode, B *TreeNode) bool {
 		return left && right
 	}
 
+	/*
+	   1. 初始化ret为0, 表示在A中没找到和B的根节点相同值的节点
+	   2. 当 ret=1 时, 表示已经找到了一个B是A的子结构的情况
+	   3. 当 ret=-1时, 表示根节点和B相同,但是不是子结构
+	   4. A树中可能存在节点值重复的情况
+	*/
 	ret := 0
 	var dfs func(node *TreeNode)
 	dfs = func(node *TreeNode) {
-		if ret != 0 || node == nil {
+		if ret == 1 || node == nil {
 			return
 		}
-		dfs(node.Left)
-		dfs(node.Right)
+		/*
+		   1. 不能后序遍历
+		   2. 类似
+		       [4,2,3,4,5,6,7,8,9]
+		       [4,8,9]
+		       这样的情况,A树上节点有重复值
+		*/
 		if node.Val == B.Val {
+			// fmt.Printf("root1=[%d,%d,%d], root2=%d \n", node.Val, node.Left.Val, node.Right.Val, B.Val)
 			if check(node, B) {
 				ret = 1
 			} else {
 				ret = -1
 			}
 		}
+		dfs(node.Left)
+		dfs(node.Right)
 	}
 
 	dfs(A)
-
+	// fmt.Printf("ret=%d\n", ret)
 	return ret == 1
 }
 
