@@ -12,17 +12,18 @@ import (
 
 // @lc code=start
 
+/**
+* Definition for a binary tree node.
+* type TreeNode struct {
+	*     Val int
+	*     Left *TreeNode
+	*     Right *TreeNode
+	* }
+*/
+
 /*
  解法1 dfs
 */
-/**
- * Definition for a binary tree node.
- * type TreeNode struct {
- *     Val int
- *     Left *TreeNode
- *     Right *TreeNode
- * }
- */
 func isSubStructure(A *TreeNode, B *TreeNode) bool {
 	if B == nil {
 		return false
