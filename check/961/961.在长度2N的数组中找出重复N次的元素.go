@@ -42,7 +42,6 @@ func repeatedNTimes1(nums []int) int {
 只有一个数出现2次,就是重复的数
 */
 func repeatedNTimes(nums []int) int {
-	n := len(nums)
 	// 直接统计出现次数
 	count := [10000]byte{}
 	for i := range nums {
