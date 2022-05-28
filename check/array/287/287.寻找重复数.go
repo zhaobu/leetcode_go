@@ -64,7 +64,7 @@ cnt[i]表示nums数组中<=i的个数,假设重复元素为target,target的取�
 二分查找的初始范围当然就是[1,n]
 */
 
-func findDuplicate(nums []int) int {
+func findDuplicate2(nums []int) int {
 	left, right := 1, len(nums)-1
 
 	getCnt := func(n int) (cnt int) {
@@ -93,6 +93,37 @@ func findDuplicate(nums []int) int {
 		}
 	}
 	return -1
+}
+
+/*
+解法3 位运算
+*/
+func findDuplicate(nums []int) int {
+	n := len(nums) - 1
+	ret := int32(0) //一定要用int32位数字,因为后面要进行移位操作
+	for i := 0; i < 32; i++ {
+		//计算[1,n]所有数字第i位为1的个数
+		cntN := 0
+		for j := 1; j <= n; j++ {
+			if (1<<i)&j > 0 {
+				cntN++
+			}
+		}
+		//计算nums数组中所有数字第i位为1的个数
+		cntNum := 0
+		for j := range nums {
+			if (1<<i)&nums[j] > 0 {
+				cntNum++
+			}
+		}
+		// fmt.Printf("cntNum=%d,cntN=%d\n", cntNum, cntN)
+		//重复元素会让二进制数第i位上为1的个数变多
+		if cntNum > cntN {
+			ret |= (1 << int32(i))
+		}
+	}
+
+	return int(ret)
 }
 
 // @lc code=end

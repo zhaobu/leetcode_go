@@ -9,9 +9,7 @@ package main
 // @lc code=start
 
 /*
-解法1 位运算
-可以推广到:一个数组中有一种数出现k次，其他数都出现了m次，m > 1, k < m, 找到出现了k次的数
-https://www.cnblogs.com/greyzeng/p/15385402.html
+解法1 位运算(和法2一样,只是更易理解)
 */
 func singleNumber1(nums []int) int {
 	/*
@@ -42,17 +40,34 @@ func singleNumber1(nums []int) int {
 解法2 更简洁写法
 */
 func singleNumber(nums []int) int {
-	ans := int32(0)
+	ret := int32(0)
 	for i := 0; i < 32; i++ {
 		total := int32(0)
 		for _, num := range nums {
 			total += int32(num) >> i & 1
 		}
-		if total%3 > 0 {
-			ans |= 1 << i
+		if total%3 == 1 {
+			ret |= 1 << i
 		}
 	}
-	return int(ans)
+	return int(ret)
+}
+
+/*
+推广到一个数组中有一种数出现k次，其他数都出现了m次，m > 1, k < m, 找到出现了k次的数
+*/
+func singleNumberN(nums []int, k, m int) int {
+	ret := int32(0)
+	for i := 0; i < 32; i++ {
+		total := 0 //统计nums中所有数字在第i位上为1的个数
+		for _, num := range nums {
+			total += num >> i & 1
+		}
+		if total%m == k {
+			ret |= 1 << i
+		}
+	}
+	return int(ret)
 }
 
 // @lc code=end
