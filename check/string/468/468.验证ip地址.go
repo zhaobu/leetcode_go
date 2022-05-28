@@ -166,33 +166,24 @@ func validIPAddress(queryIP string) string {
 	}
 
 	//先尝试判断是个ipv4
-	strs := strings.Split(queryIP, ".")
-	if len(strs) == 4 {
-		valid := true
+	if strs := strings.Split(queryIP, "."); len(strs) == 4 {
 		for i := range strs {
 			if !checkIPv4(strs[i]) {
-				valid = false
-				break
+				return "Neither"
 			}
 		}
-		if valid {
-			return "IPv4"
-		}
+		return "IPv4"
 	}
 
 	//再尝试判断是个ipv6
-	strs = strings.Split(queryIP, ":")
-	if len(strs) == 8 {
-		valid := true
+
+	if strs := strings.Split(queryIP, ":"); len(strs) == 8 {
 		for i := range strs {
 			if !checkIPv6(strs[i]) {
-				valid = false
-				break
+				return "Neither"
 			}
 		}
-		if valid {
-			return "IPv6"
-		}
+		return "IPv6"
 	}
 
 	return "Neither"
