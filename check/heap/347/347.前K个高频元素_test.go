@@ -40,12 +40,20 @@ func Test_topKFrequent(t *testing.T) {
 			want: []int{1, 2},
 		},
 		{
-			name: "test3",
+			name: "test4",
 			args: args{
 				nums: []int{2, 3, 4, 1, 4, 0, 4, -1, -2, -1},
 				k:    2,
 			},
 			want: []int{4, -1},
+		},
+		{
+			name: "test5",
+			args: args{
+				nums: []int{-1, -1},
+				k:    1,
+			},
+			want: []int{-1},
 		},
 	}
 	for _, tt := range tests {

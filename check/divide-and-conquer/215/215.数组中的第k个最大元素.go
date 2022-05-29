@@ -111,7 +111,7 @@ func findKthLargest2(nums []int, k int) int {
 }
 
 /*
-解法3 二叉堆 小顶堆
+解法3 二叉堆 小顶堆(不推荐此种写法)
 如何在一个包含 n 个数据的数组中，查找前 K 大数据呢?
 维护一个大小为 K 的小顶堆，顺序遍历数组，从数组中取出取数据
 1. 如果堆中元素<k,元素直接入堆
@@ -121,11 +121,9 @@ func findKthLargest2(nums []int, k int) int {
 数组中的数据都遍历完之后，堆中的数据就是前 K 大数据
 */
 func findKthLargest3(nums []int, k int) int {
-	heap := make([]int, k) //大小为k的小顶堆
-	count := 0             //堆中元素个数
 
 	// 自上往下堆化
-	heapify := func(i int) {
+	heapify := func(heap []int, i, count int) {
 		for {
 			minPos := i //当前节点和2个子节点中最小元素的下标
 			if (2*i+1) < count && heap[minPos] > heap[2*i+1] {
@@ -143,10 +141,7 @@ func findKthLargest3(nums []int, k int) int {
 	}
 
 	//自下往上堆化
-	insert := func(data int) {
-		heap[count] = data
-		count++
-		i := count - 1    //当前节点从堆的最后一个元素开始
+	insert := func(heap []int, i int) {
 		p := (i - 1) >> 1 //父节点下标
 		for p >= 0 && heap[i] < heap[p] {
 			heap[i], heap[p] = heap[p], heap[i] //交换父节点和当前节点
@@ -156,21 +151,23 @@ func findKthLargest3(nums []int, k int) int {
 	}
 
 	for i := 0; i < len(nums); i++ {
-		if count < k { //如果堆不满,插入新元素,从下到上堆化
-			insert(nums[i])
-		} else if nums[i] > heap[0] { //如果堆满,直接用新元素替换堆顶元素,相当于删除,然后再从上到下堆化
-			heap[0] = nums[i]
-			heapify(0)
+		if i < k { //如果堆不满,插入新元素,从下到上堆化
+			insert(nums, i)
+		} else if nums[i] > nums[0] {
+			//如果堆满,就和堆顶元素比较,如果大于堆顶元素,就和堆顶交换,相当于删除堆顶元素,然后堆顶下沉
+			nums[0], nums[i] = nums[i], nums[0]
+			heapify(nums, 0, k)
 		}
 
 	}
 
-	return heap[0]
+	return nums[0]
 }
 
 /*
-解法4 二叉堆 小顶堆
-思想和解法2一样,只不过写法不一样,先建好大小为k的小顶堆,然后再遍历剩下的元素
+解法4 二叉堆 小顶堆(推荐小顶堆写法)
+1. 思想和解法3一样,只不过写法不一样,先建好大小为k的小顶堆,然后再遍历剩下的元素
+2. 到最后小顶堆堆顶元素就是第k大元素,堆中元素全部比堆顶大
 */
 func findKthLargest(nums []int, k int) int {
 
@@ -210,7 +207,7 @@ func findKthLargest(nums []int, k int) int {
 }
 
 /*
-解法5 二叉堆 小顶堆
+解法5 二叉堆 小顶堆(不推荐此种写法,比较绕)
 1. 遍历所有元素堆化构建大顶堆
 2. 删除n-k次堆顶元素,剩下k个元素时,堆顶元素就是第k大的元素
 */
