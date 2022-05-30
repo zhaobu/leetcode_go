@@ -54,30 +54,29 @@ func sumRootToLeaf(root *TreeNode) int {
 	ret := 0
 
 	stack := []*TreeNode{}
+	pre, val := (*TreeNode)(nil), 0
 	cur := root
-	pre := (*TreeNode)(nil)
-	val := 0
 	for cur != nil || len(stack) > 0 {
 		for cur != nil {
 			val = (val << 1) | cur.Val
 			stack = append(stack, cur)
 			cur = cur.Left
 		}
-		top := stack[len(stack)-1]
-		if top.Right == nil || top.Right == pre {
-			if top.Right == nil && top.Left == nil { //不能写成top.Right == nil
+		cur = stack[len(stack)-1]
+		if cur.Right == nil || cur.Right == pre {
+			if cur.Right == nil && cur.Left == nil { //不能写成top.Right == nil
 				ret += val
 			}
-			// fmt.Printf("top.val=%d\n", top.Val)
+			// fmt.Printf("cur.val=%d\n", cur.Val)
 			// fmt.Printf("前val=%b\n", val)
-			// val = (val & (^top.Val)) >> 1
+			// val = (val & (^cur.Val)) >> 1
 			val >>= 1
 			// fmt.Printf("后val=%b\n\n", val)
-			pre = top
+			pre = cur
 			stack = stack[:len(stack)-1]
 			cur = nil
 		} else {
-			cur = top.Right
+			cur = cur.Right
 		}
 	}
 
