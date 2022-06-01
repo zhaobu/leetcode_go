@@ -1,5 +1,9 @@
 package main
 
+import (
+	"strings"
+)
+
 /*
  * @lc app=leetcode.cn id=395 lang=golang
  *
@@ -56,7 +60,7 @@ func LengthOfLongestSubstringKDistinct(s string, k int) int {
 /*
 解法1 滑动窗口
 */
-func longestSubstring(s string, k int) int {
+func longestSubstring1(s string, k int) int {
 	n := len(s)
 	if n < k {
 		return 0
@@ -64,10 +68,19 @@ func longestSubstring(s string, k int) int {
 	if k == 1 {
 		return n
 	}
-	ret := 0
+	//先统计字符出现的个数
+	cnts := [26]int{}
+	totalKind := 0
+	for i := range s {
+		cnts[s[i]-'a']++
+		if cnts[s[i]-'a'] == 1 {
+			totalKind++
+		}
+	}
 
-	for maxKind := 1; maxKind <= 26; maxKind++ {
-		cnts := [26]int{} //记录每种字符数量
+	ret := 0
+	for maxKind := 1; maxKind <= totalKind; maxKind++ {
+		cnts = [26]int{} //记录每种字符数量
 		charKind, kind := 0, 0
 		left, right := 0, 0
 
@@ -93,6 +106,7 @@ func longestSubstring(s string, k int) int {
 				cnts[index]--
 				left++
 			}
+
 			right++
 			/*
 				1. 运行到这里字符种类都是满足<=maxKind的
@@ -107,6 +121,46 @@ func longestSubstring(s string, k int) int {
 
 	}
 
+	return ret
+}
+
+/*
+解法2 分治
+*/
+func longestSubstring(s string, k int) (ret int) {
+	n := len(s)
+	if n < k {
+		return 0
+	}
+	if k == 1 {
+		return n
+	}
+
+	//统计字符串s中每个字符的频率
+	freq := [26]int{}
+	for i := range s {
+		freq[s[i]-'a']++
+	}
+
+	//找出一个分割字符,这个字符的频率<k
+	split := byte(0)
+	for i, cnt := range freq {
+		if cnt > 0 && cnt < k {
+			split = byte(i) + 'a'
+			break
+		}
+	}
+	//如果不存在频率<k的字符,说明整个字符串都符合要求
+	if split == 0 {
+		return len(s)
+	}
+	//继续去每一段分割后的字符串中查找
+	for _, str := range strings.Split(s, string(split)) {
+		tmp := longestSubstring(str, k)
+		if tmp > ret {
+			ret = tmp
+		}
+	}
 	return ret
 }
 
