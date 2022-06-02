@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
  *
  *
@@ -29,17 +31,41 @@ func findRepeatNumber1(nums []int) int {
 解法2 原地交换
 [0,1,2,3,3,5]
 */
-func findRepeatNumber(nums []int) int {
-	// defer func() {
-	// 	fmt.Printf("nums=%+nums[i]\n", nums)
-	// }()
+func findRepeatNumber2(nums []int) int {
+	count := 0
+	defer func() {
+		fmt.Printf("解法2 nums=%+v,count=%d\n", nums, count)
+	}()
 	for i := 0; i < len(nums); i++ {
 		if nums[i] != i {
+			count++
 			if nums[nums[i]] == nums[i] {
 				return nums[i]
 			}
-			nums[nums[i]], nums[i] = nums[i], nums[nums[i]]
+			nums[i], nums[nums[i]] = nums[nums[i]], nums[i]
 			i-- //注意交换后还要判断一次当前位置
+		}
+	}
+
+	return -1
+}
+
+/*
+解法3 原地交换另一种写法
+[0,1,2,3,3,5]
+*/
+func findRepeatNumber(nums []int) int {
+	count := 0
+	defer func() {
+		fmt.Printf("解法3 nums=%+v,count=%d\n", nums, count)
+	}()
+	for i := 0; i < len(nums); i++ {
+		for nums[i] != i {
+			count++
+			if nums[nums[i]] == nums[i] {
+				return nums[i]
+			}
+			nums[i], nums[nums[i]] = nums[nums[i]], nums[i]
 		}
 	}
 

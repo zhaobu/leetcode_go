@@ -40,6 +40,9 @@ func Test_findRepeatNumber(t *testing.T) {
 			if got := findRepeatNumber(tt.args.nums); got != tt.want {
 				t.Errorf("findRepeatNumber() = %v, want %v", got, tt.want)
 			}
+			if got := findRepeatNumber2(tt.args.nums); got != tt.want {
+				t.Errorf("findRepeatNumber2() = %v, want %v", got, tt.want)
+			}
 		})
 	}
 }

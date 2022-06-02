@@ -14,20 +14,20 @@ func Test_findDuplicates(t *testing.T) {
 		args args
 		want []int
 	}{
-		// {
-		// 	name: "test1",
-		// 	args: args{
-		// 		nums: []int{5, 4, 6, 7, 9, 3, 10, 9, 5, 6},
-		// 	},
-		// 	want: []int{9, 6, 5},
-		// },
-		// {
-		// 	name: "test2",
-		// 	args: args{
-		// 		nums: []int{1, 1, 2},
-		// 	},
-		// 	want: []int{1},
-		// },
+		{
+			name: "test1",
+			args: args{
+				nums: []int{5, 4, 6, 7, 9, 3, 10, 9, 5, 6},
+			},
+			want: []int{9, 6, 5},
+		},
+		{
+			name: "test2",
+			args: args{
+				nums: []int{1, 1, 2},
+			},
+			want: []int{1},
+		},
 		{
 			name: "test3",
 			args: args{
@@ -38,6 +38,9 @@ func Test_findDuplicates(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			// if got := findDuplicates1(tt.args.nums); !reflect.DeepEqual(got, tt.want) {
+			// 	t.Errorf("findDuplicates() = %v, want %v", got, tt.want)
+			// }
 			if got := findDuplicates(tt.args.nums); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("findDuplicates() = %v, want %v", got, tt.want)
 			}
