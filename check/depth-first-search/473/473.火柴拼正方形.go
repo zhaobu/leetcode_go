@@ -96,10 +96,11 @@ func makesquare2(matchsticks []int) bool {
 	}
 	for s := 1; s < len(dp); s++ {
 		for k, v := range matchsticks {
-			if s>>k&1 == 0 {
+			if s>>k&1 == 0 { //没有选中第k根火柴
 				continue
 			}
-			s1 := s &^ (1 << k)
+
+			s1 := s &^ (1 << k) //dp[s1]表示状态s这种挑选情况下,除去第k根火柴外其他火柴的长度总和
 			if dp[s1] >= 0 && dp[s1]+v <= tLen {
 				dp[s] = (dp[s1] + v) % tLen
 				break
@@ -180,7 +181,7 @@ func makesquare(matchsticks []int) bool {
 		}
 		bSet := aSet ^ a
 		for b := bSet; b > 0; b = (b - 1) & bSet {
-			fmt.Printf("B1 aSet=%05b, a=%05b, bSet=%05b, b=%05b\n", aSet, a, bSet, b)
+			fmt.Printf("B1 aSet=%05b, a=%05b, bSet=%05b, b=%05b, b=%d\n", aSet, a, bSet, b, b)
 			if s[b] != board {
 				continue
 			}
