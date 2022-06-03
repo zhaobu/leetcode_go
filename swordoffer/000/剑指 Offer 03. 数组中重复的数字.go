@@ -13,7 +13,7 @@ import (
 // @lc code=start
 
 /*
- 解法1 双指针
+ 解法1
 */
 func getKthFromEnd(head *ListNode, k int) *ListNode {
 	fast := head
