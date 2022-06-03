@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -133,12 +134,14 @@ func makesquare(matchsticks []int) bool {
 		}
 	}
 
-	s := make([]int, 1<<n)
+	m := 1 << n
+	s := make([]int, m)
 	/*
-		1.预处理,s[mask]表示mask这种枚举状态下所有被选中的元素总和
-		2. mask=0时表示所有的火柴都不选,所以mask至少>=1
+		1. 要枚举个数为n的情况, 二进制的位数要为2^n
+		2.预处理,s[mask]表示mask这种枚举状态下所有被选中的元素总和
+		3. mask=0时表示所有的火柴都不选,所以mask至少>=1
 	*/
-	for mask := 1; mask < 1<<n; mask++ {
+	for mask := 1; mask < m; mask++ {
 		//方法1:直接求和
 		/*
 			for i, v := range matchsticks {
@@ -147,25 +150,43 @@ func makesquare(matchsticks []int) bool {
 				}
 			}
 		*/
-		//方法2: 动态规划,找到最低位的1,由前面转移而来
+		/*
+			方法2: 动态规划,找到最低位的1,由前面转移而来
+			1. mask^(1<<i): 表示消掉mask的最地位的1,等价于mask&(mask-1)
+			2. 因为只消掉最低位的1,所以s[mask]和s[mask^(1<<i)]只相差选取第i位上的火柴
+		*/
 		i := 0
 		for (mask & (1 << i)) == 0 {
 			i++
 		}
-		s[mask] = s[mask^1<<i] + matchsticks[i]
+		// fmt.Printf("mask=%05b,pre=%05b,other=%05b\n", mask, mask^1<<i, mask&(mask-1))
+		s[mask] = s[mask^(1<<i)] + matchsticks[i]
 	}
 
-	for a := 1; a < 1<<n; a++ {
+	/*
+		1. a, b, c, d 为四个边所选的元素
+		2. 边a可以从 [1,m - 1] 中情况中任选一种
+		3. 边b可以从 [1,m - 1] 中出掉a选的那种情况外选一种,也就是(m - 1) ^ a 的子集
+		4. c 为 (m - 1)^a^b 的子集
+		5. d 为(m - 1)^a^b^c
+		即可保证 a | b | c | d = (1 << n) - 1 用完所有的元素
+	*/
+
+	aSet := m - 1 //边a的选取范围
+	for a := 1; a < m; a++ {
+		fmt.Printf("A1 aSet=%05b, a=%05b\n", aSet, a)
 		if s[a] != board {
 			continue
 		}
-		x := (1<<n - 1) ^ a
-		for b := x; b > 0; b = (b - 1) & x {
+		bSet := aSet ^ a
+		for b := bSet; b > 0; b = (b - 1) & bSet {
+			fmt.Printf("B1 aSet=%05b, a=%05b, bSet=%05b, b=%05b\n", aSet, a, bSet, b)
 			if s[b] != board {
 				continue
 			}
-			y := x ^ b
-			for c := y; c > 0; c = (c - 1) & y {
+			cSet := bSet ^ b
+			for c := cSet; c > 0; c = (c - 1) & cSet {
+				fmt.Printf("C1 aSet=%05b, a=%05b, bSet=%05b, b=%05b, cSet=%05b, c=%05b\n", aSet, a, bSet, b, cSet, c)
 				if s[c] != board {
 					continue
 				}
