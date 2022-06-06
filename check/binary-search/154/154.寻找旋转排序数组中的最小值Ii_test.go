@@ -11,17 +11,31 @@ func Test_findMin(t *testing.T) {
 		args args
 		want int
 	}{
-		{
-			name: "test1",
-			args: args{[]int{
-				11, 13, 15, 17,
-			}},
-			want: 11,
-		},
+		// {
+		// 	name: "test1",
+		// 	args: args{[]int{
+		// 		11, 13, 15, 17,
+		// 	}},
+		// 	want: 11,
+		// },
 		{
 			name: "test2",
 			args: args{[]int{
-				3, 4, 5, 1, 2,
+				2, 2, 2, 0, 1, 2,
+			}},
+			want: 0,
+		},
+		{
+			name: "test3",
+			args: args{[]int{
+				1, 3, 3,
+			}},
+			want: 1,
+		},
+		{
+			name: "test4",
+			args: args{[]int{
+				2, 3, 1,
 			}},
 			want: 1,
 		},

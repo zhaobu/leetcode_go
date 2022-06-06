@@ -63,7 +63,7 @@ func findMin1(nums []int) int {
 解法2 二分查找
 和方法1一样, 只不过不用提前判断当前数组是否恰好旋转n次
 */
-func findMin(nums []int) int {
+func findMin2(nums []int) int {
 	n := len(nums)
 	if n == 1 {
 		return nums[0]
@@ -95,6 +95,45 @@ func findMin(nums []int) int {
 
 	// 不会走到这里
 	return -1
+}
+
+/*
+解法3 官方题解(推荐此种写法)
+假设nums[i]就是要求的最小元素
+因为旋转的次数时[1,n]次,所以mid的取值范围是[0,n-1]
+
+当i属于(0,n-1)时
+考虑数组中最后一个元素nums[n-1],.则
+如果nums[j] < nums[n-1],那j一定在[i,j)范围内,也就是 i 的右半部分
+如果nums[j] > nums[n-1],那j一定在[0,i)范围内,也就是 i 的左半部分
+
+当i=0,或者i=n-1时,也都满足
+*/
+func findMin(nums []int) int {
+	n := len(nums)
+	if n == 1 {
+		return nums[0]
+	}
+	left, right := 0, n-1
+	for left < right {
+		mid := left + (right-left)>>1 //    left <= mid <= right
+		if nums[mid] > nums[right] {
+			/*
+				1. mid一定在属于左半部分,最小值在[mid+1:right]范围内
+				2. [left,mid]范围内的值都可以排除掉
+			*/
+			left = mid + 1
+		} else {
+			/*
+				1. mid一定属于右半部分,最小指在[left,mid]范围内
+				2. [mid+1:right]范围内的元素都可以排除掉
+			*/
+			right = mid
+		}
+	}
+
+	//当二分结束时,范围区间变为1
+	return nums[left]
 }
 
 // @lc code=end
