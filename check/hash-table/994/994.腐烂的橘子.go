@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
  * @lc app=leetcode.cn id=994 lang=golang
  *
@@ -11,7 +13,7 @@ package main
 /*
 解法1 dfs
 */
-func orangesRotting(grid [][]int) int {
+func orangesRotting1(grid [][]int) int {
 	m, n := len(grid), len(grid[0])
 
 	/*
@@ -92,6 +94,57 @@ func orangesRotting(grid [][]int) int {
 	}
 
 	return ret
+}
+
+/*
+解法2 bfs
+*/
+func orangesRotting(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+
+	queue := [][2]int{}
+	goodCnt := 0 //新鲜橘子数量
+	for i := range grid {
+		for j := range grid[i] {
+			if grid[i][j] == 2 {
+				queue = append(queue, [2]int{i, j})
+			} else if grid[i][j] == 1 {
+				goodCnt++
+			}
+		}
+	}
+
+	dirs := [][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+	maxTime := 0
+	for goodCnt > 0 && len(queue) > 0 {
+		levelCnt := len(queue)
+		maxTime++
+		for i := 0; i < levelCnt; i++ {
+			head := queue[0]
+			queue = queue[1:]
+			for _, dir := range dirs {
+				i1, j1 := head[0]+dir[0], head[1]+dir[1]
+				if i1 >= 0 && i1 < m && j1 >= 0 && j1 < n && grid[i1][j1] == 1 {
+					grid[i1][j1] = 2
+					goodCnt--
+					queue = append(queue, [2]int{i1, j1})
+				}
+			}
+		}
+	}
+
+	if goodCnt > 0 {
+		return -1
+	}
+	return maxTime
+}
+
+func printGrid(goodCnt int, grid [][]int) {
+	fmt.Printf("goodCnt=%d\n", goodCnt)
+	for i := range grid {
+		fmt.Printf("grid[%d]=%+v\n", i, grid[i])
+	}
+	fmt.Printf("\n")
 }
 
 // @lc code=end
