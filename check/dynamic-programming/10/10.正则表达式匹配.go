@@ -65,4 +65,7 @@ func isMatch(s string, p string) bool {
 	return dp[m][n]
 }
 
+/*
+解法2 带记录的dfs 参考 https://mp.weixin.qq.com/s/rnaFK05IcFWvNN1ppNf2ug
+*/
 // @lc code=end
