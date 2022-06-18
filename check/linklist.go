@@ -5,6 +5,11 @@ import (
 	"math/rand"
 )
 
+type Node struct {
+	Val  int
+	Next *Node
+}
+
 type ListNode struct {
 	Val  int
 	Next *ListNode
