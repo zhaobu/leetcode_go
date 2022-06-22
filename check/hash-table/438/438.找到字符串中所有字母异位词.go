@@ -10,36 +10,8 @@ import "fmt"
 
 // @lc code=start
 
-func findAnagrams(s string, p string) []int {
-	ret := []int{}
-	if len(s) < len(p) || len(p) < 1 {
-		return ret
-	}
-	sMap := [26]int{}
-	pMap := [26]int{}
-
-	for i, v := range p {
-		sMap[s[i]-'a']++
-		pMap[v-'a']++
-	}
-
-	n := len(s) - len(p)
-	for i := 0; i <= n; i++ {
-		if sMap == pMap {
-			ret = append(ret, i)
-		}
-		if i < n {
-			sMap[s[i]-'a']--
-			sMap[s[i+len(p)]-'a']++
-		}
-	}
-	return ret
-}
-
 /*
-解法1
-暴力法
-超时
+解法1 暴力法(超时)
 */
 func findAnagrams1(s string, p string) []int {
 	ret := []int{}
@@ -77,6 +49,38 @@ func findAnagrams1(s string, p string) []int {
 		if isAnagrams(byteS[i:i+len(byteP)], byteP) {
 			ret = append(ret, i)
 		}
+	}
+
+	return ret
+}
+
+/*
+解法2 滑动窗口
+*/
+func findAnagrams(s string, p string) []int {
+	//统计p字符串中字符个数
+	cnts := [26]int{}
+	for _, ch := range p {
+		cnts[ch-'a']++
+	}
+
+	ret := []int{}
+	left, right := 0, 0
+	curCnts := [26]int{} //记录当前窗口[left,right]内字符个数
+	for right < len(s) {
+		chIndex := s[right] - 'a'
+		curCnts[chIndex]++ //窗口向右滑动一格
+
+		//判断左边界是否需要收缩
+		for left <= right && curCnts[chIndex] > cnts[chIndex] {
+			curCnts[s[left]-'a']--
+			left++
+		}
+
+		if curCnts == cnts {
+			ret = append(ret, left)
+		}
+		right++
 	}
 
 	return ret
