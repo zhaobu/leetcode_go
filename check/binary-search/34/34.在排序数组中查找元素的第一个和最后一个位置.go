@@ -12,54 +12,52 @@ package main
 */
 func searchRange(nums []int, target int) []int {
 	n := len(nums)
+	ret := []int{-1, -1}
 	if n == 0 {
+		return ret
+	}
+	//找到一个target的下标
+	left, right, mid := 0, n-1, 0
+	for left <= right {
+		mid = left + (right-left)>>1
+		if nums[mid] < target {
+			left = mid + 1
+		} else if nums[mid] > target {
+			right = mid - 1
+		} else {
+			break
+		}
+	}
+	if nums[mid] != target {
 		return []int{-1, -1}
 	}
-
-	ret := []int{-1, -1}
-	//二分查找第一个为target的下标
-	i, j := 0, n-1
-	for i <= j {
-		mid := i + (j-i)>>1
+	//   fmt.Printf("left=%d, right=%d\n", left, right)
+	//找到第一个target的下标
+	for i, j := left, right; i <= j; {
+		mid = i + (j-i)>>1
 		if nums[mid] < target {
 			i = mid + 1
-		} else if nums[mid] > target {
-			j = mid - 1
 		} else {
-			if mid > 0 && nums[mid-1] == target { //如果mid左边还有等于target的继续在左区间二分
-				if mid > ret[1] { //尽量让二分查找右边界时的左起始位置靠右,减小查找区间
-					ret[1] = mid
-				}
-				j = mid - 1
-			} else {
+			if mid == left || nums[mid-1] != target {
 				ret[0] = mid
 				break
 			}
+			j = mid - 1
 		}
 	}
-	if ret[0] == -1 {
-		return ret
-	}
+	//   fmt.Printf("left=%d, right=%d\n", left, right)
 
-	//二分查找最后一个为target的下标
-	i, j = ret[0], n-1
-	if ret[1] > ret[0] { //第一次二分查找时,可能不会更新ret[1]
-		i = ret[1]
-	}
-	// fmt.Printf("i=%d,j=%d\n", i, j)
-	for i <= j {
-		mid := i + (j-i)>>1
-		if nums[mid] < target {
-			i = mid + 1
-		} else if nums[mid] > target {
+	//找到最后一个target的下标
+	for i, j := left, right; i <= j; {
+		mid = i + (j-i)>>1
+		if nums[mid] > target {
 			j = mid - 1
 		} else {
-			if mid < n-1 && nums[mid+1] == target { //如果mid右边还有等于target的继续在右区间二分
-				i = mid + 1
-			} else {
+			if mid == right || nums[mid+1] != target {
 				ret[1] = mid
 				break
 			}
+			i = mid + 1
 		}
 	}
 
