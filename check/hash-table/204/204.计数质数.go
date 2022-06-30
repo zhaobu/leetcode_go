@@ -59,7 +59,8 @@ func countPrimes2(n int) int {
 }
 
 /*
-解法3 埃氏筛
+解法3 线性筛
+每个合数只会被其「最小的质因数」筛去，即每个合数被标记一次
 */
 func countPrimes(n int) int {
 	isPrime := make([]bool, n)
