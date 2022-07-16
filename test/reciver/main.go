@@ -1,108 +1,58 @@
 package main
 
-import (
-	"fmt"
-	"math"
-	"runtime/debug"
-	"sort"
-)
-
-type MySlice []int
-
-func (m MySlice) append1(i int) {
-	fmt.Printf(string(debug.Stack()))
-	m = append(m, i)
-}
-
-func (m *MySlice) append2(i int) {
-	fmt.Printf(string(debug.Stack()))
-	*m = append(*m, i)
-}
-
-func init() {
-	fmt.Printf("b=%d\n", 10)
-}
-func init() {
-	fmt.Printf("a=%d\n", 10)
-}
-
-func threeSum(nums []int, target int) (ret [][]int) {
-	sort.Ints(nums)
-	n := len(nums)
-
-	for _, num1 := range nums {
-		targetNum := target - num1
-		left, right := 0, n-1
-		for left < right {
-			sum := nums[left] + nums[right]
-			if sum == targetNum {
-				ret = append(ret, []int{num1, nums[left], nums[right]})
-				break
-			} else if sum < targetNum {
-				left++
-			} else {
-				right--
-			}
-		}
-	}
-
-	return ret
-}
+import "fmt"
 
 func main() {
-	// m := make(MySlice, 2, 4)
-	// fmt.Printf("m=%+v\n", m)
-	// m.append1(1)
-	// m.append2(2)
-	// fmt.Printf("m=%+v\n", m)
+	matrix := [][]int{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+		{9, 10, 11, 12},
+	}
 
-	// nums := []int{1, 1, 1, 1}
-	// target := 3
-	// fmt.Printf("%v\n", threeSum(nums, target))
-
-	nums1 := []int{1, 1, 2, 3, 4}
-	nums2 := []int{3, 5, 6}
-	fmt.Printf("%v\n", merge(nums1, nums2))
+	fmt.Printf("%+v \n", change(matrix))
 }
 
-func merge(nums1, nums2 []int) (ret []int) {
-	n1, n2 := len(nums1), len(nums2)
-	if n1 == 0 && n2 == 0 {
+/*
+matrix =
+[
+
+[1,2,3,4],
+[5,6,7,8],
+[9,10,11,12]
+
+]
+
+输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+*/
+func change(matrix [][]int) (ret []int) {
+	n := len(matrix)
+	if n == 0 {
 		return ret
 	}
+	m := len(matrix[0])
 
+	dirs := [][]int{
+		{0, 1},
+		{1, 0},
+		{0, -1}, //左
+		{-1, 0}, //上
+	}
+
+	visited := make([][]bool, n)
+	for i := range matrix {
+		visited[i] = make([]bool, m)
+	}
+
+	count := m * n
+	curDir := 0
 	i, j := 0, 0
-	record := map[int]int{}
-
-	for _, v := range nums1 {
-		record[v]++
-	}
-	for _, v := range nums2 {
-		record[v]++
-	}
-
-	for i < n1 || j < n2 {
-		a, b := math.MaxInt64, math.MaxInt64
-		if i < n1 {
-			a = nums1[i]
-		}
-		if j < n2 {
-			b = nums2[j]
-		}
-		c := b
-		if a < b {
-			c = a
-			i++
-		} else if a == b {
-			j++
-			i++
-		} else {
-			j++
-		}
-		// fmt.Printf("a=%d, b=%d, c=%d \n", a, b, c)
-
-		if record[c] == 1 {
-			ret = append(ret, c)
+	for count > 0 {
+		ret = append(ret, matrix[i][j])
+		visited[i][j] = true
+		count--
+		i1, j1 := i+dirs[curDir][0], j+dirs[curDir][1]
+		if i1 < 0 || i1 >= n || j1 < 0 || j1 >= m || visited[i1][j1] {
+			curDir = (curDir + 1) % 4
 		}
 	}
 

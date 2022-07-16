@@ -34,4 +34,5 @@
         "**/*.meta": true,
         "**/*-template": true
     },
+    "C_Cpp.errorSquiggles": "Disabled",
 }
